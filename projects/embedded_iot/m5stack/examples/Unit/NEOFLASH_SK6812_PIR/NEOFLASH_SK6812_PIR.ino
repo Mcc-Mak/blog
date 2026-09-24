@@ -14,37 +14,28 @@
 #include <Arduino.h>
 #include "time.h"
 #include "DisplayCurrentTime.h"
-
 FASTLED_USING_NAMESPACE
-
 #if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001000)
 #warning "Requires FastLED 3.1 or later; check github for latest code."
 #endif
-
 #define DATA_PIN    26
 //#define CLK_PIN   4
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
 #define NUM_LEDS    192
 CRGB leds[NUM_LEDS];
-
 #define BRIGHTNESS          5
 #define FRAMES_PER_SECOND  120
-
 // -- The core to run FastLED.show()
 #define FASTLED_SHOW_CORE 0
-
 // -- Task handles for use in the notifications
 static TaskHandle_t FastLEDshowTaskHandle = 0;
 static TaskHandle_t userTaskHandle = 0;
-
 const char* ssid       = "***";
 const char* password   = "********";
-
 const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = 28800;
 const int   daylightOffset_sec = 0;
-
 // This is GandiStandardSSLCA2.pem, the root Certificate Authority that signed
 // the server certifcate for the demo server https://jigsaw.w3.org in this
 // example. This certificate is valid until Sep 11 23:59:59 2024 GMT
@@ -83,7 +74,6 @@ const char* rootCACertificate = \
 "m9T8bJUox04FB6b9HbwZ4ui3uRGKLXASUoWNjDNKD/yZkuBjcNqllEdjB+dYxzFf\n" \
 "BT02Vf6Dsuimrdfp5gJ0iHRc2jTbkNJtUQoj1iM=\n" \
 "-----END CERTIFICATE-----\n";
-
 uint16_t time4Day;
 uint16_t  printLocalTime()
 {
@@ -95,7 +85,6 @@ uint16_t  printLocalTime()
   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
   time4Day = timeinfo.tm_hour*1000 + timeinfo.tm_min;
   Serial.printf("time4Day:%d \r\n",time4Day);
-
   // M5.Lcd.clear(BLACK);
   M5.Lcd.setTextSize(1);
   M5.Lcd.setTextFont(2);
@@ -105,7 +94,6 @@ uint16_t  printLocalTime()
   M5.Lcd.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
   return time4Day;
 }
-
 /** show() for ESP32
  *  Call this function instead of FastLED.show(). It signals core 0 to issue a show,
  *  then waits for a notification that it is done.
@@ -116,17 +104,14 @@ void FastLEDshowESP32()
         // -- Store the handle of the current task, so that the show task can
         //    notify it when it's done
         userTaskHandle = xTaskGetCurrentTaskHandle();
-
         // -- Trigger the show task
         xTaskNotifyGive(FastLEDshowTaskHandle);
-
         // -- Wait to be notified that it's done
         const TickType_t xMaxBlockTime = pdMS_TO_TICKS( 200 );
         ulTaskNotifyTake(pdTRUE, xMaxBlockTime);
         userTaskHandle = 0;
     }
 }
-
 /** show Task
  *  This function runs on core 0 and just waits for requests to call FastLED.show()
  */
@@ -136,17 +121,13 @@ void FastLEDshowTask(void *pvParameters)
     for(;;) {
         // -- Wait for the trigger
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-
         // -- Do the show (synchronously)
         FastLED.show();
-
         // -- Notify the calling task
         xTaskNotifyGive(userTaskHandle);
     }
 }
-
 WiFiMulti WiFiMulti;
-
 void InitWifi()
 {
   Serial.printf("Connecting to %s ", ssid);
@@ -156,11 +137,9 @@ void InitWifi()
       Serial.print(".");
   }
   Serial.println(" CONNECTED");
-
   //init and get the time
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
   printLocalTime();
-
   //disconnect WiFi as it's no longer needed
  // WiFi.disconnect(true);
   //WiFi.mode(WIFI_OFF);
@@ -169,7 +148,6 @@ void setup() {
   delay(3000); // 3 second delay for recovery
   M5.begin();
   M5.Power.begin();
-
   M5.Lcd.clear(BLACK);
   M5.Lcd.setTextColor(YELLOW); M5.Lcd.setTextSize(2); M5.Lcd.setCursor(40, 0);
   M5.Lcd.println("Neoflash example");
@@ -180,23 +158,18 @@ void setup() {
   // tell FastLED about the LED strip configuration
   FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
   //FastLED.addLeds<LED_TYPE,DATA_PIN,CLK_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
-
   // set master brightness control
   FastLED.setBrightness(BRIGHTNESS);
   //M5.Lcd.drawJpg((uint8_t *)m5_logo, 22758, 0, 0, 320, 240);
   int core = xPortGetCoreID();
   Serial.print("Main code running on core ");
   Serial.println(core);
-
     // -- Create the FastLED show task
     xTaskCreatePinnedToCore(FastLEDshowTask, "FastLEDshowTask", 2048, NULL, 2, &FastLEDshowTaskHandle, FASTLED_SHOW_CORE);
 }
-
-
 // List of patterns to cycle through.  Each is defined as a separate function below.
 typedef void (*SimplePatternList[])();
 SimplePatternList gPatterns = {confetti, sinelon};
-
 uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
 uint8_t gHue = 0; // rotating "base color" used by many of the patterns
 uint8_t i = 0;
@@ -208,7 +181,6 @@ void loop()
     uint16_t lasttime;
     //https_test();
     curtime = printLocalTime();
-
     if(digitalRead(36)==1)
     {
         Serial.printf("ad read = 111\r\n");
@@ -236,36 +208,30 @@ void loop()
      }
      lasttime = curtime;
 }
-
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
-
 void nextPattern()
 {
   // add one to the current pattern number, and wrap around at the end
   gCurrentPatternNumber = (gCurrentPatternNumber + 1) % ARRAY_SIZE( gPatterns);
   i++;
 }
-
 void rainbow()
 {
   // FastLED's built-in rainbow generator
   fill_rainbow( leds, NUM_LEDS, gHue, 7);
 }
-
 void rainbowWithGlitter()
 {
   // built-in FastLED rainbow, plus some random sparkly glitter
   rainbow();
   addGlitter(80);
 }
-
 void addGlitter( fract8 chanceOfGlitter)
 {
   if( random8() < chanceOfGlitter) {
     leds[ random16(NUM_LEDS) ] += CRGB::White;
   }
 }
-
 void confetti()
 {
   // random colored speckles that blink in and fade smoothly
@@ -273,7 +239,6 @@ void confetti()
   int pos = random16(NUM_LEDS);
   leds[pos] += CHSV( gHue + random8(64), 200, 255);
 }
-
 void sinelon()
 {
   // a colored dot sweeping back and forth, with fading trails
@@ -281,7 +246,6 @@ void sinelon()
   int pos = beatsin16( 13, 0, NUM_LEDS-1 );
   leds[pos] += CHSV( gHue, 255, 192);
 }
-
 void bpm()
 {
   // colored stripes pulsing at a defined Beats-Per-Minute (BPM)
@@ -292,7 +256,6 @@ void bpm()
     leds[i] = ColorFromPalette(palette, gHue+(i*2), beat-gHue+(i*10));
   }
 }
-
 void juggle() {
   // eight colored dots, weaving in and out of sync with each other
   fadeToBlackBy( leds, NUM_LEDS, 20);
@@ -302,7 +265,6 @@ void juggle() {
     dothue += 32;
   }
 }
-
 void https_test(void)
 {
   WiFiClientSecure *client = new WiFiClientSecure;
@@ -311,18 +273,15 @@ void https_test(void)
     {
       // Add a scoping block for HTTPClient https to make sure it is destroyed before WiFiClientSecure *client is
       HTTPClient https;
-
       Serial.print("[HTTPS] begin...\n");
       if (https.begin("https://jigsaw.w3.org/HTTP/connection.html")) {  // HTTPS
         Serial.print("[HTTPS] GET...\n");
         // start connection and send HTTP header
         int httpCode = https.GET();
-
         // httpCode will be negative on error
         if (httpCode > 0) {
           // HTTP header has been send and Server response header has been handled
           Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
-
           // file found at server
           if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
             String payload = https.getString();
@@ -331,22 +290,17 @@ void https_test(void)
         } else {
           Serial.printf("[HTTPS] GET... failed, error: %s\n", https.errorToString(httpCode).c_str());
         }
-
         https.end();
       } else {
         Serial.printf("[HTTPS] Unable to connect\n");
       }
-
       // End extra scoping block
     }
-
     delete client;
   } else {
     Serial.println("Unable to create client");
   }
-
   Serial.println();
   Serial.println("Waiting 10s before the next round...");
   delay(10000);
-
  }

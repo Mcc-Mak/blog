@@ -1,11 +1,9 @@
 menu "M5Stack"
-
 choice CORE_TYPE
     prompt "Type of Core"
     default M5STACK_BASIC
     help
         Type of Core.
-
 config M5STICK
     bool "M5Stick"
 config M5STACK_BASIC
@@ -15,6 +13,4 @@ config M5STACK_GRAY
 config M5STACK_FIRE
     bool "M5Stack Fire"
 endchoice
-
 endmenu
-

@@ -6,7 +6,6 @@
 #include <M5Stack.h>
 #include <ADXL345.h>
 ADXL345 accel(ADXL345_ALT);
-
 void setup() {
   // put your setup code here, to run once:
   M5.begin();
@@ -14,11 +13,9 @@ void setup() {
   Wire.begin();
   M5.Lcd.setCursor(140, 10, 4);
   M5.Lcd.println("ACC");
-
   M5.Lcd.setCursor(40, 100); M5.Lcd.print(" x ");
   M5.Lcd.setCursor(140, 100); M5.Lcd.print(" y ");
   M5.Lcd.setCursor(240, 100); M5.Lcd.print(" z ");
-
   byte deviceID = accel.readDeviceID();
   if (deviceID != 0) {
     Serial.print("0x");
@@ -30,7 +27,6 @@ void setup() {
       delay(100);
     }
   }
-
   // Data Rate
   // - ADXL345_RATE_3200HZ: 3200 Hz
   // - ADXL345_RATE_1600HZ: 1600 Hz
@@ -47,7 +43,6 @@ void setup() {
       delay(100);
     }
   }
-
   // Data Range
   // - ADXL345_RANGE_2G: +-2 g
   // - ADXL345_RANGE_4G: +-4 g
@@ -59,7 +54,6 @@ void setup() {
       delay(100);
     }
   }
-
   if (!accel.start()) {
     Serial.println("start: failed");
     while(1) {
@@ -67,7 +61,6 @@ void setup() {
     }
   }
 }
-
 void loop() {
   // put your main code here, to run repeatedly:
     if (accel.update()) {

@@ -1,9 +1,7 @@
 /*
     Description: Control Catch Unit through PWM.
 */
-
 #include <M5Stack.h>
-
 const int servoPin = 26;
 int freq = 50;
 int ledChannel = 0;
@@ -19,7 +17,6 @@ void setup() {
   ledcSetup(ledChannel, freq, resolution);
   ledcAttachPin(servoPin, ledChannel);
 }
-
 void loop() {
   // High level 0.5ms is angle 0°
   // duty = 0.5/20ms = 0.025, 0.025*1023≈25

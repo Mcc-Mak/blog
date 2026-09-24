@@ -1,24 +1,19 @@
 name: Auto merge branches
-
 on:
   push:
     branches:
       - dev-001
       - dev
-
 permissions:
   contents: write
-
 # 相当于 GitLab 的 resource_group，串行化合并操作
 concurrency:
   group: auto-merge
   cancel-in-progress: false
-
 jobs:
   auto_merge_dev_001_to_dev:
     if: github.ref == 'refs/heads/dev-001'
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout dev
         uses: actions/checkout@v5
@@ -28,12 +23,10 @@ jobs:
           # 如果要自动串联 dev-001 -> dev -> main，必须用 PAT / GitHub App Token。
           # GITHUB_TOKEN 推送 dev 后不会触发新的 workflow。
           token: ${{ secrets.GIT_PUSH_TOKEN }}
-
       - name: Configure git
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-
       - name: Auto-merge dev-001 into dev
         run: |
           git fetch origin dev dev-001
@@ -41,11 +34,9 @@ jobs:
           git reset --hard origin/dev
           git merge origin/dev-001 --no-ff -m "Auto-merge dev-001 into dev"
           git push origin dev
-
   auto_merge_dev_to_main:
     if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout main
         uses: actions/checkout@v5
@@ -53,12 +44,10 @@ jobs:
           ref: main
           fetch-depth: 0
           token: ${{ secrets.GIT_PUSH_TOKEN }}
-
       - name: Configure git
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-
       - name: Auto-merge dev into main
         run: |
           git fetch origin main dev

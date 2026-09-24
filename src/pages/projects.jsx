@@ -1,9 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import { categories, projects } from "../data/projects";
-
 // Resolve a relative project path against the Vite base (/blog/).
 const assetUrl = (relativePath) => `${import.meta.env.BASE_URL}${relativePath}`;
-
 function Projects() {
   return (
     <div className="content projects">
@@ -79,5 +77,4 @@ function Projects() {
     </div>
   );
 }
-
 export default Projects;

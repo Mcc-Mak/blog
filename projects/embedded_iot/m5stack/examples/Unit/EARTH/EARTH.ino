@@ -2,13 +2,11 @@
     Description: Read the analog quantity and digital quantity returned by the EARTH unit, and convert the analog quantity into 12-bit data and display it on the screen.
 */
 #include <M5Stack.h>
-
 void setup() {
   M5.begin();
   M5.Power.begin();
   //disable the speak noise
   dacWrite(25, 0);
-
   M5.Lcd.setTextColor(YELLOW);
   M5.Lcd.setTextSize(2);
   M5.Lcd.setCursor(65, 50);
@@ -19,7 +17,6 @@ void setup() {
   M5.Lcd.setCursor(85, 100);
   M5.Lcd.print("GPIO26:");
 }
-
 uint16_t analogRead_value = 0;
 uint16_t digitalRead_value = 0;
 void loop() {

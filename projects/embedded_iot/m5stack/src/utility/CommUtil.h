@@ -7,10 +7,8 @@
  *----------------------------------------------------------------------*/
 #ifndef CommUtil_h
 #define CommUtil_h
-
 #include <Arduino.h>
 #include <Wire.h>
-
 class CommUtil {
   public:
     CommUtil();

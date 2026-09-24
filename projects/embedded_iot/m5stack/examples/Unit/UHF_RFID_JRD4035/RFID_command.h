@@ -1,13 +1,9 @@
 #ifndef _RFID_COMMAND_H
 #define _RFID_COMMAND_H
-
 #include "Arduino.h"
-
 #define UBYTE   uint8_t
 #define UWORD   uint16_t
 #define UDOUBLE uint32_t
-
-
 struct CardpropertiesInfo
 {
   String _RSSI;
@@ -16,13 +12,11 @@ struct CardpropertiesInfo
   String _CRC;
   String _ERROR;
 };
-
 struct ManyInfo
 {
   int len;
   CardpropertiesInfo *card;
 };
-
 struct SelectInfo
 {
   String Mask;
@@ -31,7 +25,6 @@ struct SelectInfo
   String MaskLen;
   String Truncate;
 };
-
 struct CardInformationInfo
 {
   String _UL;
@@ -43,7 +36,6 @@ struct CardInformationInfo
   String _Data;
   String _Successful;
 };
-
 struct QueryInfo
 {
   String  QueryParameter;
@@ -55,7 +47,6 @@ struct QueryInfo
   String  Target;
   String  Q;
 };
-
 struct ReadInfo
 {
   String Region;
@@ -64,25 +55,17 @@ struct ReadInfo
   String Mixer_G;
   String IF_G;
   String Thrd;
-
 };
-
 struct TestInfo
 {
   String CH_L;
   String CH_H;
   String Data[20];
 };
-
-
-
-
 class UHF_RFID
 {
-
   public:
     UBYTE _debug;
-    
     void Sendcommand(UBYTE com_nub);
     void Send_the_modified_command();
     void Readcallback();
@@ -101,7 +84,6 @@ class UHF_RFID
     CardInformationInfo EPC_Gen2_error_code();
     CardInformationInfo Operation_is_successful();
     CardInformationInfo UI_PC_EPC();
-
     String Query_hardware_version();
     String Query_software_version();
     String Inquire_manufacturer();
@@ -140,8 +122,6 @@ class UHF_RFID
     CardInformationInfo NXP_Change_Config(UDOUBLE Access_Password, UWORD Config_Word = 0x0000);
     CardInformationInfo Impinj_Monza_QT(UDOUBLE Access_Password, UBYTE Read_Write = 0x00, UBYTE Persistence = 0x01, UWORD Payload = 0x4000);
     CardInformationInfo BlockPermalock(UDOUBLE Access_Password, UBYTE Read_Lock = 0x00, UBYTE MemBank = 0x03, UWORD BlockPtr = 0x00, UBYTE BlockRange = 0x01, UWORD Mask = 0x0700);
-
-
   private:
     CardpropertiesInfo *card;
     String DATA_Str_M5led = "";
@@ -151,9 +131,6 @@ class UHF_RFID
     UBYTE DATA_Interim_order[40] = {0,};
     UBYTE DATA_Interim_b = 0;
 };
-
-
-
 const UWORD RFID_cmdnub[39][26] =
 {
   {0xBB, 0x00, 0x03, 0x00, 0x01, 0x00, 0x04, 0x7E,},       //0. Hardware version 0.硬件版本
@@ -212,14 +189,5 @@ const UWORD RFID_cmdnub[39][26] =
   { 0xBB, 0x00, 0xD3, 0x00, 0x0B, 0x00, 0x00, 0xFF,
     0xFF, 0x01, 0x03, 0x00, 0x00, 0x01, 0x07, 0x00, 0xE8, 0x7E,
   },   //38.The BlockPermalock directive permanently locks blocks of a user's Block 38.BlockPermalock 指令可以永久锁定用户区的某几个 Block
-
 };
-
-
-
-
-
-
-
-
 #endif

@@ -14,7 +14,6 @@
 void setup() {
   M5.begin();  //Init M5Core
   M5.Power.begin();//Init Power module
-
   M5.Lcd.setTextColor(YELLOW);  // Set the font color to yellow
   M5.Lcd.setTextSize(2);  // Set the font size
   M5.Lcd.setCursor(65, 10); //Move the cursor position to (x, y)
@@ -24,7 +23,6 @@ void setup() {
   M5.Lcd.println("to clear screen.");
   M5.Lcd.setTextColor(RED);
 }
-
 //After the program in setup() runs, it runs the program in loop()
 //The loop() function is an infinite loop in which the program runs repeatedly
 void loop() {

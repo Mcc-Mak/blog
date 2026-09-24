@@ -4,11 +4,9 @@
 #include <M5Stack.h>
 #include <stdint.h>
 #include <vector>
-
 TFT_eSprite Disbuff = TFT_eSprite(&M5.Lcd);
 TaskHandle_t xhandle_lte_event = NULL;
 SemaphoreHandle_t command_list_samap;
-
 typedef enum
 {
     kQUERY_MO = 0,
@@ -21,7 +19,6 @@ typedef enum
     kACTION_MT,
     kINFORM
 } LTEMsg_t;
-
 typedef enum
 {
     kErrorSendTimeOUT = 0xe1,
@@ -33,7 +30,6 @@ typedef enum
     kWaitforRead = 3,
     kReOK
 } LTEState_t;
-
 struct ATCommand
 {
     uint8_t command_type;
@@ -44,9 +40,7 @@ struct ATCommand
     String read_str;
     uint16_t _send_count;
     uint16_t _send_time_count;
-
 } user;
-
 using namespace std;
 vector<ATCommand> serial_at;
 String zmmi_str;
@@ -57,16 +51,13 @@ void LTEModuleTask(void *arg)
     while (1)
     {
         xSemaphoreTake(command_list_samap, portMAX_DELAY);
-
         if (Serial2.available() != 0)
         {
             String str = Serial2.readString();
             restr += str;
-
             if (restr.indexOf("\r\n") != -1)
             {
             }
-
             if (restr.indexOf("+ZMMI:") != -1)
             {
                 zmmi_str = restr;
@@ -97,7 +88,6 @@ void LTEModuleTask(void *arg)
                 restr.clear();
             }
         }
-
         if (serial_at.empty() != true)
         {
             Number = 0;
@@ -109,7 +99,6 @@ void LTEModuleTask(void *arg)
                 serial_at[0].state = kSending;
                 break;
             case kSending:
-
                 if (serial_at[0]._send_time_count > 0)
                 {
                     serial_at[0]._send_time_count--;
@@ -156,7 +145,6 @@ void LTEModuleTask(void *arg)
         delay(10);
     }
 }
-
 void AddMsg(String str, uint8_t type, uint16_t sendcount, uint16_t sendtime)
 {
     struct ATCommand newcommand;
@@ -171,7 +159,6 @@ void AddMsg(String str, uint8_t type, uint16_t sendcount, uint16_t sendtime)
     serial_at.push_back(newcommand);
     xSemaphoreGive(command_list_samap);
 }
-
 uint8_t readSendState(uint32_t number)
 {
     xSemaphoreTake(command_list_samap, portMAX_DELAY);
@@ -179,7 +166,6 @@ uint8_t readSendState(uint32_t number)
     xSemaphoreGive(command_list_samap);
     return restate;
 }
-
 uint32_t getATMsgSize()
 {
     xSemaphoreTake(command_list_samap, portMAX_DELAY);
@@ -194,7 +180,6 @@ String ReadMsgstr(uint32_t number)
     xSemaphoreGive(command_list_samap);
     return restate;
 }
-
 bool EraseFirstMsg()
 {
     xSemaphoreTake(command_list_samap, portMAX_DELAY);
@@ -202,7 +187,6 @@ bool EraseFirstMsg()
     xSemaphoreGive(command_list_samap);
     return true;
 }
-
 uint16_t GetstrNumber(String Str, uint32_t *ptrbuff)
 {
     uint16_t count = 0;
@@ -233,11 +217,9 @@ uint16_t GetstrNumber(String StartStr, String EndStr, String Str)
     uint16_t count = 0;
     String Numberstr;
     int indexpos = 0;
-
     Str = Str.substring(Str.indexOf(StartStr) + StartStr.length(), Str.indexOf(EndStr));
     Str.trim();
     restr_v.clear();
-
     while (Str.length() > 0)
     {
         indexpos = Str.indexOf(",");
@@ -258,7 +240,6 @@ uint16_t GetstrNumber(String StartStr, String EndStr, String Str)
     }
     return count;
 }
-
 String getReString(uint16_t Number)
 {
     if (restr_v.empty())
@@ -267,16 +248,13 @@ String getReString(uint16_t Number)
     }
     return restr_v.at(Number);
 }
-
 uint16_t GetstrNumber(String StartStr, String EndStr, String Str, uint32_t *ptrbuff)
 {
     uint16_t count = 0;
     String Numberstr;
     int indexpos = 0;
-
     Str = Str.substring(Str.indexOf(StartStr) + StartStr.length(), Str.indexOf(EndStr));
     Str.trim();
-
     while (Str.length() > 0)
     {
         indexpos = Str.indexOf(",");
@@ -298,7 +276,6 @@ uint16_t GetstrNumber(String StartStr, String EndStr, String Str, uint32_t *ptrb
 }
 uint32_t numberbuff[128];
 String readstr;
-
 void setup()
 {
     // put your setup code here, to run once:
@@ -307,15 +284,12 @@ void setup()
     Serial.begin(115200);
     Serial2.begin(115200, SERIAL_8N1, 16, 17);
     Serial.printf("FUCK STC\n");
-
     Disbuff.createSprite(320, 100);
     Disbuff.fillRect(0, 0, 320, 100, BLACK);
     Disbuff.drawRect(0, 0, 320, 20, Disbuff.color565(36, 36, 36));
     Disbuff.pushSprite(0, 0);
-
     pinMode(2, OUTPUT);
     digitalWrite(2, 0);
-
     Disbuff.setTextColor(WHITE);
     Disbuff.setTextSize(1);
     for (int i = 0; i < 100; i++)
@@ -328,11 +302,9 @@ void setup()
         delay(10);
     }
     digitalWrite(2, 1);
-
     xTaskCreate(LTEModuleTask, "LTEModuleTask", 1024 * 2, (void *)0, 4, &xhandle_lte_event);
     command_list_samap = xSemaphoreCreateMutex();
     xSemaphoreGive(command_list_samap);
-
     int count_t = 0;
     AddMsg("AT\r\n", kASSIGN_MO, 1000, 1000);
     while (getATMsgSize() > 0)
@@ -349,7 +321,6 @@ void setup()
 	AddMsg("AT+GMR?\r\n", kQUERY_MT, 1000, 1000);
 	while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) || (readSendState(0) == kWaitforMsg))delay(50);
 	*/
-
     AddMsg("AT^CARDMODE\r\n", kQUERY_MT, 1000, 1000);
     while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) || (readSendState(0) == kWaitforMsg))
         delay(50);
@@ -380,9 +351,7 @@ void setup()
         Disbuff.pushSprite(0, 0);
     }
     EraseFirstMsg();
-
     AddMsg("AT+CFUN=1\r\n", kASSIGN_MO, 1000, 1000);
-
     AddMsg("AT+CGDCONT=1,\"IP\"\r\n", kASSIGN_MO, 1000, 1000);
     AddMsg("AT+CLIP=1\r\n", kASSIGN_MO, 1000, 1000);
     AddMsg("AT+CREG=1\r\n", kASSIGN_MO, 1000, 1000);
@@ -390,7 +359,6 @@ void setup()
     AddMsg("AT+COPS=1,2,\"46008\",0\r\n", kASSIGN_MO, 1000, 1000);
     AddMsg("AT+S32K=0\r\n", kASSIGN_MO, 1000, 1000);
 }
-
 uint8_t restate;
 void loop()
 {
@@ -482,23 +450,19 @@ void loop()
         delay(50);
     restate = readSendState(0);
     readstr = ReadMsgstr(0).c_str();
-
     Disbuff.fillRect(0, 20, 320, 10, BLACK);
     Disbuff.setCursor(20, 25);
     Disbuff.setTextColor(WHITE);
     Disbuff.setTextSize(1);
     readstr.trim();
     Disbuff.print(readstr);
-
     if ((readstr.indexOf("+COPS:") != -1) && (restate == kWaitforRead))
     {
         int count = GetstrNumber("+COPS:", "OK", readstr);
-
         Disbuff.fillRect(100, 0, 120, 20, Disbuff.color565(36, 36, 36));
         Disbuff.setCursor(100, 7);
         Disbuff.setTextColor(WHITE);
         Disbuff.setTextSize(1);
-
         if (count == 1)
         {
             Disbuff.printf("NO Operator");
@@ -507,12 +471,10 @@ void loop()
         {
             Disbuff.print(getReString(2).c_str());
         }
-
         Disbuff.pushSprite(0, 0);
     }
     Serial.print(readstr);
     EraseFirstMsg();
-
     //*******************************************************
     //  	call +18200000000
     /*
@@ -528,7 +490,6 @@ void loop()
 		Disbuff.pushSprite(0,0);
         AddMsg("ATD18200000000;\r\n", kQUERY_MT, 1000, 1000);
         ATD
-
   		while ((readSendState(0) == kSendReady) || (readSendState(0) == kSending) || (readSendState(0) == kWaitforMsg))delay(50);
 		Serial.printf("Read state = %d \n", readSendState(0));
 		readstr = ReadMsgstr(0).c_str();
@@ -545,6 +506,5 @@ void loop()
 		AddMsg("AT+CHUP\r\n", kASSIGN_MO, 1000, 1000);	
 	}
 	*/
-
     // put your main code here, to run repeatedly:
 }

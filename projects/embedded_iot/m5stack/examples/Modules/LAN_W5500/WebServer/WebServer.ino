@@ -10,31 +10,25 @@
 #define MISO 19
 #define MOSI 23
 #define CS 26
-
 //  01 05 00 01 02 00 9d 6a
 char uart_buffer[8] = {0x01, 0x05, 0x00, 0x01, 0x02, 0x00, 0x9d, 0x6a};
 char uart_rx_buffer[8] = {0};
-
 char Num = 0;
 char stringnum = 0;
 unsigned long W5500DataNum = 0;
 unsigned long Send_Num_Ok = 0;
 unsigned long Rec_Num = 0;
 unsigned long Rec_Num_Ok = 0;
-
-
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
 IPAddress ip(192, 168, 1, 177);
-
 // Initialize the Ethernet server library
 // with the IP address and port you want to use
 // (port 80 is default for HTTP):
 EthernetServer server(80);
-
 void setup() {
   // Open serial communications and wait for port to open:
   M5.begin(true, false, true);
@@ -49,13 +43,10 @@ void setup() {
   server.begin();
   Serial.print("server is at ");
   Serial.println(Ethernet.localIP());
-
   M5.Lcd.println("M5Stack W5500 Test");
   M5.Lcd.println(" ");
   M5.Lcd.print(Ethernet.localIP());
 }
-
-
 void loop() {
   // listen for incoming clients
   EthernetClient client = server.available();
@@ -79,7 +70,6 @@ void loop() {
           client.println();
           client.println("<!DOCTYPE HTML>");
           client.println("<html>");
-
           client.println("<body>");
           client.println("<h1>M5Stack W5500 Test</h1>");
           client.println("<br />");
@@ -88,28 +78,20 @@ void loop() {
           client.println("<br />");
           client.println("<br />");
           client.println("<br />");
-
-          
           client.print("W5500 Counter Num :");
           client.print(W5500DataNum);
           client.println("<br />");
           client.println("<br />");
           W5500DataNum ++;
-          
           client.print("Rec_Num_Ok Counter :");
           client.print(Rec_Num_Ok);
           client.println("<br />");
           client.println("<br />");
-
           client.print("Rec_Num Counter :");
           client.print(Rec_Num);
           client.println("<br />");
           client.println("<br />");
-
-        
-        
           client.println("</body>");
-
           client.println("</html>");
           break;
         }
@@ -130,4 +112,3 @@ void loop() {
     Serial.println("client disconnected");
   }
 }
-

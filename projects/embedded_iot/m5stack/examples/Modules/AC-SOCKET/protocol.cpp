@@ -1,31 +1,24 @@
 #include "protocol.h"
-
 CmdData cmd_save;
-
 static protocolComType_t pUartHandle;
-
 __attribute__((weak)) void protocol_callback(CmdData cmd);
 __attribute__((weak)) void protocol_data_write(uint8_t data);
-
 static uint8_t CheckSumCal(uint8_t *pData, uint32_t num) {
   if (pData == NULL) { return 0x00; }
   if (num == 0) { return 0x00; }
   uint8_t crc_data = 0x00;
-
   for (uint32_t i = 0; i < num; i++) {
     /*仅保留低位*/
     crc_data += 0xff & pData[i];
   }
   return crc_data;
 }
-
 static void InitPtcStruct() {
   pUartHandle.step = 0;
   pUartHandle.tmpCnt = 0;
   pUartHandle.aRxBufIndex = 0;
   pUartHandle.aRxCrcIndex = 0;
 }
-
 void protocol_rec_put(uint8_t data) {
   switch (pUartHandle.step) {
   case 0:
@@ -74,34 +67,28 @@ void protocol_rec_put(uint8_t data) {
       InitPtcStruct(); /*初始化结构体值,准备下一次接收*/
     }
     break;
-
   default:
     InitPtcStruct();/*初始化结构体值,准备下一次接收*/
     break;
   }
 }
-
 void protocol_send_data(CmdData data) {
   protocolComType_t pUartHandle;
   pUartHandle.aRxBufIndex = 0;
   pUartHandle.aRxBuf[pUartHandle.aRxBufIndex++] = FRAME_HEAD_SAME_FA;
-
   pUartHandle.aRxBuf[pUartHandle.aRxBufIndex++] = data.payload.cmd_length + 6;
   uint8_t *ptx = (uint8_t *)&data;
   for (int i = 0; i < 6; i++) {
     pUartHandle.aRxBuf[pUartHandle.aRxBufIndex++] = ptx[i];
   }
-
   if (data.payload.cmd_length) {
     ptx = data.payload.cmd_value;
     for (int i = 0; i < data.payload.cmd_length; i++) {
       pUartHandle.aRxBuf[pUartHandle.aRxBufIndex++] = ptx[i];
     }
   }
-
   uint8_t check = CheckSumCal(&pUartHandle.aRxBuf[0], 8 + data.payload.cmd_length);
   pUartHandle.aRxBuf[pUartHandle.aRxBufIndex++] = check;
-
   for (int i = 0; i < pUartHandle.aRxBufIndex; i++) {
     protocol_data_write(pUartHandle.aRxBuf[i]);
   }

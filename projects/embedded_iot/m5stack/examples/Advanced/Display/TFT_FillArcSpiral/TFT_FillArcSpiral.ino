@@ -1,30 +1,21 @@
 // This sketch tests a fillArc function that has been adapted to permit the drawing of spirals
-
 // Sketch also includes (but does not use) a function to change the brightness of a colour
-
 #include <M5Stack.h>
-
 #define DEG2RAD 0.0174532925
-
 int segment = 0;
 unsigned int col = 0;
 int delta = -1;
-
   byte red = 31; // Red is the top 5 bits of a 16 bit colour value
   byte green = 0;// Green is the middle 6 bits
   byte blue = 0; // Blue is the bottom 5 bits
   byte state = 0;
-
 void setup(void) {
   M5.begin();
   M5.Power.begin();
   M5.Lcd.fillScreen(TFT_BLACK);
 }
-
-
 void loop() {
   fillArc(160, 120, segment*6, 1, 120-segment/4, 120-segment/4, 3, rainbow(col));
-
   segment+=delta;
   col+=1;
   if (col>191) col = 0;
@@ -32,11 +23,9 @@ void loop() {
   if (segment >298) delta = -1; // ~5 turns in the spiral (300*6 degrees)
   //delay(5); // Slow drawing down
 }
-
 // #########################################################################
 // Draw an arc with a defined thickness (modified to aid drawing spirals)
 // #########################################################################
-
 // x,y == coords of centre of arc
 // start_angle = 0 - 359
 // seg_count = number of 3 degree segments to draw (120 => 360 degree arc)
@@ -45,14 +34,11 @@ void loop() {
 // w  = width (thickness) of arc in pixels
 // colour = 16 bit colour value
 // Note if rx and ry are the same an arc of a circle is drawn
-
 int fillArc(int x, int y, int start_angle, int seg_count, int rx, int ry, int w, unsigned int colour)
 {
-
   // Make the segment size 7 degrees to prevent gaps when drawing spirals
   byte seg = 7; // Angle a single segment subtends (made more than 6 deg. for spiral drawing)
   byte inc = 6; // Draw segments every 6 degrees
-
   // Draw colour blocks every inc degrees
   for (int i = start_angle; i < start_angle + seg * seg_count; i += inc) {
     // Calculate pair of coordinates for segment start
@@ -62,7 +48,6 @@ int fillArc(int x, int y, int start_angle, int seg_count, int rx, int ry, int w,
     uint16_t y0 = sy * (ry - w) + y;
     uint16_t x1 = sx * rx + x;
     uint16_t y1 = sy * ry + y;
-
     // Calculate pair of coordinates for segment end
     float sx2 = cos((i + seg - 90) * DEG2RAD);
     float sy2 = sin((i + seg - 90) * DEG2RAD);
@@ -70,12 +55,10 @@ int fillArc(int x, int y, int start_angle, int seg_count, int rx, int ry, int w,
     int y2 = sy2 * (ry - w) + y;
     int x3 = sx2 * rx + x;
     int y3 = sy2 * ry + y;
-
     M5.Lcd.fillTriangle(x0, y0, x1, y1, x2, y2, colour);
     M5.Lcd.fillTriangle(x1, y1, x2, y2, x3, y3, colour);
   }
 }
-
 // #########################################################################
 // Return a 16 bit colour with brightness 0 - 100%
 // #########################################################################
@@ -84,14 +67,11 @@ unsigned int brightness(unsigned int colour, int brightness)
   byte red  = colour >> 11;
   byte green = (colour & 0x7E0) >> 5;
   byte blue   = colour & 0x1F;
-
   blue = (blue * brightness)/100;
   green = (green * brightness)/100;
   red = (red * brightness)/100;
-
   return (red << 11) + (green << 5) + blue;
 }
-
 // #########################################################################
 // Return a 16 bit rainbow colour
 // #########################################################################
@@ -99,7 +79,6 @@ unsigned int rainbow(byte value)
 {
   // Value is expected to be in range 0-127
   // The value is converted to a spectrum colour from 0 = blue through to 127 = red
-
     switch (state) {
       case 0:
         green ++;
@@ -146,4 +125,3 @@ unsigned int rainbow(byte value)
     }
     return red << 11 | green << 5 | blue;
 }
-

@@ -1,11 +1,8 @@
 #include "PCA9554.h"
-
 PCA9554::PCA9554(byte SlaveAddress)
 {
   _SlaveAddress = SlaveAddress;
 }
-
-
 bool PCA9554::twiRead(byte &registerAddress)
 {
   Wire.beginTransmission(_SlaveAddress);
@@ -20,7 +17,6 @@ bool PCA9554::twiRead(byte &registerAddress)
   }
   return false;
 }
-
 bool PCA9554::twiWrite(byte registerAddress, byte dataWrite)
 {
   Wire.beginTransmission(_SlaveAddress);
@@ -30,7 +26,6 @@ bool PCA9554::twiWrite(byte registerAddress, byte dataWrite)
     return true;
   return false;
 }
-
 bool PCA9554::pinMode0(byte pinNumber, bool state)
 {
   byte oldValue = CONFIGPORT0;
@@ -53,7 +48,6 @@ bool PCA9554::pinMode0(byte pinNumber, bool state)
   }
   return false;
 }
-
 /* bool PCA9554::pinMode1(byte pinNumber, bool state)
 {
   byte oldValue = CONFIGPORT1;
@@ -76,21 +70,18 @@ bool PCA9554::pinMode0(byte pinNumber, bool state)
   }
   return false;
 } */
-
 bool PCA9554::portMode0(byte value)
 {
   if (this->twiWrite(CONFIGPORT0, value))
     return true;
   return false;
 }
-
 /* bool PCA9554::portMode1(byte value)
 {
   if(this->twiWrite(CONFIGPORT1, value))
     return true;
   return false;
 } */
-
 bool PCA9554::digitalWrite0(byte pinNumber, bool state)
 {
   byte oldValue = OUTPUTPORT0;
@@ -113,7 +104,6 @@ bool PCA9554::digitalWrite0(byte pinNumber, bool state)
   }
   return false;
 }
-
 /* bool PCA9554::digitalWrite1(byte pinNumber, bool state)
 {
   byte oldValue = OUTPUTPORT1;
@@ -136,21 +126,18 @@ bool PCA9554::digitalWrite0(byte pinNumber, bool state)
   }
   return false;
 } */
-
 bool PCA9554::digitalWritePort0(byte value)
 {
   if (this->twiWrite(OUTPUTPORT0, value))
     return true;
   return false;
 }
-
 /* bool PCA9554::digitalWritePort1(byte value)
 {
   if(this->twiWrite(OUTPUTPORT1, value))
     return true;
   return false;
 } */
-
 bool PCA9554::digitalRead0(byte &pinNumber)
 {
   byte oldValue = INPUTPORT0;
@@ -163,7 +150,6 @@ bool PCA9554::digitalRead0(byte &pinNumber)
   }
   return false;
 }
-
 /* bool PCA9554::digitalRead1(byte &pinNumber)
 {
   byte oldValue = INPUTPORT1;
@@ -184,7 +170,6 @@ bool PCA9554::digitalReadPort0(byte &value)
     return true;
   return false;
 }
-
 /* bool PCA9554::digitalReadPort1(byte &value)
 {
   value = INPUTPORT1;

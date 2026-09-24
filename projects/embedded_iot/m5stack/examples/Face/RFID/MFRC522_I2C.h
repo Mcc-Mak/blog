@@ -77,10 +77,8 @@
  */
 #ifndef MFRC522_h
 #define MFRC522_h
-
 #include <Arduino.h>
 #include <Wire.h>
-
 // Firmware data for self-test
 // Reference values based on firmware version
 // Hint: if needed, you can remove unused self-test data to save flash memory
@@ -133,7 +131,6 @@ const byte FM17522_firmware_reference[] PROGMEM = {
 	0x51, 0x64, 0xAB, 0x3E, 0xE9, 0x15, 0xB5, 0xAB,
 	0x56, 0x9A, 0x98, 0x82, 0x26, 0xEA, 0x2A, 0x62
 };
-
 class MFRC522 {
 public:
 	// MFRC522 registers. Described in chapter 9 of the datasheet.
@@ -155,7 +152,6 @@ public:
 		BitFramingReg			= 0x0D ,	// adjustments for bit-oriented frames
 		CollReg					= 0x0E ,	// bit position of the first bit-collision detected on the RF interface
 		//						  0x0F			// reserved for future use
-
 		// Page 1: Command
 		// 						  0x10			// reserved for future use
 		ModeReg					= 0x11 ,	// defines general modes for transmitting and receiving
@@ -173,7 +169,6 @@ public:
 		MfRxReg					= 0x1D ,	// controls some MIFARE communication receive parameters
 		// 						  0x1E			// reserved for future use
 		SerialSpeedReg			= 0x1F ,	// selects the speed of the serial UART interface
-
 		// Page 2: Configuration
 		// 						  0x20			// reserved for future use
 		CRCResultRegH			= 0x21 ,	// shows the MSB and LSB values of the CRC calculation
@@ -191,7 +186,6 @@ public:
 		TReloadRegL				= 0x2D ,
 		TCounterValueRegH		= 0x2E ,	// shows the 16-bit timer value
 		TCounterValueRegL		= 0x2F ,
-
 		// Page 3: Test Registers
 		// 						  0x30			// reserved for future use
 		TestSel1Reg				= 0x31 ,	// general test signal configuration
@@ -210,7 +204,6 @@ public:
 		// 						  0x3E			// reserved for production tests
 		// 						  0x3F			// reserved for production tests
 	};
-
 	// MFRC522 commands. Described in chapter 10 of the datasheet.
 	enum PCD_Command {
 		PCD_Idle				= 0x00,		// no action, cancels current command execution
@@ -224,7 +217,6 @@ public:
 		PCD_MFAuthent 			= 0x0E,		// performs the MIFARE standard authentication as a reader
 		PCD_SoftReset			= 0x0F		// resets the MFRC522
 	};
-
 	// MFRC522 RxGain[2:0] masks, defines the receiver's signal voltage gain factor (on the PCD).
 	// Described in 9.3.3.6 / table 98 of the datasheet at http://www.nxp.com/documents/data_sheet/MFRC522.pdf
 	enum PCD_RxGain {
@@ -240,7 +232,6 @@ public:
 		RxGain_avg				= 0x04 << 4,	// 100b - 33 dB, average, convenience for RxGain_33dB
 		RxGain_max				= 0x07 << 4		// 111b - 48 dB, maximum, convenience for RxGain_48dB
 	};
-
 	// Commands sent to the PICC.
 	enum PICC_Command {
 		// The commands used by the PCD to manage communication with several PICCs (ISO 14443-3, Type A, section 6.4)
@@ -266,13 +257,11 @@ public:
 		// The PICC_CMD_MF_READ and PICC_CMD_MF_WRITE can also be used for MIFARE Ultralight.
 		PICC_CMD_UL_WRITE		= 0xA2		// Writes one 4 byte page to the PICC.
 	};
-
 	// MIFARE constants that does not fit anywhere else
 	enum MIFARE_Misc {
 		MF_ACK					= 0xA,		// The MIFARE Classic uses a 4 bit ACK/NAK. Any other value than 0xA is NAK.
 		MF_KEY_SIZE				= 6			// A Mifare Crypto1 key is 6 bytes.
 	};
-
 	// PICC types we can detect. Remember to update PICC_GetTypeName() if you add more.
 	enum PICC_Type {
 		PICC_TYPE_UNKNOWN		= 0,
@@ -286,7 +275,6 @@ public:
 		PICC_TYPE_TNP3XXX		= 8,	// Only mentioned in NXP AN 10833 MIFARE Type Identification Procedure
 		PICC_TYPE_NOT_COMPLETE	= 255	// SAK indicates UID is not complete.
 	};
-
 	// Return codes from the functions in this class. Remember to update GetStatusCodeName() if you add more.
 	enum StatusCode {
 		STATUS_OK				= 1,	// Success
@@ -299,30 +287,24 @@ public:
 		STATUS_CRC_WRONG		= 8,	// The CRC_A does not match
 		STATUS_MIFARE_NACK		= 9		// A MIFARE PICC responded with NAK.
 	};
-
 	// A struct used for passing the UID of a PICC.
 	typedef struct {
 		byte		size;			// Number of bytes in the UID. 4, 7 or 10.
 		byte		uidByte[10];
 		byte		sak;			// The SAK (Select acknowledge) byte returned from the PICC after successful selection.
 	} Uid;
-
 	// A struct used for passing a MIFARE Crypto1 key
 	typedef struct {
 		byte		keyByte[MF_KEY_SIZE];
 	} MIFARE_Key;
-
 	// Member variables
 	Uid uid;								// Used by PICC_ReadCardSerial().
-
 	// Size of the MFRC522 FIFO
 	static const byte FIFO_SIZE = 64;		// The FIFO is 64 bytes.
-
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Functions for setting up the Arduino
 	/////////////////////////////////////////////////////////////////////////////////////
 	MFRC522(byte chipAddress);
-
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Basic interface functions for communicating with the MFRC522
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -334,7 +316,6 @@ public:
 	void PCD_SetRegisterBitMask(byte reg, byte mask);
 	void PCD_ClearRegisterBitMask(byte reg, byte mask);
 	byte PCD_CalculateCRC(byte *data, byte length, byte *result);
-
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Functions for manipulating the MFRC522
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -345,7 +326,6 @@ public:
 	byte PCD_GetAntennaGain();
 	void PCD_SetAntennaGain(byte mask);
 	bool PCD_PerformSelfTest();
-
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Functions for communicating with PICCs
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -356,7 +336,6 @@ public:
 	byte PICC_REQA_or_WUPA(byte command, byte *bufferATQA, byte *bufferSize);
 	byte PICC_Select(Uid *uid, byte validBits = 0);
 	byte PICC_HaltA();
-
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Functions for communicating with MIFARE PICCs
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -371,7 +350,6 @@ public:
 	byte MIFARE_Ultralight_Write(byte page, byte *buffer, byte bufferSize);
 	byte MIFARE_GetValue(byte blockAddr, long *value);
 	byte MIFARE_SetValue(byte blockAddr, long value);
-
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Support functions
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -391,17 +369,14 @@ public:
 	bool MIFARE_OpenUidBackdoor(bool logErrors);
 	bool MIFARE_SetUid(byte *newUid, byte uidSize, bool logErrors);
 	bool MIFARE_UnbrickUidSector(bool logErrors);
-
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Convenience functions - does not add extra functionality
 	/////////////////////////////////////////////////////////////////////////////////////
 	bool PICC_IsNewCardPresent();
 	bool PICC_ReadCardSerial();
-
 private:
 	byte _chipAddress;
 	byte _resetPowerDownPin;	// Arduino pin connected to MFRC522's reset and power down input (Pin 6, NRSTPD, active low)
 	byte MIFARE_TwoStepHelper(byte command, byte blockAddr, long data);
 };
-
 #endif

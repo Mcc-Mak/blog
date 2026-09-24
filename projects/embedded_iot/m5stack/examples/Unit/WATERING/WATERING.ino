@@ -1,16 +1,11 @@
 /*
     Description: Read the ADC value measured by the Watering Unit, and the water pump can be switched on and off through the middle button.
 */
-
-
 #include <M5Stack.h>
-
 #define INPUT_PIN 36
 #define PUMP_PIN 26
-
 bool flag = true;
 int rawADC;
-
 void setup() { 
     M5.begin();
     M5.Lcd.setTextColor(GREEN);
@@ -23,9 +18,7 @@ void setup() {
     pinMode(25,OUTPUT);
     digitalWrite(25,0);
 }
-
 char info[30];
-
 void loop() { 
   rawADC = analogRead(INPUT_PIN);
   M5.lcd.fillRect(80, 100, 240, 50, BLACK);

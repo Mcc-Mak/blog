@@ -1,9 +1,7 @@
 Installation instructions for Mac OS
 =====================================
-
 - Install latest Arduino IDE from [arduino.cc](https://www.arduino.cc/en/Main/Software)
 - Open Terminal and execute the following command (copy->paste and hit enter):
-
   ```bash
   mkdir -p ~/Documents/Arduino/hardware/espressif && \
   cd ~/Documents/Arduino/hardware/espressif && \
@@ -14,10 +12,6 @@ Installation instructions for Mac OS
   python get.py
   ```
 - If you get the error below. Install the command line dev tools with xcode-select --install and try the command above again:
-  
 ```xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun```
-
 ```xcode-select --install```
-
 - Restart Arduino IDE
-

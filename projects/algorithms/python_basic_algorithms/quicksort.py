@@ -1,5 +1,4 @@
 """Quick sort with a pivot value chosen as the left element. O(NlogN)."""
-
 def quicksort(data, left, right):
     if left >= right:
         return
@@ -23,17 +22,13 @@ def quicksort(data, left, right):
     # ["88", 34, 23, 78, 67, 23, 66, 29, 79, 55, 78, "89", 92, 96, 96, 100]
     quicksort(data, left, i - 1)  # Sort the smaller part on the left
     quicksort(data, i + 1, right)  # Sort the bigger part on the right
-
-
 if __name__ == "__main__":
     data = [89, 34, 23, 78, 67, 100, 66, 29, 79, 55, 78, 88, 92, 96, 96, 23]
     quicksort(data, 0, len(data) - 1)
     print(data)
     print("__________________________________________________")
-
     import random
     import math
-
     test_data = [math.floor(random.random() * 101) for _ in range(100)]
     print("Total Number of Data: {0}\nTest Data: {1}".format(len(test_data), test_data))
     quicksort(test_data, 0, len(test_data) - 1)

@@ -25,20 +25,16 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 #ifndef __DRIVERS_CAN_CFG_H__
 #define __DRIVERS_CAN_CFG_H__
-
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
 #include "freertos/semphr.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 /** \brief CAN Node Bus speed */
 typedef enum {
 	CAN_SPEED_100KBPS = 100,  /**< \brief CAN Node runs at 100kBit/s. */
@@ -49,7 +45,6 @@ typedef enum {
 	CAN_SPEED_800KBPS = 800,  /**< \brief CAN Node runs at 800kBit/s. */
 	CAN_SPEED_1000KBPS = 1000 /**< \brief CAN Node runs at 1000kBit/s. */
 } CAN_speed_t;
-
 /** \brief CAN configuration structure */
 typedef struct {
 	CAN_speed_t speed;      /**< \brief CAN speed. */
@@ -60,12 +55,9 @@ typedef struct {
 	TaskHandle_t tx_handle; /**< \brief Handler to FreeRTOS TX task. */
 	TaskHandle_t rx_handle; /**< \brief Handler to FreeRTOS RX task. */
 } CAN_device_t;
-
 /** \brief CAN configuration reference */
 extern CAN_device_t CAN_cfg;
-
 #ifdef __cplusplus
 }
 #endif
-
 #endif /* __DRIVERS_CAN_CFG_H__ */

@@ -1,14 +1,10 @@
 """Google Trends keyword search utility for market analysis."""
-
 from pytrends.request import TrendReq
 import matplotlib.pyplot as plt
-
-
 # --- Google Trends client ---
 class Trends:
     def __init__(self, hl="en-US", tz=360):
         self.trends = TrendReq(hl=hl, tz=tz)  # 360 => Area code in US , 1=> Hong Kong timezone
-
     # def get_start_date(self,kw,date='today 24-m'):
     #     if isinstance(kw,str):
     #         self.trends.build_payload([kw],cat=0,timeframe=date)
@@ -18,7 +14,6 @@ class Trends:
     #     data = data.reset_index()
     #     #print(data["date"])
     #     #return data["date"][0]
-
     # --- search interest over time for a keyword or a list ---
     def search(self, kw="NNDM", date='today 12-m', plot=False):  # date format: 'today 12-m' or '2020-04-01 2020-05-01'
         if isinstance(kw, str):
@@ -48,12 +43,9 @@ class Trends:
                 plt.title("\"{}\" keyword trend".format(kw[0]))
             plt.show()
         return data
-
-
 # --- demo run ---
 if __name__ == "__main__":
     trend = Trends()
     #trend.search("TSLA stock",plot=True) #Only support one args search
     #trend.search("NNDM")
-
     trend.search("FB stock", plot=True)

@@ -1,12 +1,8 @@
 // Original Adafruit_GFX 5x7 font
-
 #ifndef FONT5X7_H
 #define FONT5X7_H
-
 #include <pgmspace.h>
-
 // Standard ASCII 5x7 font
-
 static const unsigned char font[] PROGMEM = {
 	0x00, 0x00, 0x00, 0x00, 0x00,
 	0x3E, 0x5B, 0x4F, 0x5B, 0x3E,
@@ -264,5 +260,4 @@ static const unsigned char font[] PROGMEM = {
 	0x00, 0x3C, 0x3C, 0x3C, 0x3C,
 	0x00, 0x00, 0x00, 0x00, 0x00
 };
-
 #endif // FONT5X7_H

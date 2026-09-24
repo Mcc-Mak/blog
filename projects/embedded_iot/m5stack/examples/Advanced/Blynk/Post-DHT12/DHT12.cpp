@@ -7,7 +7,6 @@
 #include "Arduino.h"
 #include "Wire.h"
 #include "DHT12.h"
-
 DHT12::DHT12(byte scale,byte id)
 {
 	if (id==0 || id>126) _id=0x5c;
@@ -15,7 +14,6 @@ DHT12::DHT12(byte scale,byte id)
 	if (scale==0 || scale>3) _scale=CELSIUS;
 	else _scale=scale;
 }
-
 byte DHT12::read()
 {
 	Wire.beginTransmission(_id);
@@ -30,7 +28,6 @@ byte DHT12::read()
 	if (datos[4]!=(datos[0]+datos[1]+datos[2]+datos[3])) return 3;
 	return 0;
 }
-
 float DHT12::readTemperature(byte scale)
 {
 	float resultado=0;
@@ -50,7 +47,6 @@ float DHT12::readTemperature(byte scale)
 	};
 	return resultado;
 }
-
 float DHT12::readHumidity()
 {
 	float resultado;
@@ -59,4 +55,3 @@ float DHT12::readHumidity()
 	resultado=(datos[0]+(float)datos[1]/10);
 	return resultado;
 }
-

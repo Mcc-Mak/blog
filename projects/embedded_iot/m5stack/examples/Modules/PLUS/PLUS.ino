@@ -3,14 +3,10 @@
 */
 #include <Arduino.h>
 #include <M5Stack.h>
-
 #define IrPin 13
 #define PLUS_ADDR 0x62
-
 int32_t number = 0;
 uint8_t press = 0;
-
-
 void setup() {
     M5.begin(true, false, false);
     M5.Power.begin();
@@ -21,7 +17,6 @@ void setup() {
     ledcSetup(1, 38000, 10);
     ledcAttachPin(IrPin, 1);
 }
-
 void plus_encode() {
     Wire.requestFrom(PLUS_ADDR, 2);
     while(Wire.available()) {
@@ -36,10 +31,8 @@ void plus_encode() {
         }
     }
 }
-
 void loop() {
     char data[20];
-
     plus_encode();
     ledcWrite(1, ledcRead(1) ? 0 : 512);
     sprintf(data, "%d  %d        ", number, press);

@@ -3,22 +3,18 @@
 */
 #include <M5Stack.h>
 #include "Wire.h"
-
 #define JOY_ADDR 0x52
 void setup() {
   M5.begin();
   M5.Power.begin();
   M5.Lcd.clear();
-
   M5.Lcd.setTextFont(4);
   M5.Lcd.setCursor(70, 0, 4);
   M5.Lcd.println(("Joystick Test"));
   //disable the speak noise
   dacWrite(25, 0);
-
   Wire.begin(21, 22, 400000);
 }
-
 uint8_t x_data;
 uint8_t y_data;
 uint8_t button_data;
@@ -32,7 +28,6 @@ void loop() {
     button_data = Wire.read();
     sprintf(data, "x:%d y:%d button:%d\n", x_data, y_data, button_data);
     Serial.print(data);
-
     M5.Lcd.setCursor(100, 50, 4);
     M5.Lcd.printf("X:%d      ",x_data);
     M5.Lcd.setCursor(100, 80, 4);

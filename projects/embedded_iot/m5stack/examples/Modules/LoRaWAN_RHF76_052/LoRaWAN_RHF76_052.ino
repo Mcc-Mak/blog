@@ -1,17 +1,13 @@
 /*
     Description: Use LoRaWAN Module to send "Hello World" message. Click button A to clear the screen, click button B to switch the 433 band, and click button C to switch the 868 band.
 */
-
 #include <M5Stack.h>
 #include <LoRaWan.h>
-
 #define SerialUSB Serial
-
 unsigned char buffer[128] = {
     0,
 };
 uint8_t flag_test_868 = 0;
-
 void key_scan(void *arg)
 {
   while (1)
@@ -22,7 +18,6 @@ void key_scan(void *arg)
   }
   vTaskDelete(NULL);
 }
-
 void setup(void)
 {
   M5.begin();
@@ -38,7 +33,6 @@ void setup(void)
   // M5.Lcd.println(core);
   xTaskCreatePinnedToCore(key_scan, "key_scan", 3096, NULL, 5, NULL, 0);
 }
-
 void loop(void)
 {
   // lora.loraDebug();
@@ -69,30 +63,24 @@ void loop(void)
   }
   M5.update();
 }
-
 void init_433()
 {
   lora.initP2PMode(433, SF12, BW500, 8, 8, 20);
 }
-
 void init_868()
 {
   lora.initP2PMode(868, SF12, BW500, 8, 8, 20);
 }
-
 void send_data()
 {
   lora.transferPacketP2PMode("hello world");
 }
-
 void onReceive()
 {
   short length = 0;
   short rssi = 0;
-
   memset(buffer, 0, 128);
   length = lora.receivePacketP2PMode(buffer, 128, &rssi, 1);
-
   if (length)
   {
     SerialUSB.print("Length is: ");

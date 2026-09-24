@@ -1,17 +1,13 @@
 #!/usr/bin/python3
-
 '''
 # Example:
 > python bin2code.py m5_logo.jpg
 > Out:m5_logo.jpg.c Done!
 '''
-
 import sys, os
-
 in_name = sys.argv[1]
 out_name = in_name + '.c'
 file_size = os.path.getsize(in_name)
-
 with open(in_name, 'rb') as infile:
   with open(out_name, 'wb+') as outfile:
     arrary_name = 'const unsigned char ' + out_name[0:out_name.find('.')] + '[' +str(file_size)+'] = {\n'
@@ -27,5 +23,4 @@ with open(in_name, 'rb') as infile:
       else:
         outfile.write('};\n'.encode('utf-8'))
         break
-
 print('Out:'+ out_name +' Done!')

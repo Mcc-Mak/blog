@@ -3,7 +3,6 @@
   Set tools->partition scheme->'Large APP'
   Pls modify <m5stack path>/src/utility/In_eSPI_Setup.h, At the end of the file add "#define USE_M5_FONT_CREATOR"
   if want get customize unicode, try use https://github.com/m5stack/FontCreator, create font file
-  
   if add "#define USE_M5_FONT_CREATOR" and want to use standard gfx font, need modify font file
     #ifdef USE_M5_FONT_CREATOR
     0, 0, 
@@ -20,18 +19,14 @@
 */
 #include <M5Stack.h>
 #include "CUF_24px.h"
-
 void setup()
 {
     M5.begin();
     M5.Power.begin();
     M5.Lcd.setTextColor(TFT_WHITE);
     M5.Lcd.setFreeFont(&unicode_24px);
-
-
     M5.Lcd.setTextDatum(TC_DATUM);
 }
-
 void loop()
 {
     M5.Lcd.fillScreen(0);
@@ -40,15 +35,12 @@ void loop()
     M5.Lcd.drawString("Здравствуй  мир", 160, 120, 1);
     M5.Lcd.drawString("こんにちは  せかい", 160, 150, 1);
     delay(3000);
-
     M5.Lcd.fillScreen(0);
     M5.Lcd.setCursor(0, 30);
     M5.Lcd.printf("☀☁☂☃☄★☆☇☈☉☊☋☌☍☎☏☐☑☒☓☔☕☖☗☘☙☚☛☜☝☞☟☠☡☢☣☤☥☦☧☨☩☪☫☬☭☮☯☸☹☺☻☼☽☾☿♀♁♂♃♄♅♆♇♈♉♊♋♌♍♎♏♐♑♒♓♔♕♖♗♘♙♚♛♜♝♞♟♠♡♢♣♤♥♦♧♨♩♪♫♬♭♮♯♰♱♲♳♴♵♶♷♸♹♺♻♼♽♾♿⚀⚁⚂⚃⚄⚅⚆⚇⚈⚉⚊⚋⚌⚍⚎⚏⚐⚑⚒⚓⚔⚕⚖⚗⚘⚙⚚⚛⚜⚝⚞⚟A⚠⚡⚢⚣⚤⚥⚦⚧⚨⚩⚪⚫⚬⚭⚮⚯B⚰⚱⚲⚳⚴⚵⚶⚷⚸⚹⚺⚻⚼⚽⚾⚿C⛀⛁⛂⛃⛄⛅⛆⛇⛈⛉⛊⛋⛌⛍⛎⛏D⛐⛑⛒⛓⛔⛕⛖⛗⛘⛙⛚⛛⛜⛝⛞⛟E⛠⛡⛢");
     delay(3000);
-
     M5.Lcd.fillScreen(0);
     M5.Lcd.setCursor(0, 30);
     M5.Lcd.printf("⛣⛤⛥⛦⛧⛨⛩⛪⛫⛬⛭⛮⛯F⛰⛱⛲⛳⛴⛵⛶⛷⛸⛹⛺⛻⛼⛽⛾⛿✀✁✂✃✄✅✆✇✈✉✊✋✌✍✎✏✐✑✒✓✔✕✖✗✘✙✚✛✜✝✞✟✠✡✢✣✤✥✦✧✨✩✪✫✬✭✮✯✰✱✲✳✴✵✶✷✸✹✺✻✼✽✾✿❀❁❂❃❄❅❆❇❈❉❊❋❌❍❎❏❐❑❒❓❔❕❖❗❘❙❚❛❜❝❞❟❠❡❢❣❤❥❦❧❨❩❪❫❬❭❮❯❰❱❲❳❴❵❶❷❸❹❺❻❼❽❾❿➀➁➂➃➄➅➆➇➈➉➊➋➌➍➎➏➐➑➒➓➔➕➖➗➘➙➚➛➜➝➞➟A➠➡➢➣➤➥➦➧➨➩➪➫➬➭➮➯B➰➱➲➳➴➵➶➷➸➹➺➻➼➽➾➿");
     delay(3000);
-    
 }

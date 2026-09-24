@@ -2,8 +2,6 @@
 from django.forms import ModelForm
 from .models import *
 from django import forms
-
-
 # --- Blog post form ---
 class BlogForm(ModelForm):
     class Meta:

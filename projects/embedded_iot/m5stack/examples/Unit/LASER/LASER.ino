@@ -3,23 +3,18 @@
     And connect LASER.TX and LASER.RX to PORTC port respectively. 
     Point LASER.TX to LASER.RX and press the button on the panel to send characters to the receiver of LASER.RX.
 */
-
 #include <M5Stack.h>
-
 char ch;
 // serial 2 write and read
 //#define RX 
 void setup() {
-
   M5.begin();
   M5.Power.begin();
   Serial.begin(115200);
-
   // Serial2.begin(unsigned long baud, uint32_t config, int8_t rxPin, int8_t txPin, bool invert)
   Serial2.begin(9600, SERIAL_8N1, 16, 17);
   pinMode(5, OUTPUT);
   digitalWrite(5, 1);
-
   M5.Lcd.setTextSize(4);
   M5.Lcd.setTextColor(GREEN);
   M5.Lcd.setCursor(60, 50);
@@ -39,16 +34,13 @@ void setup() {
 #endif
   M5.Lcd.setCursor(0, 100);
 }
-
 void loop() {
-
 #ifdef RX 
 M5.update();
  if(Serial2.available()) {
     char ch = Serial2.read();
     M5.Lcd.print(ch);
  }
-
   if (M5.BtnA.wasReleased()) {
     M5.Lcd.clear();
     M5.Lcd.setCursor(0, 0);
@@ -73,6 +65,4 @@ M5.update();
     M5.Lcd.print(ch);
  }
 #endif
-
-
 }

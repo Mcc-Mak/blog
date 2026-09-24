@@ -1,18 +1,13 @@
 /*
     Description: Read the status of the four line-tracking sensors of TRACE Unit and output them through UART.
 */
-
 #include <M5Stack.h>
-
 // #define VALUE_SPLIT
-
 uint8_t value;
 int SensorArray[4] = {0};
-
 void setup() {
     m5.begin();
     M5.Power.begin();
-
     Serial.begin(115200);
     Wire.begin();
     M5.Lcd.clear(BLACK);
@@ -22,12 +17,10 @@ void setup() {
     M5.Lcd.println("TRACE example");
     M5.Lcd.setTextColor(WHITE);
 }
-
 void loop(){
     SensorStatus();
     delay(100);
 }
-
 void SensorStatus(void){
     Wire.beginTransmission(0x5a);
     Wire.write(0x00);

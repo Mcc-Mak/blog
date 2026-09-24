@@ -4,25 +4,19 @@
     You need to configure a `Coordinator` when using, and other devices can be configured as `End Device` for data sending and receiving.
     Note: 16 and 17 of the DIP switch are set to ON. This case needs to use the Keyboard in the FACE Kit for information input
 */
-
 #include "M5Stack.h"
 #include "byteArray.h"
 #include "DRFZigbee.h"
-
 #include <stdarg.h>
 #include <initializer_list>
-
 #include "resource.h"
-
 DRFZigbee zigbee;
-
 uint16_t atNow = 29999;
 uint16_t iconpos[3][6] = {
     {0, 40, 120, 140, 53, 0},
     {100, 40, 120, 140, 0, 0},
     {257, 40, 63, 140, 0, 0},
 };
-
 const uint8_t *iconptrbuff[3] = {
     coordinator_jpeg_120x140,
     endDevice_jpeg_120x140,
@@ -33,11 +27,8 @@ size_t iconSizeBuff[3] = {
     24609,
     26433,
 };
-
 char asciiHexList[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-
 bool flushFlag = true;
-
 int drawChatBubbles(String str,uint16_t addr)
 {
     uint16_t posY = 76;
@@ -53,43 +44,32 @@ int drawChatBubbles(String str,uint16_t addr)
         posY += 20;
     }
     M5.Lcd.drawJpg(chatBubblesBottom, 11546, 60, posY, 229, 20);
-
     M5.Lcd.fillEllipse(27,posY+18,23,23,M5.Lcd.color565(200, 200, 200));
-
     char panIDchar[5] = {0, 0, 0, 0, 0};
     for (int i = 0; i < 4; i++)
     {
         panIDchar[i] = asciiHexList[addr & 0x000f];
         addr >>= 4;
     }
-
     M5.Lcd.setTextDatum(CC_DATUM);
     M5.Lcd.setTextColor(M5.Lcd.color565(20, 20, 20));
     M5.Lcd.drawString(panIDchar,27,posY+20);
     return posY;
 }
-
 void setup()
 {
     M5.begin();
     Serial2.begin(38400, SERIAL_8N1, 16, 17);
-
     zigbee.begin(Serial2);
-
     M5.Lcd.fillRect(0, 0, 320, 240, M5.Lcd.color565(56, 56, 56));
-
     M5.Lcd.drawJpg(router_jpeg_120x140, 26433, 0, 40, 120, 140, 53, 0);
     M5.Lcd.drawJpg(coordinator_jpeg_120x140, 26433, 100, 40, 120, 140, 0, 0);
     M5.Lcd.drawJpg(endDevice_jpeg_120x140, 26433, 257, 40, 63, 140, 0, 0);
-
     DRFZigbee::zigbee_arg_t *arg = new DRFZigbee::zigbee_arg_t;
     zigbee.linkMoudle();
     zigbee.readModuleparm(arg);
-
     Serial.printf("PAIN ID:%04X\r\n", arg->main_PANID);
-
     //drawChatBubbles("Fuck STC!!!!!");
-
     /*
     xTaskCreate([](void *arg){
         uint8_t readbuff[128];
@@ -100,33 +80,27 @@ void setup()
         }
     }, "reviceTask", 2048, nullptr, 2, nullptr);
     */
-
     /*
     if( zigbee.sendCMDAndWaitRevice(0xfc,ZIGBEE_CMD_LINKMODULE) != DRFZigbee::kReviceOK )
     {
         Serial.printf("Link Zigbee module faild! code:%d\r\n",zigbee.lastErrorcode);
         while(1) delay(100);
     }
-
     byteArray array;
     if( zigbee.sendCMDAndWaitRevice(0xfc,ZIGBEE_CMD_READPARM,&array) != DRFZigbee::kReviceOK )
     {
         Serial.printf("Read module pram faild! code:%d\r\n",zigbee.lastErrorcode);
         while(1) delay(100);
     }
-
     if(( array.at(0) != 0x0A )||( array.at(1) != 0x0E ))
     {
         Serial.println("Read module pram faild!");
         while(1) delay(100);
     }
     array = array.mid(2);
-
     array.printfArray<HardwareSerial>(&Serial);
-
     DRFZigbee::zigbee_arg arg;
     memcpy(arg.Wave,array.dataptr(),sizeof(DRFZigbee::zigbee_arg));
-
     arg.main_pointType = DRFZigbee::kCoordinator; 
     arg.main_PANID = DRFZigbee::swap<uint16_t>(0x6889);
     arg.main_channel = 20;
@@ -134,32 +108,25 @@ void setup()
     arg.main_transmissionMode = DRFZigbee::kN2Ntransmission;
     arg.main_customID = DRFZigbee::swap<uint16_t>(0x1213);
     arg.res3 = 0x01;
-
     byteArray sendArray;
     sendArray += 0x07;
     sendArray += byteArray(&arg.Wave[0],16);
     sendArray += byteArray(&arg.Wave[24],16);
     sendArray += byteArray(&arg.Wave[42],6);
-
     sendArray.printfArray<HardwareSerial>(&Serial);
-
     if( zigbee.sendCMDAndWaitRevice(0xfc,sendArray,&array) != DRFZigbee::kReviceOK )
     {
         Serial.printf("Read module pram faild! code:%d\r\n",zigbee.lastErrorcode);
         while(1) delay(100);
     }
-    
     if( zigbee.sendCMDAndWaitRevice(0xfc,{0x06,0x44,0x54,0x4b,0xaa,0xbb}) != DRFZigbee::kReviceOK )
     {
         Serial.printf("reboot Zigbee module faild! code:%d\r\n",zigbee.lastErrorcode);
         while(1) delay(100);
     }
-    
     delay(1000);
     */
-
     //zigbee.sendDataP2P(DRFZigbee::kP2PShortAddrMode,0x0000,{0x01,0x02,0x03,0x04});
-
     delay(1000);
     /*
     zigbee.nodeList.clear();
@@ -169,7 +136,6 @@ void setup()
         delay(100);
     }
     */
-
     /*
     M5.Lcd.fillRect(0,0,320,240,TFT_BLACK);
     int count = 0;
@@ -181,15 +147,12 @@ void setup()
         //int angle = ( count < 3 ) ? ( count % 3 ) * 120 : ((120 / (((count / 3) * 2))) + ( count % 3 ) * 120);
         double posX = cos(PI*angle/180) * 100 + 160;
         double posY = sin(PI*angle/180) * 100 + 120;
-
         Serial.printf("Point %02d:%03d,%03d\r\n",count,(int)posX,(int)posY);
-
         M5.Lcd.fillEllipse((int)posX,(int)posY,10,10,TFT_WHITE);
         delay(200);
         count++;
     }
     */
-
     /*
     if( !zigbee.nodeList.empty() )
     {
@@ -197,8 +160,6 @@ void setup()
         std::map<int,DRFZigbee::node>::iterator iter;
         for( iter = zigbee.nodeList.begin(); iter != zigbee.nodeList.end();iter ++ )
         {
-
-
             iter->first;
             iter->second;
             count++;
@@ -206,20 +167,16 @@ void setup()
     }
     */
 }
-
 void AppCoordinator()
 {
     Serial.printf("AppCoordinator\r\n");
     M5.Lcd.fillRect(0, 0, 320, 240, M5.Lcd.color565(56, 56, 56));
     M5.Lcd.drawJpg(coordinatorTitle, 21823, 0, 10, 320, 35);
-
     DRFZigbee::zigbee_arg_t *arg = new DRFZigbee::zigbee_arg_t;
     zigbee.readModuleparm(arg);
     arg->main_pointType = DRFZigbee::kCoordinator;
-
     M5.Lcd.setTextColor(TFT_WHITE);
     M5.Lcd.setTextDatum(TC_DATUM);
-
     char panIDchar[5] = {0, 0, 0, 0, 0};
     uint16_t panID = DRFZigbee::swap<uint16_t>(arg->main_PANID);
     for (int i = 0; i < 4; i++)
@@ -227,7 +184,6 @@ void AppCoordinator()
         panIDchar[i] = asciiHexList[panID & 0x000f];
         panID >>= 4;
     }
-
     M5.Lcd.setTextColor(M5.Lcd.color565(30, 30, 30));
     M5.Lcd.drawString(panIDchar, 165, 95, 8);
     M5.Lcd.setTextColor(TFT_WHITE);
@@ -240,16 +196,13 @@ void AppCoordinator()
         if (M5.BtnB.wasPressed())
             break;
     }
-
     delete arg;
 }
-
 void AppRouter()
 {
     Serial.printf("AppRouter\r\n");
     M5.Lcd.fillRect(0, 0, 320, 240, M5.Lcd.color565(56, 56, 56));
     M5.Lcd.drawJpg(EndDeviceTitle, 17470, 0, 10, 320, 35);
-
     DRFZigbee::zigbee_arg_t *arg = new DRFZigbee::zigbee_arg_t;
     zigbee.readModuleparm(arg);
     arg->main_pointType = DRFZigbee::kRouter;
@@ -259,9 +212,7 @@ void AppRouter()
     arg->main_ATN = DRFZigbee::kANTEXP;
     zigbee.setModuleparm(*arg);
     zigbee.rebootModule();
-
     pinMode(5, INPUT_PULLUP);
-
     while (1)
     {
         DRFZigbee::reviceData_t revice;
@@ -271,13 +222,11 @@ void AppRouter()
         }
     }
 }
-
 void AppEndDevice()
 {
     Serial.printf("AppEndDevice\r\n");
     M5.Lcd.fillRect(0, 0, 320, 240, M5.Lcd.color565(56, 56, 56));
     M5.Lcd.drawJpg(EndDeviceTitle, 17470, 0, 10, 320, 35);
-
     DRFZigbee::zigbee_arg_t *arg = new DRFZigbee::zigbee_arg_t;
     zigbee.readModuleparm(arg);
     arg->main_pointType = DRFZigbee::kEndDevice;
@@ -285,19 +234,14 @@ void AppEndDevice()
     arg->main_transmissionMode = DRFZigbee::kN2Ntransmission;
     zigbee.setModuleparm(*arg);
     zigbee.rebootModule();
-
     pinMode(5, INPUT_PULLUP);
     Wire.begin(21,22);
-
     M5.Lcd.fillRect(20, 200, 280, 30, M5.Lcd.color565(56, 56, 56));
     M5.Lcd.drawRect(20, 200, 280, 30, M5.Lcd.color565(200, 200, 200));
-
     uint8_t senduff[256];
     char    revicechar[256];
     uint16_t charPos = 0;
-
     memset(senduff,0,256);
-
     while (1)
     {
         DRFZigbee::reviceData_t revice;
@@ -309,7 +253,6 @@ void AppEndDevice()
             memcpy(revicechar,revice.array->dataptr(),revice.length);
             drawChatBubbles(String(revicechar),revice.fromAddr);
         }
-
         if (digitalRead(5) == LOW)
         {
             Wire.requestFrom(0x08, 1);
@@ -340,7 +283,6 @@ void AppEndDevice()
         }
     }
 }
-
 void loop()
 {
     if (M5.BtnA.wasPressed())

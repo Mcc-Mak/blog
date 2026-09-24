@@ -1,13 +1,11 @@
 #ifndef DFRobot_SHT20_h
 #define DFRobot_SHT20_h
-
 #if defined(ARDUINO) && ARDUINO >= 100
  #include "Arduino.h"
 #else
  #include "WProgram.h"
 #endif
 #include <Wire.h>
-
 #define ERROR_I2C_TIMEOUT                     998
 #define ERROR_BAD_CRC                         999
 #define SLAVE_ADDRESS                         0x40 
@@ -30,7 +28,6 @@
 #define DELAY_INTERVAL                        10
 #define SHIFTED_DIVISOR                       0x988000
 #define MAX_COUNTER                           (MAX_WAIT/DELAY_INTERVAL)
-
 class DFRobot_SHT20 
 {
 public:
@@ -42,11 +39,9 @@ public:
     float    readHumidity(void);
     float    readTemperature(void);
     byte     readUserRegister(void);
-
 private:
     TwoWire *i2cPort;
     byte     checkCRC(uint16_t message_from_sensor, uint8_t check_value_from_sensor);
     uint16_t readValue(byte cmd);
 };
-
 #endif

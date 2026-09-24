@@ -1,12 +1,10 @@
 """Bucket sort for [name, score] records, grouping entries into score buckets."""
-
 def bucketsort(data):
     # Find the maximum score to size the bucket list
     max_score = 0
     for m in data:
         if m[1] > max_score:
             max_score = m[1]
-
     # Each bucket holds [count, names joined by ":"] for one score value
     bucket = [[0, ""] for _ in range(max_score + 1)]
     for d in data:
@@ -15,7 +13,6 @@ def bucketsort(data):
             bucket[d[1]][1] += ":" + d[0]
         else:
             bucket[d[1]][1] += d[0]
-
     # Linear scan: write records back in ascending score order
     index = 0
     # print(bucket)
@@ -29,8 +26,6 @@ def bucketsort(data):
                 index += 1
             # print(data)
     return data
-
-
 if __name__ == "__main__":
     data = [['Abby', 58], ['Julia', 44], ['Jane', 31], ['Stephen', 76], ['Ryn', 82], ['Justin', 99], ['Caroline', 65], ['James', 87], ['Damon', 25], ['Elena', 76]]
     ans = bucketsort(data)

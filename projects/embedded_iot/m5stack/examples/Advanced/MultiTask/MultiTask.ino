@@ -1,35 +1,26 @@
 #include <M5Stack.h>
-
 void task1(void * pvParameters) {
-
     for(;;) {
         Serial.print("task1 Uptime (ms): ");
         Serial.println(millis());
         delay(100);
     }
 }
-
 void task2(void * pvParameters) {
-
     for(;;) {
         Serial.print("task2 Uptime (ms): ");
         Serial.println(millis());
         delay(200);
     }
 }
-
 void task3(void * pvParameters) {
-
     for(;;) {
         Serial.print("task3 Uptime (ms): ");
         Serial.println(millis());
         delay(1000);
     }
 }
-
-
 void setup() {
-
     M5.begin();
     M5.Power.begin();
     // Task 1
@@ -41,7 +32,6 @@ void setup() {
                     1,         /* Priority of the task */
                     NULL,      /* Task handle. */
                     0);        /* Core where the task should run */
-
     // Task 2
     xTaskCreatePinnedToCore(
                     task2,     /* Function to implement the task */
@@ -51,7 +41,6 @@ void setup() {
                     2,         /* Priority of the task */
                     NULL,      /* Task handle. */
                     0);        /* Core where the task should run */
-
     // Task 3
     xTaskCreatePinnedToCore(
                     task3,     /* Function to implement the task */
@@ -62,8 +51,6 @@ void setup() {
                     NULL,      /* Task handle. */
                     0);        /* Core where the task should run */
 }
-
 void loop() {
-
     M5.update();
 }

@@ -1,16 +1,11 @@
 name: Deploy Holding Page to Pages
-
 on:
   push:
     branches: [ main ] # Runs every time you push code to main
-
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
-
 jobs:
   deploy:
     environment:

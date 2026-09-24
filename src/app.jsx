@@ -5,15 +5,12 @@ import Navbar from "./components/navbar";
 import Home from "./pages/home";
 import Gallery from "./pages/gallery";
 import Projects from "./pages/projects";
-
 // Root layout: header + xp-tracking navbar + routed page content.
 function App() {
   const [xp, setXp] = useState(0); // lifetime "XP to know me" counter
-
   const addXp = (points) => {
     setXp((current) => current + points);
   };
-
   return (
     <BrowserRouter basename="/blog">
       <div className="app">
@@ -30,5 +27,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;

@@ -1,13 +1,10 @@
 #include <M5Stack.h>
-
 class GRBL
 {
-
     private:
         void SendByte(byte b);
         void SendBytes(uint8_t *data, size_t size);
     public:
-
         GRBL(int addr=0x70);
         void Init();
         void Init(uint32_t x_step, uint32_t y_step,uint32_t z_step,uint32_t acc);

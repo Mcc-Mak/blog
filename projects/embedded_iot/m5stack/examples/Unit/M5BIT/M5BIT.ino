@@ -3,7 +3,6 @@
 */
 #include <M5Stack.h>
 #include <M5StackUpdater.h>
-
 #define WIDTH 320
 #define HEIGHT 240
 #define BLOCK_SIZE  40
@@ -14,7 +13,6 @@
 #define GETY(i) ((i) / (5))
 int world[UNIT_SIZE];
 int i;
-  
 void setup() {
   M5.begin();
   M5.Power.begin();
@@ -34,7 +32,6 @@ void setup() {
   }
   i = UNIT_SIZE / 2;
 }
-
 void loop() {
       M5.update();
       int x = GETX(i) + 1;

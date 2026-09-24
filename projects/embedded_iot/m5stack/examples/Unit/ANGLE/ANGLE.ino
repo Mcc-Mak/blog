@@ -1,7 +1,6 @@
 /*
     Description: Read ANGLE Unit input analog quantity, and convert to 12-bit digital quantity for display 
 */
-
 #include <M5Stack.h>
 // select the input pin for the potentiometer
 int sensorPin = 36;
@@ -9,7 +8,6 @@ int sensorPin = 36;
 int last_sensorValue = 100;
 // current variable to store the value coming from the sensor
 int cur_sensorValue = 0;
-
 void setup() {
   M5.begin();
   M5.Power.begin();
@@ -19,7 +17,6 @@ void setup() {
   M5.Lcd.setCursor(0, 0);
   M5.Lcd.print("the value of ANGLE: ");
 }
-
 void loop() {
   // read the value from the sensor:
   cur_sensorValue = analogRead(sensorPin);
