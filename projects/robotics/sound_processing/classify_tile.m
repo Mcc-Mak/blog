@@ -1,8 +1,8 @@
-% final_judge.m
+% classify_tile.m
 % Neural-net classifier: decides whether a recorded knock is "hollow" (1)
 % or "solid" (2) by feeding the PCA features of one audio window through
 % the trained network whose weights are defined below.
-function y=final_judge(arg)  %ѵ����ϵ������磬����10��hol+10��solѵ��
+function y=classify_tile(arg)  %ѵ����ϵ������磬����10��hol+10��solѵ��
 %flag=1;
 %sampledata_temp1=textread('SignalTest1.txt');
 % Unpack the audio buffer passed from Python and set the analysis window.
@@ -26,7 +26,7 @@ b2=[0.184753090449206,-0.478328096302084];
         one_column=one_column(:);
         one_column=one_column(1:time_length,1);
         % Generate the PCA coordinates that act as the network input.
-        input_test=final_test_gene(one_column);  %���ɵ����������������ɷ����꣬������Ϊ�������input
+        input_test=pca_features(one_column);  %���ɵ����������������ɷ����꣬������Ϊ�������input
         
         % Feed-forward: hidden layer yields Iout, then the output layer.
         Iout_test=1./(1+exp(-input_test(1,:)*w1-b1));  %������

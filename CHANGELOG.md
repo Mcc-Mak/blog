@@ -2,6 +2,23 @@
 
 All notable changes to this project are documented here, with a semver version (`X.X.X`) per released change set.
 
+## [1.8.0] - 2026-09-25
+
+### Changed
+
+- Renamed project scripts that were not meaningful/representative to descriptive names, keeping the standardized lowercase `[a-z0-9_.]` convention:
+  - `projects/games/skywar/py_game_full.py` → `skywar_game.py` (docstring references in `scoreboard.py` and `user_interface.py` updated).
+  - `projects/robotics/sound_processing/tmp4.py` → `knock_detection.py` (its `mlab.run_func('final_judge.m', ...)` call → `'classify_tile.m'`).
+  - `projects/robotics/sound_processing/final_judge.m` → `classify_tile.m` (hollow/solid neural-net classifier).
+  - `projects/robotics/sound_processing/final_test_gene.m` → `pca_features.m` (PCA feature extraction; internal call in `classify_tile.m` updated).
+  - `projects/robotics/sound_processing/jk.m` → `bridge_passthrough.m` (Python↔MATLAB bridge helper).
+  - `projects/robotics/sound_processing/dataprocess.m` → `debug_signal_plot.m` (signal-file debug plot helper).
+  - `projects/robotics/sound_processing/pyserialcom1/pyserialcom/pyserialcom.ino` → flattened to `knock_spray_controller/knock_spray_controller.ino` (Arduino sketch folder now matches its descriptive name).
+  - `projects/computer_vision/face_point_detector_68/dlib_tut.py` → `face_landmark_detector.py`; `example.py` → `face_detection_demo.py` (import updated).
+  - `projects/algorithms/python_basic_algorithms/algorithms.py` → `sorting_algorithms.py`.
+- All renames done with `git mv`; every internal reference updated; the non-UTF-8 (GBK) comments in the `.m` files left byte-for-byte intact. All 36 user `.py` files still pass `python -m py_compile`; `eslint .` and `vite build` unchanged and passing.
+- `package.json` version aligned to `1.8.0`.
+
 ## [1.7.0] - 2026-09-25
 
 ### Added

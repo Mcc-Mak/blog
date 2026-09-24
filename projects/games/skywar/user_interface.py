@@ -1,7 +1,7 @@
 """Startup panel for SkyWar: lets the user pick a username and a background map.
 
 The chosen values are exposed as the module globals ``username`` and
-``bg_index`` that py_game_full.py reads after this window closes.
+``bg_index`` that skywar_game.py reads after this window closes.
 """
 
 from tkinter import *
