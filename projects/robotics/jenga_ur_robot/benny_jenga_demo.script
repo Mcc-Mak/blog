@@ -1,0 +1,240 @@
+def gripper_open():
+	rg_grip(96,40,rg_index_get())
+end
+def gripper_close():
+	rg_grip(55.5,40,rg_index_get())
+end
+
+global a = 1 #0.5
+global v = 0.5 #0.25
+
+
+def pick_place(pk1,pk2,p1,p2,home):
+        movel(pk1,a=a,v=v)
+        sleep(0.5)
+        movel(pk2,a=a,v=v)
+        sleep(0.5)
+        gripper_close()
+        sleep(1)
+        movel(pk1,a=a,v=v)
+        sleep(0.5)
+        movel(p1,a=a,v=v)
+        sleep(0.5)
+        movel(p2,a=a,v=v)
+        sleep(0.5)
+        gripper_open()
+        sleep(0.5)
+        movel(home,a=a,v=v)
+        sleep(0.5)
+end
+
+
+def pick_place_slope(pk1,pk2,p2,home): #Place With a slope
+        movel(pk1,a=a,v=v)
+        sleep(0.5)
+        movel(pk2,a=a,v=v)
+        sleep(0.5)
+        gripper_close()
+        sleep(1)
+        movel(pk1,a=a,v=v)
+        sleep(0.5)
+        movel(p2,a=a,v=v)
+        sleep(0.5)
+        gripper_open()
+        sleep(0.5)
+        movel(home,a=a,v=v)
+        sleep(0.5)
+end
+
+
+
+global y_offset =-(0.096/2)-0.0045 #-(0.096/2)-0.0045
+global x_offset = 0.0117 #0.0117
+
+#global x_offset = 0
+#global y_offset = 0
+
+
+#90 degree orientation : 2.219 2.219 0.0
+global ort_90 = [2.219,2.219,0.0]
+global z_offset = 0.399
+global z_down = -0.324 #level 1: z-axis down position
+global z_down_pl = -0.324 - 0.01  
+#0 degree orientation : 0.007 3.143 -0.004
+global ort_0 = [0.007,3.143,-0.004]
+global level = 0.015 #0.015 height for placing up one level 
+global up_offset = 0.025 # The offset for high jenga
+
+global home = p[.430071711366+x_offset, -.001876999629+y_offset, .132460146262, ort_90[0], ort_90[1], ort_90[2]] #z = .132460146262     
+global pl_u_general =  p[.531+x_offset-0.0117, .010+y_offset, .211917717864+level,  ort_0[0], ort_0[1], ort_0[2]]
+global error = 0.006
+
+
+#Add an inclination point as the level 1 approach point
+global place_incline_angle_radian = d2r(5)
+global incline_shift = -0.026
+global pl_incline_2_u = p[-0.2119*tan(place_incline_angle_radian)+.506+x_offset+(0*incline_shift)-0.0192,.052+y_offset,.211917717864,ort_90[0],ort_90[1],ort_90[2]]
+global pl_incline_1_u = p[-0.2119*tan(place_incline_angle_radian)+.531+x_offset+(1*incline_shift)-0.0152,.052+y_offset,.211917717864,ort_90[0],ort_90[1],ort_90[2]]
+global pl_incline_0_u = p[-0.2119*tan(place_incline_angle_radian)+.556+x_offset+(2*incline_shift)-0.0122,.052+y_offset,.211917717864,ort_90[0],ort_90[1],ort_90[2]]
+  
+global second_level_offset = -.003
+
+
+global pk_0_d = p[.430196943850+x_offset, .052+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+global pk_0_u = p[.429+x_offset, .052+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
+global pl_0_u = p[.556+x_offset-0.0122, .052+y_offset, .211917717864+up_offset,  ort_90[0], ort_90[1], ort_90[2]]
+global pl_0_d = p[.556+x_offset-0.0122, .052+y_offset,  z_down_pl+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+
+global pk_1_d = p[.403+x_offset, .052+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+global pk_1_u = p[.403+x_offset, .052+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
+global pl_1_u = p[.531+x_offset-0.0152, .052+y_offset, .211917717864+up_offset,  ort_90[0], ort_90[1], ort_90[2]]
+global pl_1_d = p[.531+x_offset-0.0152, .052+y_offset,  z_down_pl+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+
+
+global pk_2_d = p[.369+x_offset, .052+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+global pk_2_u = p[.369+x_offset, .052+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
+global pl_2_u = p[.506+x_offset-0.0172, .052+y_offset, .211917717864+up_offset,  ort_90[0], ort_90[1], ort_90[2]]
+global pl_2_d = p[.506+x_offset-0.0172, .052+y_offset,  z_down_pl+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+
+
+global pk_3_d = p[.343+x_offset, .052+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+global pk_3_u = p[.343+x_offset, .052+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
+global pl_3_u = p[.531+x_offset-0.0122+second_level_offset, .077+y_offset, .211917717864+level+up_offset,  ort_0[0], ort_0[1], ort_0[2]]
+global pl_3_d = p[.531+x_offset-0.0122+second_level_offset, .077+y_offset,  z_down_pl+z_offset+level,  ort_0[0], ort_0[1], ort_0[2]]
+
+
+global pk_4_d = p[.309+x_offset+error, .052+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+global pk_4_u = p[.309+x_offset+error, .052+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
+global pl_4_u = p[.531+x_offset-0.0122+second_level_offset, .052+y_offset, .211917717864+level+up_offset,  ort_0[0], ort_0[1], ort_0[2]]
+global pl_4_d = p[.531+x_offset-0.0122+second_level_offset, .052+y_offset,  z_down_pl+z_offset+level,  ort_0[0], ort_0[1], ort_0[2]]
+
+
+global pk_5_d = p[.283+x_offset+error, .052+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+global pk_5_u = p[.283+x_offset+error, .052+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
+global pl_5_u = p[.531+x_offset-0.0122+second_level_offset, .027+y_offset, .211917717864+level+up_offset,  ort_0[0], ort_0[1], ort_0[2]]
+global pl_5_d = p[.531+x_offset-0.0122+second_level_offset, .027+y_offset+second_level_offset,  z_down_pl+z_offset+level,  ort_0[0], ort_0[1], ort_0[2]]
+
+
+global pp_x = [.4315,.4065,.376,.3505,.3205,.295,.58625,.5675,.53075,.50525,.58625,.5675,.53075,.50525,.58625,.5675,.53075,.50525,.43625,.41075,.38075,.35525,.28625,.26075,.23075,.20525,.43625,.41075,.38075,.35525,.28625,.26075,.23075,.20525,.23075,.20525,.43625,.41075,.38075,.35525,.28625,.26075,.58625,.5675,.53075,.50525,.43625,.41075,.38075,.35525,.28625,.26075,.23075,.20525] #irregular pick points x
+global pp_y = [.052,.052,.052,.052,.052,.052,-.059,-.059,-.059,-.059,.163,.163,.163,.163,.264,.264,.264,.264,.264,.264,.264,.264,.264,.264,.264,.264,.163,.163,.163,.163,.163,.163,.163,.163,-.059,-.059,-.059,-.059,-.059,-.059,-.059,-.059,-.16,-.16,-.16,-.16,-.16,-.16,-.16,-.16,-.16,-.16,-.16,-.16] #irregular pick points y
+#19-22
+#33-36
+global count = 0 #6
+
+
+
+
+def stack(pl_up_general,home,pk_0_u,pl_0_u,pl_0_d,pl_incline_0_u,pk_1_u,pl_1_u,pl_1_d,pl_incline_1_u,pk_2_u,pl_2_u,pl_2_d,pl_incline_2_u,pk_3_d,pk_3_u,pl_3_u,pl_3_d,pk_4_d,pk_4_u,pl_4_u,pl_4_d,pk_5_d,pk_5_u,pl_5_u,pl_5_d):
+	pick_place(pk_0_u,pk_0_d,pl_incline_0_u,pl_0_d,home)
+
+	#pick_place_slope(pk_1_u,pk_1_d,pl_1_d,home)
+	#pick_place_slope(pk_2_u,pk_2_d,pl_2_d,home)
+
+	pick_place(pk_1_u,pk_1_d,pl_incline_1_u,pl_1_d,home)
+	pick_place(pk_2_u,pk_2_d,pl_incline_2_u,pl_2_d,home)
+
+
+
+	#Then rotate 90 degree and move up z-axis for place for second floor
+	pick_place(pk_3_u,pk_3_d,pl_u_general,pl_3_d,home)
+	pick_place(pk_4_u,pk_4_d,pl_u_general,pl_4_d,home)
+	pick_place(pk_5_u,pk_5_d,pl_u_general,pl_5_d,home)
+	
+end
+
+global pk_offset = 0
+global pk_offset_s = 0
+global p1_offset = 0.0112
+global p2_offset = 0.0152
+global p3_offset = 0.0162
+global p4_offset = 0.003
+global p5_offset = 0.002
+global p6_offset = 0.002
+
+
+
+global block_gap = 0 #-0.0045 
+# every 2 blocks
+
+global p1_shift = 0
+global p2_shift = 0
+global p3_shift = 0
+global p4_shift = 0
+global p5_shift = 0
+global p6_shift = 0
+
+
+
+
+def main():
+	i = 1
+	while i<=9:
+		if count == 6:
+			pk_offset = 0.001-x_offset
+			pk_offset_s = -x_offset-error
+			
+
+			#pk_offset = - .006
+			p1_offset = p1_offset
+			p2_offset = p2_offset -0.004
+			p3_offset = p3_offset +0.001
+			p4_offset = p4_offset +0.00 #0.003
+			p5_offset = p5_offset+ 0.0015 # +0.011
+			p6_offset = p6_offset -0.000
+			block_gap = -0.002 #-0.004
+			#p1_shift = 0.001
+			p2_shift = 0.003
+			#p3_shift = 0.004
+			p4_shift = 0.002 #0.004
+			p5_shift = 0.006 #0.006
+			p6_shift = 0.007 #0.007
+			
+		end
+		home = p[.430071711366+x_offset, -.001876999629+y_offset, .132460146262+(2*level*i), ort_90[0], ort_90[1], ort_90[2]]
+		pk_0_d = p[pp_x[0+count]-0.002+p1_shift+x_offset+pk_offset, pp_y[0+count]+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+		pk_0_u = p[pp_x[0+count]-0.002+p1_shift+x_offset+pk_offset, pp_y[0+count]+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
+ 		pl_0_u = p[.556+x_offset-p1_offset, .052+y_offset, .211917717864+up_offset+(2*level*(i-1)),  ort_90[0], ort_90[1], ort_90[2]]
+		pl_0_d = p[.556+x_offset-p1_offset, .052+y_offset,  z_down_pl+z_offset+(2*level*(i-1)),  ort_90[0], ort_90[1], ort_90[2]]
+
+		pk_1_d = p[pp_x[1+count]-0.003+p2_shift+x_offset+pk_offset+block_gap, pp_y[1+count]+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+		pk_1_u = p[pp_x[1+count]-0.003+p2_shift+x_offset+pk_offset+block_gap, pp_y[1+count]+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
+		pl_1_u = p[.531+x_offset-p2_offset, .052+y_offset, .211917717864+up_offset+(2*level*(i-1)),  ort_90[0], ort_90[1], ort_90[2]]
+		pl_1_d = p[.531+x_offset-p2_offset, .052+y_offset,  z_down_pl+z_offset+(2*level*(i-1)),  ort_90[0], ort_90[1], ort_90[2]]
+
+		pk_2_d = p[pp_x[2+count]-0.004+p3_shift+x_offset+pk_offset, pp_y[2+count]+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+		pk_2_u = p[pp_x[2+count]-0.004+p3_shift+x_offset+pk_offset, pp_y[2+count]+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
+		pl_2_u = p[.506+x_offset-p3_offset, .052+y_offset, .211917717864+up_offset+(2*level*(i-1)),  ort_90[0], ort_90[1], ort_90[2]]
+		pl_2_d = p[.506+x_offset-p3_offset, .052+y_offset,  z_down_pl+z_offset+(2*level*(i-1)),  ort_90[0], ort_90[1], ort_90[2]]
+
+
+		pk_3_d = p[pp_x[3+count]-0.004+p4_shift+x_offset+error+pk_offset_s+block_gap, pp_y[3+count]+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]	
+		pk_3_u= p[pp_x[3+count]-0.004+p4_shift+x_offset+error+pk_offset_s+block_gap, pp_y[3+count]+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
+		pl_3_u = p[.531+x_offset-0.0122+second_level_offset, .077+y_offset+p4_offset, .211917717864+up_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
+		pl_3_d = p[.531+x_offset-0.0122+second_level_offset, .077+y_offset+p4_offset,  z_down_pl+z_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
+
+
+		pk_4_d = p[pp_x[4+count]-0.006+p5_shift+x_offset+error+pk_offset_s,pp_y[4+count]+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+		pk_4_u = p[pp_x[4+count]-0.006+p5_shift+x_offset+error+pk_offset_s, pp_y[4+count]+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
+		pl_4_u = p[.531+x_offset-0.0122+second_level_offset, .052+y_offset+p5_offset, .211917717864+up_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
+		pl_4_d = p[.531+x_offset-0.0122+second_level_offset, .052+y_offset+p5_offset,  z_down_pl+z_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
+
+
+		pk_5_d = p[pp_x[5+count]-0.007+p6_shift+x_offset+error+pk_offset_s+block_gap, pp_y[5+count]+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
+		pk_5_u = p[pp_x[5+count]-0.007+p6_shift+x_offset+error+pk_offset_s+block_gap, pp_y[5+count]+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
+		pl_5_u = p[.531+x_offset-0.0122+second_level_offset, .027+y_offset+p6_offset, .211917717864+up_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
+		pl_5_d = p[.531+x_offset-0.0122+second_level_offset, .027+y_offset+second_level_offset+p6_offset,  z_down_pl+z_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
+		
+		pl_u_general =  p[.531+x_offset-0.0117, .010+y_offset, .211917717864+up_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
+		pl_incline_2_u = p[-0.2119*tan(place_incline_angle_radian)+.506+x_offset+(0*incline_shift)-0.0192-p3_offset,.052+y_offset,.211917717864+up_offset+(2*level*i),ort_90[0],ort_90[1],ort_90[2]]
+		pl_incline_1_u = p[-0.2119*tan(place_incline_angle_radian)+.531+x_offset+(1*incline_shift)-0.0152-p2_offset,.052+y_offset,.211917717864+up_offset+(2*level*i),ort_90[0],ort_90[1],ort_90[2]]
+		pl_incline_0_u = p[-0.2119*tan(place_incline_angle_radian)+.556+x_offset+(2*incline_shift)-0.0122-p1_offset,.052+y_offset,.211917717864+up_offset+(2*level*i),ort_90[0],ort_90[1],ort_90[2]]
+		stack(pl_u_general,home,pk_0_u,pl_0_u,pl_0_d,pl_incline_0_u,pk_1_u,pl_1_u,pl_1_d,pl_incline_1_u,pk_2_u,pl_2_u,pl_2_d,pl_incline_2_u,pk_3_d,pk_3_u,pl_3_u,pl_3_d,pk_4_d,pk_4_u,pl_4_u,pl_4_d,pk_5_d,pk_5_u,pl_5_u,pl_5_d)
+		i = i + 1
+		count = count + 6
+	end
+
+
+end
+
+
+main()
