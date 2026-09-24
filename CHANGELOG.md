@@ -1,5 +1,9 @@
 # Changelog
 All notable changes to this project are documented here, with a semver version (`X.X.X`) per released change set.
+## [1.8.1] - 2026-09-25
+### Fixed
+- GitHub Pages module script MIME error: added `public/.nojekyll` so built `.js` files under `/blog/` are served correctly; verified `dist/index.html` points to hashed `.js` assets.
+- Normalized EOLs across user-defined text files (replaced `[\r\n]+\s*[\r\n]+` with `\n`).
 ## [1.8.0] - 2026-09-25
 ### Changed
 - Renamed project scripts that were not meaningful/representative to descriptive names, keeping the standardized lowercase `[a-z0-9_.]` convention:
@@ -14,13 +18,6 @@ All notable changes to this project are documented here, with a semver version (
   - `projects/algorithms/python_basic_algorithms/algorithms.py` → `sorting_algorithms.py`.
 - All renames done with `git mv`; every internal reference updated; the non-UTF-8 (GBK) comments in the `.m` files left byte-for-byte intact. All 36 user `.py` files still pass `python -m py_compile`; `eslint .` and `vite build` unchanged and passing.
 - `package.json` version aligned to `1.8.0`.
-## [1.8.1] - 2026-09-25
-### Fixed
-- GitHub Pages module script MIME error: added public/.nojekyll so built .js files under /blog/ are served correctly; verified dist/index.html points to hashed .js assets.
-- Normalized EOLs across user-defined text files (replaced [
-]+\s*[
-]+ with \n).
-
 ## [1.7.0] - 2026-09-25
 ### Added
 - Concise comments and docstrings across the rest of the user code (comments only — no logic, names, literals or behavior changed):
@@ -52,7 +49,7 @@ All notable changes to this project are documented here, with a semver version (
 ## [1.3.0] - 2026-09-24
 ### Changed
 - Renamed XP state/props from `score`/`addScore` to `xp`/`addXp` across `App.jsx`, `Navbar.jsx` and `Gallery.jsx`, matching the on-screen "XP to Know Me" concept (CSS classes `nav-score`/`score-*` → `nav-xp`/`xp-*`).
-- Renamed vague loop and data variables to be self-describing: `Projects.jsx` now uses `category`/`project`/`categoryProjects` instead of `cat`/`p`/`items`, `asset` helper → `assetUrl`; `Gallery.jsx` uses `rawBlocks`/`parsedSections`/`section`/`index`; `Navbar.jsx` uses `navLinks`/`index`/`xpPop`.
+- Renamed vague loop and data variables to be self-descriptive: `Projects.jsx` now uses `category`/`project`/`categoryProjects` instead of `cat`/`p`/`items`, `asset` helper → `assetUrl`; `Gallery.jsx` uses `rawBlocks`/`parsedSections`/`section`/`index`; `Navbar.jsx` uses `navLinks`/`index`/`xpPop`.
 - Renamed the ambiguous `run` field in `src/data/projects.js` to `runCommand`.
 ## [1.2.0] - 2026-09-24
 ### Changed
