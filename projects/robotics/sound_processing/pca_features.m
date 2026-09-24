@@ -1,7 +1,7 @@
-% final_test_gene.m
+% pca_features.m
 % Turns one flattened audio window into PCA coordinates - the feature
-% vector consumed by the trained network in final_judge.m.
-function y=final_test_gene(one_column)  %�ѵ���������������ת��Ϊ���ɷ����꣬������Ϊ����������
+% vector consumed by the trained network in classify_tile.m.
+function y=pca_features(one_column)  %�ѵ���������������ת��Ϊ���ɷ����꣬������Ϊ����������
 ratio_in_pi=1.0;
 
 % --- Trained PCA basis vectors (do not change) ---

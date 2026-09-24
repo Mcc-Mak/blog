@@ -1,4 +1,4 @@
-// pyserialcom.ino
+// knock_spray_controller.ino
 // Arduino side of the sound-triggered sprayer. Listens on the serial port
 // for 'K' (knock -> swing the hammer) and 'S' (spray -> flash the LED).
 
