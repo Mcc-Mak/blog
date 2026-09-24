@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented here, with a semver version (`X.X.X`) per released change set.
 
+## [1.6.0] - 2026-09-24
+
+### Added
+
+- Concise section banners and inline comments across the SkyWar game source and the sound-processing research code (comments only — no logic, names, literals or asset paths changed):
+
+  - `projects/games/skywar/{py_game_full.py, user_interface.py, scoreboard.py}` and `projects/games/skywar/tools/game_score_board.py`: module docstrings, `# --- <Section> ---` banners, sprite/loop/method comments, Python-style blank line discipline.
+  - `projects/robotics/sound_processing/{dataprocess.m, jk.m, final_test_gene.m, final_judge.m}`: `%` headers and stepping comments (MATLAB weight matrices and PCA `basis1`/`basis2` left byte-for-byte untouched).
+  - `projects/robotics/sound_processing/tmp4.py`: docstrings, serial/MATLAB/PyAudio section comments, removed a stale commented-out tkinter block.
+  - `projects/robotics/sound_processing/pyserialcom1/pyserialcom/pyserialcom.ino`: normalized to 2-space indentation with `//` comments (pins, `freq = 20`, delays and Serial strings preserved).
+- Normalized line endings (CRLF everywhere except the LF `tools/game_score_board.py`) and verified every `.py` file compiles with `python -m py_compile`.
+
 ## [1.5.0] - 2026-09-24
 
 ### Changed
