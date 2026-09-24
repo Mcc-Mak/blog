@@ -11,6 +11,8 @@ import os
 
 from django.core.asgi import get_asgi_application
 
+# --- Point Django at this project's settings module ---
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_server.settings")
 
+# --- ASGI application entry point for the server ---
 application = get_asgi_application()

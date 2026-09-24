@@ -1,3 +1,4 @@
+// Decorative SVG "wiring worker" that walks across the home page background.
 function WalkingWorker() {
   return (
     <div className="worker-bg" aria-hidden="true">

@@ -1,6 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import { categories, projects } from "../data/projects";
 
+// Resolve a relative project path against the Vite base (/blog/).
 const assetUrl = (relativePath) => `${import.meta.env.BASE_URL}${relativePath}`;
 
 function Projects() {
@@ -12,6 +13,7 @@ function Projects() {
         🧪 Open-source
       </p>
       {categories.map((category) => {
+        // Group projects by category, skipping empty ones.
         const categoryProjects = projects.filter(
           (project) => project.category === category.id
         );

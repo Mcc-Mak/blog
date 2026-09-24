@@ -1,12 +1,14 @@
+"""Draft pygame leaderboard screen, superseded by the CSV/tkinter version.
+
+Only the tiny sanity check at the bottom still runs.
+"""
+
 # import pygame
 # import sys
 # from pygame.locals import QUIT
 #
 # username = "Benny"
 # score = 20
-#
-#
-#
 #
 # pygame.init()
 # width = 1000
@@ -41,8 +43,10 @@
 #         # 當使用者結束視窗，程式也結束
 #         if event.type == QUIT:
 #             pygame.quit()
-#             sys.exit()
+#            sys.exit()
 
+
+# --- Sanity check: format() accepts a plain string ---
 
 number = str(5)
 print(type("{}.".format(number)))
