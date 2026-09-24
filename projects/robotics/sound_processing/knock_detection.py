@@ -1,7 +1,7 @@
 """Real-time knock detection for the sound-processing robot experiment.
 
 Captures microphone audio, streams samples to MATLAB for classification
-(final_judge.m), and toggles the Arduino spray/hammer rig over serial.
+(classify_tile.m), and toggles the Arduino spray/hammer rig over serial.
 """
 # Real-time detection of microphone signaling
 import pyaudio
@@ -210,7 +210,7 @@ def Run(C, R, mic, Plot):
                 data = np.fromstring(stream.read(CHUNK), dtype=np.short)
                 time = np.arange(0, CHUNK)
 
-                # (Commented-out: volume-bar visualisation and jk.m passthrough)
+                # (Commented-out: volume-bar visualisation and bridge_passthrough.m passthrough)
                 # peak = np.average(np.abs(data)) * 21
                 # bars = "#" * int(50 * peak / 2 ** 16)
 
@@ -235,7 +235,7 @@ def Run(C, R, mic, Plot):
                     plt.xlabel('Sample Size')
 
                     # Classify the window in MATLAB (1 = hollow, 2 = solid).
-                    dataprocess = mlab.run_func('final_judge.m', {"arg1": data})
+                    dataprocess = mlab.run_func('classify_tile.m', {"arg1": data})
                     print(np.amax(data))
                     print(dataprocess['result'])
                     d1 = dataprocess['result']

@@ -2,7 +2,7 @@
 
 Reads, ranks and appends player records, and creates the CSV with a header
 row the first time it runs. Each method derives the CSV path from the main
-script (argv[0]) so the file lands next to py_game_full.py.
+script (argv[0]) so the file lands next to skywar_game.py.
 """
 
 import pandas as pd
