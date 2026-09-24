@@ -2,6 +2,22 @@
 
 All notable changes to this project are documented here, with a semver version (`X.X.X`) per released change set.
 
+## [1.7.0] - 2026-09-25
+
+### Added
+
+- Concise comments and docstrings across the rest of the user code (comments only — no logic, names, literals or behavior changed):
+  - `projects/web/personal_web/django_web/` — module docstrings, `# --- <Section> ---` banners and Django-template `<!-- ... -->` comments; spacing normalized in `settings.py`, `models.py`, `views.py`, `urls.py` and the two `admin`/`apps` modules (gallery `resume.css` got group comments, `url("resume_bg.jpg")` preserved).
+  - `projects/trading/` — docstrings + section banners for `automated_trading_robot/` and `us_stock_scanner/` modules; verified AST-identical to originals after edits, all nine files compile.
+  - `projects/algorithms/python_basic_algorithms/`, `computer_vision/` and `robotics/jenga_ur_robot/` — docstrings, sort/DFS/SIFT stitch comments; URScript Jenga programs got `#` step comments only (all waypoint poses preserved).
+  - `src/` (React app) — light comments in `main.jsx`, `app.jsx`, `navbar.jsx`, `walking_worker.jsx`, `home.jsx`, `gallery.jsx`, `projects.jsx`, `data/projects.js`, `app.css` and `index.css`, plus short notes in `vite.config.js` and `eslint.config.js`.
+
+### Changed
+
+- Restored the four canonical docs to their conventional uppercase names — `AGENTS.md`, `LICENSE`, `README.md` and `CHANGELOG.md` (plus per-project `PROJECTS/trading/automated_trading_robot/LICENSE` and `.../django_web/personal_web/static/README.md`), and updated `AGENTS.md`'s own references accordingly.
+- Kept the uncommitted `index.html` switch of the favicon/entry paths to relative ones (`public/favicon.svg`, `src/main.jsx`) as requested.
+- `package.json` version aligned to `1.7.0`.
+
 ## [1.6.0] - 2026-09-24
 
 ### Added
@@ -20,7 +36,7 @@ All notable changes to this project are documented here, with a semver version (
 
 - Renamed every tracked file and directory to lowercase `[a-z0-9_.]` (hyphens are excluded because `-` breaks Python `import`). Slugs became underscore-case (`automated-trading-robot` → `automated_trading_robot`, `computer-vision` → `computer_vision`), app files lowercased (`App.jsx` → `app.jsx`, `src/pages/Home.jsx` → `src/pages/home.jsx`), and assets fixed (`UR_jenga.gif` → `ur_jenga.gif`, `MainMenu.PNG` → `main_menu.png`, `Colourful.jpg` → `colourful.jpg`, `clear-blue-sky.jpg` → `clear_blue_sky.jpg`). Excluded: vendored M5Stack library, iCloud stubs (`.FFbgMusic.mp3.icloud`, `.Flying_me_softly.mp3.icloud`) and npm-managed `package-lock.json`.
 - Updated every cross-reference: imports in `src/main.jsx`, `src/app.jsx`, `src/pages/home.jsx`; media paths and run commands in `src/data/projects.js` (`stock_APP.py` → `stock_app.py`, `stock_GUI.py` → `stock_gui.py`); README toctree links, images and run instructions; `agents.md` repo map and workflow names (`auto_merge.yml`); and in-repo asset paths in the SkyWar game (`Resources/` → `resources/`, `BadCloud.png` → `bad_cloud.png`, `Bullet.png` → `bullet.png`).
-- `package.json` version aligned to `1.5.0` (was `1.2.0`) to match `changelog.md`.
+- `package.json` version aligned to `1.5.0` (was `1.2.0`) to match `CHANGELOG.md`.
 
 ## [1.4.0] - 2026-09-24
 

@@ -1,3 +1,4 @@
+// Site banner shown at the top of every page.
 function Header() {
   return (
     <header className="header">

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
+// Navigation entries — each click awards the visitor some xp.
 const navLinks = [
   { to: "/", label: "Home", icon: "\u2694", xp: 50 },
   { to: "/projects", label: "Projects", icon: "\uD83E\uDDF0", xp: 60 },
@@ -8,7 +9,7 @@ const navLinks = [
 ];
 
 function Navbar({ xp, addXp }) {
-  const [xpPop, setXpPop] = useState(null);
+  const [xpPop, setXpPop] = useState(null); // index of link showing the "+xp" popup
 
   const handleNavClick = (index) => {
     setXpPop(index);

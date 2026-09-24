@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 function Gallery({ addXp }) {
-  const [sections, setSections] = useState([]);
-  const [open, setOpen] = useState({});
-  const [xpPop, setXpPop] = useState(null);
+  const [sections, setSections] = useState([]); // parsed ## blocks from gallery.md
+  const [open, setOpen] = useState({}); // which accordion sections are expanded
+  const [xpPop, setXpPop] = useState(null); // index of section showing the "+30XP" popup
 
   useEffect(() => {
+    // Load gallery.md at runtime and split it into accordion sections by ## heading.
     fetch(`${import.meta.env.BASE_URL}gallery.md`)
       .then((res) => res.text())
       .then((text) => {
@@ -27,6 +28,7 @@ function Gallery({ addXp }) {
   }, []);
 
   const toggle = (index) => {
+    // Expand/collapse an accordion section; first open awards xp.
     setOpen((prev) => ({ ...prev, [index]: !prev[index] }));
     if (!open[index]) {
       addXp(30);

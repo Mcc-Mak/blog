@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Personal portfolio/blog "Benny's Blog" — a React 19 + Vite static site deployed to GitHub Pages at `https://chunwmak9.github.io/blog/`.
+Personal portfolio/blog "Benny's Blog" — a React 19 + Vite static site deployed to GitHub Pages at `https://Mcc-Mak.github.io/blog/`.
 
 ## Commands
 
@@ -15,13 +15,13 @@ Personal portfolio/blog "Benny's Blog" — a React 19 + Vite static site deploye
 
 For every code or content change, before finishing:
 
-1. Update `changelog.md` — bump the version (semver `X.X.X`), add a dated entry describing the change (Keep a Changelog style: Added / Changed / Fixed / Removed).
+1. Update `CHANGELOG.md` — bump the version (semver `X.X.X`), add a dated entry describing the change (Keep a Changelog style: Added / Changed / Fixed / Removed).
 2. `git commit` with a clear subject line and a body explaining what changed and why.
 3. Work on `dev-001`: `.github/workflows/auto_merge.yml` auto-merges `dev-001 → dev → main` on push. Do not push to `main` directly.
 
 ## Deploy workflow
 
-Deploy order matters: commit + push to `dev-001` first (it auto-merges through `dev` to `main`), then `npm run deploy` (this is what readme.md documents). `deploy` publishes the static build to the `gh-pages` branch (not `main` or `docs/`).
+Deploy order matters: commit + push to `dev-001` first (it auto-merges through `dev` to `main`), then `npm run deploy` (this is what README.md documents). `deploy` publishes the static build to the `gh-pages` branch (not `main` or `docs/`).
 
 ## Path base quirk (do not "fix")
 
@@ -37,7 +37,7 @@ Use `import.meta.env.BASE_URL` (e.g. `${import.meta.env.BASE_URL}img/benny.png`)
 
 ## `projects/` (portfolio content)
 
-Source code only, grouped by category and named with lowercase `[a-z0-9_.]`:
+Source code only, grouped by category and named with lowercase `[a-z0-9_.]`. Exception: the canonical root docs keep their conventional uppercase names — `AGENTS.md`, `LICENSE`, `README.md`, `CHANGELOG.md` (and per-project `LICENSE`/`README.md`).
 
 ```
 projects/trading/{automated_trading_robot,us_stock_scanner}
@@ -49,7 +49,7 @@ projects/games/{skywar,treasury_hunter_ios}
 projects/algorithms/python_basic_algorithms
 ```
 
-- Each project's nested `.git/` and `readme.md` were removed; original repos stay on GitHub (`chunwmak9/<name>`) and are linked as the `source` in `src/data/projects.js`.
+- Each project's nested `.git/` and `README.md` were removed; original repos stay on GitHub (`chunwmak9/<name>`) and are linked as the `source` in `src/data/projects.js`.
 - Do not commit venvs, `__pycache__/`, `*.pyc`, `.DS_Store`, `db.sqlite3`, PyInstaller `build/` output (see `.gitignore`).
 
 ## Project showcase wiring
@@ -57,5 +57,5 @@ projects/algorithms/python_basic_algorithms
 Three views of the same portfolio must stay in sync:
 
 1. `src/data/projects.js` — single source of truth for cards/tags (name, category, role tags, tech, run command, media, source link). Edit here first.
-2. Root `readme.md` — toctree grouped by the same categories; entries link to `projects/<category>/<slug>/` and images to `public/projects/<slug>/`.
+2. Root `README.md` — toctree grouped by the same categories; entries link to `projects/<category>/<slug>/` and images to `public/projects/<slug>/`.
 3. `public/projects/<slug>/` — showcase screenshots/demos referenced by both the site (`${import.meta.env.BASE_URL}projects/<slug>/...`) and the README (`public/projects/<slug>/...`). Game sprites and runtime assets stay inside `projects/<slug>/` where the code expects them.

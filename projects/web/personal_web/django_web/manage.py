@@ -4,6 +4,7 @@ import os
 import sys
 
 
+# --- Entry point for all Django management commands ---
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_server.settings")
@@ -18,5 +19,6 @@ def main():
     execute_from_command_line(sys.argv)
 
 
+# --- Invoke main() when run directly ---
 if __name__ == "__main__":
     main()
