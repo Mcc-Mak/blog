@@ -6,27 +6,17 @@
 #include "GoPlus2.h"
 #include <driver/rmt.h>
 #include <math.h>
-
 GoPlus2  goPlus;
-
 #define X_LOCAL 40
 #define Y_LOCAL 30
-
 #define X_OFFSET 160
 #define Y_OFFSET 23
 #define rrmt_item32_timemout_us 9500
-
 int _hub1, hub1 = 0;
 rmt_item32_t signals[1024];
-
 size_t received = 0;
-
-
-
-
 int flag = 0;
 int num = 0;
-
 void header(const char *string, uint16_t color)
 {
     M5.Lcd.fillScreen(color);
@@ -36,7 +26,6 @@ void header(const char *string, uint16_t color)
     M5.Lcd.setTextDatum(TC_DATUM);
     M5.Lcd.drawString(string, 160, 3, 4);   
 }
-
 void Motor()
 {   
     while(num == 0){
@@ -61,9 +50,7 @@ void Motor()
       goPlus.Motor_write_speed(MOTOR_NUM0, 0);
       delay(1000);
     }
-
 }
-
 void Servo()
 {   
     while(num == 1){
@@ -87,12 +74,10 @@ void Servo()
       delay(1000);
   }
 }
-
 void Port_B()
 {   
   M5.Lcd.fillRect(0, 40, 320, 100, TFT_BLACK);
   while(num == 2){ 
-      
       M5.Lcd.setCursor(0, 40, 4);
        hub1 = goPlus.hub1_a_read_value(HUB1_R_ADDR);
       if(abs(hub1 - _hub1) > 3){
@@ -108,12 +93,8 @@ void Port_B()
       }
       M5.update();
       M5.Lcd.printf("HUB3 State: %d\r\n", flag);
-     
     }
 }
-
-
-
 void rx_channel_init()
 {
     rmt_config_t rmt_rx;
@@ -125,12 +106,9 @@ void rx_channel_init()
     rmt_rx.rx_config.filter_en            = false;
     rmt_rx.rx_config.filter_ticks_thresh  = 0;
     rmt_rx.rx_config.idle_threshold       = 5000;
-
     rmt_config(&rmt_rx);
     rmt_driver_install(rmt_rx.channel, 1000, 0);
-    
 }
-
 void tx_channel_init() {
   rmt_config_t rmt_tx;
   rmt_tx.rmt_mode = RMT_MODE_TX;
@@ -148,13 +126,10 @@ void tx_channel_init() {
   rmt_config(&rmt_tx);
   rmt_driver_install(rmt_tx.channel, 0, 0);
 }
-
-
 void rmt_rx_task() {
   RingbufHandle_t rb = NULL;
   rmt_get_ringbuf_handle(RMT_CHANNEL_0, &rb);
   rmt_rx_start(RMT_CHANNEL_0, 1);
-
   size_t rx_size = 0;
   M5.Lcd.setCursor(20, 40, 4);
   M5.Lcd.println("wait ir signal...");
@@ -166,7 +141,6 @@ void rmt_rx_task() {
   }
   M5.Lcd.print("received items: ");
   M5.Lcd.println(rx_size);
-
   memcpy(signals, item, sizeof(rmt_item32_t) * rx_size);
   for (int i = 0; i < rx_size; ++i) {
     signals[i].level0 = ~signals[i].level0;
@@ -178,25 +152,20 @@ void rmt_rx_task() {
   rmt_rx_stop(RMT_CHANNEL_0);
   rmt_tx_task();
 }
-
 void rmt_tx_task() {
   M5.Lcd.println("send...");
   M5.Lcd.println(received);
   rmt_write_items(RMT_CHANNEL_4, signals, received, false);
   rmt_wait_tx_done(RMT_CHANNEL_4, 2000);
   M5.Lcd.println("send done");
-
 }
-
 void IR()
 {   
-    
     while(num == 3) {
       M5.Lcd.fillRect(0, 40, 320, 200, TFT_BLACK);
       rmt_rx_task();
     }
 }
-
 void doTask()
 {
   if(num == 4){
@@ -206,36 +175,28 @@ void doTask()
   }
   Serial.println(num);
 }
-
 void setup() {
-
    M5.begin();
    goPlus.begin();
    delay(100);
    rx_channel_init();
    tx_channel_init();
-
 //   goPlus.hub1_set_io(HUB1_R_O_ADDR, 1); //set digital_output to digital_input
 //   goPlus.hub2_set_io(HUB2_R_O_ADDR, 1); //set digital_output to digital_input
 //   goPlus.hub3_set_io(HUB3_R_O_ADDR, 1); //set digital_output to digital_input
-
    header("GoPlus 2", TFT_BLACK);
    M5.Lcd.setTextColor(TFT_GREEN, TFT_BLACK);
    attachInterrupt(digitalPinToInterrupt(38), doTask, RISING);
-
 }
-
 void loop() {
    Servo();
    Motor();
    Port_B();
    IR();
-  
 //    int val1 = goPlus.hub1_d_o_read_value(HUB1_R_O_ADDR);  //read digtial_input
 //    int val2 = goPlus.hub2_d_o_read_value(HUB2_R_O_ADDR);  //read digtial_input
 //    int val3 = goPlus.hub3_d_o_read_value(HUB3_R_O_ADDR);  //read digtial_input
 //    Serial.println(val1);
 //    Serial.println(val2);
 //    Serial.println(val3);
-
 }

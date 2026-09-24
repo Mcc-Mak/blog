@@ -2,10 +2,8 @@
     Description: Read the button status of BUTTON Unit and display it on the screen
 */
 #include <M5Stack.h>
-
 int last_value = 0;
 int cur_value = 0;
-
 void setup() {
   // init lcd
   M5.begin();
@@ -19,10 +17,8 @@ void setup() {
   Serial.println("Button example: ");
   M5.Lcd.setTextColor(WHITE);
 }
-
 void loop() {
   cur_value = digitalRead(36);// read the value of BUTTON
-
   M5.Lcd.setCursor(0,25); M5.Lcd.print("Status: ");
   M5.Lcd.setCursor(0,45); M5.Lcd.print("Value: ");
   if(cur_value != last_value){

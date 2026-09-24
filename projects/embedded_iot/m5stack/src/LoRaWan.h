@@ -1,11 +1,9 @@
 /*
   LoRaWAN.cpp for M5Stack (fork from https://github.com/toddkrein/OTAA-LoRaWAN-Seeed)
-
   2013 Copyright (c) Seeed Technology Inc.  All right reserved.
   Author: Wayne Weng
   Date: 2016-10-17
   add rgb backlight fucnction @ 2013-10-15
-
   The MIT License (MIT)
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +21,21 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.1  USA
 */
-
 #ifndef _LORAWAN_H_
 #define _LORAWAN_H_
-
 #include <Arduino.h>
-
 #define SerialUSB Serial
 #define SerialLoRa          Serial2
-
 #define _DEBUG_SERIAL_      1
 //#define DEFAULT_TIMEOUT     5 // second
 #define DEFAULT_TIMEOUT     3 // second
 #define DEFAULT_TIMEWAIT    200 // milliseconds to wait after issuing command via serial
 #define DEFAULT_DEBUGTIME   500 // milliseconds to wait for a response after command
-
 // #define BATTERY_POWER_PIN    A4
 // #define CHARGE_STATUS_PIN    A5
-
 #define BEFFER_LENGTH_MAX    256
-
 #define MAC_COMMAND_FLAG    "MACCMD:"
 #define kLOCAL_BUFF_MAX     64
-
 enum _class_type_t { CLASS_A = 0, CLASS_C };
 enum _physical_type_t { UNINIT = -1, EU434, EU868, US915, US915HYBRID, AU915, AS923, CN470, KR920, CN470PREQUEL, STE920, UNDEF };
 enum _device_mode_t { LWABP = 0, LWOTAA, TEST };
@@ -54,8 +44,6 @@ enum _window_delay_t { RECEIVE_DELAY1 = 0, RECEIVE_DELAY2, JOIN_ACCEPT_DELAY1, J
 enum _band_width_t { BW125 = 125, BW250 = 250, BW500 = 500 };
 enum _spreading_factor_t { SF12 = 12, SF11 = 11, SF10 = 10, SF9 = 9, SF8 = 8, SF7 = 7 };
 enum _data_rate_t { DR0 = 0, DR1, DR2, DR3, DR4, DR5, DR6, DR7, DR8, DR9, DR10, DR11, DR12, DR13, DR14, DR15 };
-
-
 /*****************************************************************
 Type    DataRate    Configuration   BitRate| TxPower Configuration
 EU434   0           SF12/125 kHz    250    | 0       10dBm
@@ -105,21 +93,16 @@ CN780   0           SF12/125 kHz    250    | 0       10dBm
         7           FSK:50 kbps     50000  |
         8:15        RFU                    |
 ******************************************************************/
-
-
 class LoRaWanClass
 {
     public:
-
         LoRaWanClass(void);
-
         /**
          *  \brief Initialize the conmunication interface
          *
          *  \return Return null
          */
         void init(void);
-
         /**
          *  \brief Read the version from device
          *
@@ -130,7 +113,6 @@ class LoRaWanClass
          *  \return Return null.
          */
         void getVersion(char *buffer, short length, unsigned char timeout = DEFAULT_TIMEOUT);
-
         /**
          *  \brief Read the ID from device
          *
@@ -141,7 +123,6 @@ class LoRaWanClass
          *  \return Return null.
          */
         void getId(char *buffer, short length, unsigned char timeout = DEFAULT_TIMEOUT);
-
         /**
          *  \brief Set the ID
          *
@@ -152,7 +133,6 @@ class LoRaWanClass
          *  \return Return null.
          */
         void setId(char *DevAddr, char *DevEUI, char *AppEUI);
-
         /**
          *  \brief Set the key
          *
@@ -163,7 +143,6 @@ class LoRaWanClass
          *  \return Return null.
          */
         void setKey(char *NwkSKey, char *AppSKey, char *AppKey);
-
         /**
          *  \brief Set the data rate
          *
@@ -173,7 +152,6 @@ class LoRaWanClass
          *  \return Return null.
          */
         bool setDataRate(_data_rate_t dataRate = DR0, _physical_type_t physicalType = EU434);
-
         /**
          *  \brief ON/OFF adaptive data rate mode
          *
@@ -182,7 +160,6 @@ class LoRaWanClass
          *  \return Return null.
          */
         void setAdaptiveDataRate(bool command);
-
         /**
          *  \brief Set the output power
          *
@@ -191,7 +168,6 @@ class LoRaWanClass
          *  \return Return null.
          */
         void setPower(short power);
-
         /**
          *  \brief Set the port number
          *
@@ -200,7 +176,6 @@ class LoRaWanClass
          *  \return Return null.
          */
         void setPort(unsigned char port);
-
         /**
          *  \brief Set the channel parameter
          *
@@ -232,7 +207,6 @@ class LoRaWanClass
          *  \return Return null.
          */
         void setChannel(unsigned char channel, float frequency, _data_rate_t dataRataMin, _data_rate_t dataRataMax);
-
         /**
          *  \brief Transfer the data
          *
@@ -271,7 +245,6 @@ class LoRaWanClass
          *  \return Return bool. Ture : Confirmed ACK, false : Confirmed NOT ACK
          */
         bool transferPacketWithConfirmed(unsigned char *buffer, unsigned char length, unsigned char timeout = DEFAULT_TIMEOUT);
-
         /**
          *  \brief Receive the data
          *
@@ -282,7 +255,6 @@ class LoRaWanClass
          *  \return Return Receive data number
          */
         short receivePacket(char *buffer, short length, short *rssi);
-
         /**
          *  \brief Transfer the proprietary data
          *
@@ -302,7 +274,6 @@ class LoRaWanClass
          *  \return Return bool. Ture : transfer done, false : transfer failed
          */
         bool transferProprietaryPacket(unsigned char *buffer, unsigned char length, unsigned char timeout = DEFAULT_TIMEOUT);
-
         /**
          *  \brief Set device mode
          *
@@ -311,7 +282,6 @@ class LoRaWanClass
          *  \return Return null
          */
         bool setDeviceMode(_device_mode_t mode);
-
         /**
          *  \brief Set device join a network
          *
@@ -321,7 +291,6 @@ class LoRaWanClass
          *  \return Return bool. True : join OK, false : join NOT OK
          */
         bool setOTAAJoin(_otaa_join_cmd_t command, unsigned char timeout = DEFAULT_TIMEOUT);
-
         /**
          *  \brief Set message unconfirmed repeat time
          *
@@ -330,7 +299,6 @@ class LoRaWanClass
          *  \return Return null
          */
         void setUnconfirmedMessageRepeatTime(unsigned char time);
-
         /**
          *  \brief Set message retry times time
          *
@@ -339,7 +307,6 @@ class LoRaWanClass
          *  \return Return null
          */
         void setConfirmedMessageRetryTime(unsigned char time);
-
         /**
          *  \brief ON/OFF receice window 1
          *
@@ -358,7 +325,6 @@ class LoRaWanClass
          *  \return Return null
          */
         void setReceiveWindowFirst(unsigned char channel, float frequency);
-
         /**
          *  \brief Set receice window 2 channel mapping
          *
@@ -378,7 +344,6 @@ class LoRaWanClass
          *  \return Return null
          */
         void setReceiveWindowSecond(float frequency, _spreading_factor_t spreadingFactor, _band_width_t bandwidth);
-
         /**
          *  \brief Set receice window delay
          *
@@ -388,7 +353,6 @@ class LoRaWanClass
          *  \return Return null
          */
         void setReceiveWindowDelay(_window_delay_t command, unsigned short _delay);
-
         /**
          *  \brief Set LoRaWAN class type
          *
@@ -397,28 +361,24 @@ class LoRaWanClass
          *  \return Return null
          */
         void setClassType(_class_type_t type);
-
         /**
          *  \brief Set device into low power mode
          *
          *  \return Return null
          */
         void setDeviceLowPower(void);
-
         /**
          *  \brief Reset device
          *
          *  \return Return null
          */
         void setDeviceReset(void);
-
         /**
          *  \brief Setup device default
          *
          *  \return Return null
          */
         void setDeviceDefault(void);
-
         /**
          *  \brief Initialize device into P2P mode
          *
@@ -461,7 +421,6 @@ class LoRaWanClass
          *  \return Return Receive data number
          */
         short receivePacketP2PMode(unsigned char *buffer, short length, short *rssi, unsigned char timeout = DEFAULT_TIMEOUT);
-
         /**
          *  \brief LoRaWAN raw data
          *
@@ -478,8 +437,6 @@ class LoRaWanClass
          *  \return Return battery voltage
          */
         // short getBatteryVoltage(void);
-
-
     private:
         void sendCommand(const char *command);
         void sendCommand(const __FlashStringHelper* command);
@@ -487,15 +444,9 @@ class LoRaWanClass
         short readLine(char* buffer, short length, unsigned char timeout = DEFAULT_TIMEOUT);
         short waitForResponse(char* response, unsigned char timeout = DEFAULT_TIMEOUT);
         short sendCommandAndWaitForResponse(char* command, char *response, unsigned char timeout = DEFAULT_TIMEOUT);
-
         char _buffer[256];
         short debug;
         _physical_type_t myType;
-
 };
-
-
 extern LoRaWanClass lora;
-
-
 #endif

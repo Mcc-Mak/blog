@@ -1,14 +1,11 @@
 //@file Adafruit_SGP30.cpp
 #include "Arduino.h"
-
 #include "Adafruit_SGP30.h"
 //#define I2C_DEBUG
-
 /*!
  *  @brief  Instantiates a new SGP30 class
  */
 Adafruit_SGP30::Adafruit_SGP30() {}
-
 /*!
  *  @brief  Setups the hardware and detects a valid SGP30. Initializes I2C
  *          then reads the serialnumber and checks that we are talking to an
@@ -23,15 +20,12 @@ Adafruit_SGP30::Adafruit_SGP30() {}
 boolean Adafruit_SGP30::begin(TwoWire *theWire, boolean initSensor) {
   _i2caddr = SGP30_I2CADDR_DEFAULT;
   _i2c = theWire;
-
   _i2c->begin();
-
   uint8_t command[2];
   command[0] = 0x36;
   command[1] = 0x82;
   if (!readWordFromCommand(command, 2, 10, serialnumber, 3))
     return false;
-
   uint16_t featureset;
   command[0] = 0x20;
   command[1] = 0x2F;
@@ -44,10 +38,8 @@ boolean Adafruit_SGP30::begin(TwoWire *theWire, boolean initSensor) {
     if (!IAQinit())
       return false;
   }
-
   return true;
 }
-
 /*!
  *   @brief Commands the sensor to perform a soft reset using the "General
  * Call" mode. Take note that this is not sensor specific and all devices that
@@ -62,7 +54,6 @@ boolean Adafruit_SGP30::softReset(void) {
   command[1] = 0x06;
   return readWordFromCommand(command, 2, 10);
 }
-
 /*!
  *   @brief  Commands the sensor to begin the IAQ algorithm. Must be called
  * after startup.
@@ -75,7 +66,6 @@ boolean Adafruit_SGP30::IAQinit(void) {
   command[1] = 0x03;
   return readWordFromCommand(command, 2, 10);
 }
-
 /*!
  *  @brief  Commands the sensor to take a single eCO2/VOC measurement. Places
  *          results in {@link TVOC} and {@link eCO2}
@@ -93,7 +83,6 @@ boolean Adafruit_SGP30::IAQmeasure(void) {
   eCO2 = reply[0];
   return true;
 }
-
 /*!
  *  @brief  Commands the sensor to take a single H2/ethanol raw measurement.
  * Places results in {@link rawH2} and {@link rawEthanol}
@@ -111,7 +100,6 @@ boolean Adafruit_SGP30::IAQmeasureRaw(void) {
   rawH2 = reply[0];
   return true;
 }
-
 /*!
  *   @brief  Request baseline calibration values for both CO2 and TVOC IAQ
  *           calculations. Places results in parameter memory locaitons.
@@ -135,7 +123,6 @@ boolean Adafruit_SGP30::getIAQBaseline(uint16_t *eco2_base,
   *tvoc_base = reply[1];
   return true;
 }
-
 /*!
  *  @brief  Assign baseline calibration values for both CO2 and TVOC IAQ
  *          calculations.
@@ -156,10 +143,8 @@ boolean Adafruit_SGP30::setIAQBaseline(uint16_t eco2_base, uint16_t tvoc_base) {
   command[5] = eco2_base >> 8;
   command[6] = eco2_base & 0xFF;
   command[7] = generateCRC(command + 5, 2);
-
   return readWordFromCommand(command, 8, 10);
 }
-
 /*!
  *  @brief  Set the absolute humidity value [mg/m^3] for compensation to
  * increase precision of TVOC and eCO2.
@@ -174,7 +159,6 @@ boolean Adafruit_SGP30::setHumidity(uint32_t absolute_humidity) {
   if (absolute_humidity > 256000) {
     return false;
   }
-
   uint16_t ah_scaled =
       (uint16_t)(((uint64_t)absolute_humidity * 256 * 16777) >> 24);
   uint8_t command[5];
@@ -183,26 +167,20 @@ boolean Adafruit_SGP30::setHumidity(uint32_t absolute_humidity) {
   command[2] = ah_scaled >> 8;
   command[3] = ah_scaled & 0xFF;
   command[4] = generateCRC(command + 2, 2);
-
   return readWordFromCommand(command, 5, 10);
 }
-
 /*!
  *  @brief  I2C low level interfacing
  */
-
 boolean Adafruit_SGP30::readWordFromCommand(uint8_t command[],
                                             uint8_t commandLength,
                                             uint16_t delayms,
                                             uint16_t *readdata,
                                             uint8_t readlen) {
-
   _i2c->beginTransmission(_i2caddr);
-
 #ifdef I2C_DEBUG
   Serial.print("\t\t-> ");
 #endif
-
   for (uint8_t i = 0; i < commandLength; i++) {
     _i2c->write(command[i]);
 #ifdef I2C_DEBUG
@@ -215,12 +193,9 @@ boolean Adafruit_SGP30::readWordFromCommand(uint8_t command[],
   Serial.println();
 #endif
   _i2c->endTransmission();
-
   delay(delayms);
-
   if (readlen == 0)
     return true;
-
   uint8_t replylen = readlen * (SGP30_WORD_LEN + 1);
   if (_i2c->requestFrom(_i2caddr, replylen) != replylen)
     return false;
@@ -236,11 +211,9 @@ boolean Adafruit_SGP30::readWordFromCommand(uint8_t command[],
     Serial.print(", ");
 #endif
   }
-
 #ifdef I2C_DEBUG
   Serial.println();
 #endif
-
   for (uint8_t i = 0; i < readlen; i++) {
     uint8_t crc = generateCRC(replybuffer + i * 3, 2);
 #ifdef I2C_DEBUG
@@ -262,11 +235,9 @@ boolean Adafruit_SGP30::readWordFromCommand(uint8_t command[],
   }
   return true;
 }
-
 uint8_t Adafruit_SGP30::generateCRC(uint8_t *data, uint8_t datalen) {
   // calculates 8-Bit checksum with given polynomial
   uint8_t crc = SGP30_CRC8_INIT;
-
   for (uint8_t i = 0; i < datalen; i++) {
     crc ^= data[i];
     for (uint8_t b = 0; b < 8; b++) {

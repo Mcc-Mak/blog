@@ -1,7 +1,6 @@
 #include <M5Stack.h>
 #include "RFID_command.h"
 #include <string>
-
 void UHF_RFID::Sendcommand(UBYTE com_nub)
 {
   UBYTE b = 0;
@@ -13,11 +12,9 @@ void UHF_RFID::Sendcommand(UBYTE com_nub)
   Serial2.write(0x7E);
   Serial2.write("\n\r");
 }
-
 void UHF_RFID::Send_the_modified_command()
 {
   UBYTE b = 0;//Send instructions 发送指令
-
   while (DATA_Interim_order[b] != 0x7E)
   {
     Serial2.write(DATA_Interim_order[b]);
@@ -25,9 +22,7 @@ void UHF_RFID::Send_the_modified_command()
   }
   Serial2.write(0x7E);
   Serial2.write("\n");
-
 }
-
 void UHF_RFID::Readcallback()
 {
   while (Serial2.available())
@@ -41,7 +36,6 @@ void UHF_RFID::Readcallback()
     DATA_I_NUB++;
   }
 }
-
 void UHF_RFID::clean_data()
 {
   DATA_Str_Serial = "";
@@ -57,8 +51,6 @@ void UHF_RFID::clean_data()
     DATA_Interim_order[i] = 0x00;
   }
 }
-
-
 UBYTE UHF_RFID::Return_to_convert(UBYTE mod)
 {
   DATA_Str_M5led = "";
@@ -93,14 +85,10 @@ UBYTE UHF_RFID::Return_to_convert(UBYTE mod)
       break;
   }
   return 1;
-
 }
-
 UDOUBLE UHF_RFID::String_to_command_frame(String str_epc) //EPC string to command frame EPC字符串转命令帧
 {
-
   UDOUBLE b;
-
   for (UBYTE c = 0; c < 8; c++)
   {
     switch (char(str_epc[c]))
@@ -161,12 +149,8 @@ UDOUBLE UHF_RFID::String_to_command_frame(String str_epc) //EPC string to comman
         break;
     }
   }
-
   return b;
-
 }
-
-
 void UHF_RFID::Warningmessage(UBYTE nub)
 {
   switch (nub)
@@ -288,17 +272,12 @@ void UHF_RFID::Warningmessage(UBYTE nub)
       //标签不支持 Error-code 返回
       break;
     default: break;
-
   }
-
 }
-
 void UHF_RFID::Delay(unsigned long xms)
 {
   delay(xms);
 }
-
-
 UBYTE  UHF_RFID::DelayScanwarning()
 {
   UDOUBLE i = 0;
@@ -307,19 +286,13 @@ UBYTE  UHF_RFID::DelayScanwarning()
     if (DATA_I[i] == 0xBB && DATA_I[i + 2] == 0xFF )
     {
       Warningmessage(DATA_I[i + 5]);
-
       return DATA_I[i + 5];
     }
-
   }
-
   return 0;
-
 }
-
 void UHF_RFID::Copy_command_library( UBYTE com_nub)
 {
-
   while (RFID_cmdnub[com_nub][DATA_Interim_b] != 0x7E) //First copy the command library 先复制命令库
   {
     DATA_Interim_order[DATA_Interim_b] = RFID_cmdnub[com_nub][DATA_Interim_b];
@@ -327,11 +300,9 @@ void UHF_RFID::Copy_command_library( UBYTE com_nub)
   }
   DATA_Interim_order[DATA_Interim_b] = 0x7E;
 }
-
 void UHF_RFID::Check_bit_accumulation()
 {
   DATA_Interim_order[DATA_Interim_b - 1] = 0x00;                      //Check bit accumulation 校验位累加
-
   for (UBYTE c = 1; c < DATA_Interim_b - 1; c++)
   {
     DATA_Interim_order[DATA_Interim_b - 1] = DATA_Interim_order[c] + DATA_Interim_order[DATA_Interim_b - 1] ;
@@ -341,17 +312,13 @@ void UHF_RFID::Check_bit_accumulation()
     DATA_Interim_order[DATA_Interim_b - 1] =  DATA_Interim_order[DATA_Interim_b - 1] % 256;
   }
 }
-
 UWORD UHF_RFID::ToHex(UDOUBLE parameters, UBYTE MSB, UBYTE LSB)
 {
-
   UBYTE i = LSB - MSB;
   UBYTE l = LSB;
-
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   // DATA_Interim_order[3] = 0x12;             //Split the reshape to a command frame parameter 拆分整形装换为命令帧参数
   // DATA_Interim_order[4] = 0x34;
-
   if (i >= 4) {
     return 0;
   }
@@ -367,14 +334,11 @@ UWORD UHF_RFID::ToHex(UDOUBLE parameters, UBYTE MSB, UBYTE LSB)
       parameters = parameters / 256;
     }
   }
-
 }
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
 UBYTE UHF_RFID::Verify_the_return(UBYTE a[] , UBYTE size_v)  //Verify return information 验证返回信息
 {
   UBYTE c = 0;
-
   if ( DATA_I[0] == a[0] && DATA_I[1] == a[1] )
   {
     for (UBYTE i = 0; i < size_v; i++)
@@ -388,25 +352,20 @@ UBYTE UHF_RFID::Verify_the_return(UBYTE a[] , UBYTE size_v)  //Verify return inf
     {
       return 1;
     }
-
   }
-
   return 0;
 }
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *  Used to transfer string EPC to command frame
-
   用于将字符串EPC转命令帧
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 UBYTE UHF_RFID::EPC_string_to_command_frame(String str_epc, UBYTE MSB, UBYTE LSB)
 {
   UBYTE b  = 0;
   b = LSB - MSB;
-
   String d1 = str_epc.substring(0, 8);
   String d2 = str_epc.substring(8, 16);
   String d3 = str_epc.substring(16, 24);
-
   if (b == 11)
   {
     ToHex(String_to_command_frame(d1), MSB, MSB + 3);
@@ -414,12 +373,9 @@ UBYTE UHF_RFID::EPC_string_to_command_frame(String str_epc, UBYTE MSB, UBYTE LSB
     ToHex(String_to_command_frame(d3), MSB + 8, MSB + 11);
   }
 }
-
 CardInformationInfo UHF_RFID::Access_Password_is_incorrect()
 {
-
   CardInformationInfo Cardinformation;
-
   Cardinformation._UL = DATA_Str_M5led.substring( 12,  14);
   Cardinformation._PC = DATA_Str_M5led.substring( 14,  18);
   Cardinformation._EPC =DATA_Str_M5led.substring( 18,  42);
@@ -428,14 +384,11 @@ CardInformationInfo UHF_RFID::Access_Password_is_incorrect()
   Cardinformation._Error = "The Access Password is incorrect";
   Cardinformation._Data ="";
   Cardinformation._Successful ="";
-
   return Cardinformation;
 }
-
 CardInformationInfo UHF_RFID::EPC_Gen2_error_code()
 {
   CardInformationInfo Cardinformation;
-
   Cardinformation._UL = DATA_Str_M5led.substring( 12,  14);
   Cardinformation._PC = DATA_Str_M5led.substring( 14,  18);
   Cardinformation._EPC =DATA_Str_M5led.substring( 18,  42);
@@ -444,15 +397,11 @@ CardInformationInfo UHF_RFID::EPC_Gen2_error_code()
   Cardinformation._Error = "EPC Gen2 error code";
   Cardinformation._Data ="";
   Cardinformation._Successful ="";
-  
   return Cardinformation;
-
 }
-
 CardInformationInfo UHF_RFID::Operation_is_successful()
 {
   CardInformationInfo Cardinformation;
-
   Cardinformation._UL = DATA_Str_M5led.substring( 10,  12);
   Cardinformation._PC = DATA_Str_M5led.substring( 12,  16);
   Cardinformation._EPC =DATA_Str_M5led.substring( 16,  40);
@@ -461,15 +410,11 @@ CardInformationInfo UHF_RFID::Operation_is_successful()
   Cardinformation._Error = "";
   Cardinformation._Data ="";
   Cardinformation._Successful ="";
-
   return Cardinformation;
-
 }
-
 CardInformationInfo UHF_RFID::UI_PC_EPC()
 {
   CardInformationInfo Cardinformation;
-
   Cardinformation._UL = DATA_Str_M5led.substring( 10,  12);
   Cardinformation._PC = DATA_Str_M5led.substring( 12,  16);
   Cardinformation._EPC =DATA_Str_M5led.substring( 16,  40);
@@ -478,7 +423,5 @@ CardInformationInfo UHF_RFID::UI_PC_EPC()
   Cardinformation._Error = "";
   Cardinformation._Data ="";
   Cardinformation._Successful ="";
-  
   return Cardinformation;
-
 }

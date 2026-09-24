@@ -1,8 +1,5 @@
 """Graph shortest path solved with DFS on a weighted adjacency matrix."""
-
 import numpy as np
-
-
 def graph_dfs(cur, dis):  # Current city code, distance walked
     global min1
     global visited
@@ -20,8 +17,6 @@ def graph_dfs(cur, dis):  # Current city code, distance walked
             graph_dfs(j, dis + e[cur][j])
             visited[j] = 0
     return
-
-
 if __name__ == "__main__":
     ### Graph initiation by adjacency matrix, indices start from 1 ###
     min1 = 99999999  # Infinity, also the initial shortest-path value

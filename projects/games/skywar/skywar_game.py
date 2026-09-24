@@ -1,30 +1,20 @@
 """SkyWar: a side-scrolling arcade shooter built with pygame.
-
 The player picks a username and background in a tkinter UI, then shoots
 incoming enemies while a live scoreboard is shown on exit.
 """
 # pip install pillow  # provides the "PIL" module
-
 import pygame
 import random
-
 from tkinter import *
 from tkinter import messagebox
-
 import os
 import time
-
 from PIL import ImageTk, Image
-
 print(os.getcwd())
-
 import math
-
 import user_interface
 import scoreboard
-
 # pygame.locals for easier access to key coordinates
-
 from pygame.locals import (
     RLEACCEL,  # optional flag that speeds up rendering on slow displays
     K_UP,
@@ -36,27 +26,18 @@ from pygame.locals import (
     QUIT,
     K_SPACE,
 )
-
 Game_Finished = False  # True once the player loses all health
-
 username = "Benny"  # default name until the UI overwrites it
-
 bg_index = 0
-
 DIR = os.getcwd()+r"/Full_game"
 backgrounds = [DIR+"/clear_blue_sky.jpg", DIR+"/colourful.jpg", DIR+"/sci.jpg"]
-
 # --- Initialization of the User Interface ---
 # parameters: bg_index, username
-
 user_interface.TKbox()
-
 username = user_interface.username
 bg_index = user_interface.bg_index
-
 # --- Initialization of User Attributes ---
 # Name, Score, Health, Time, Exp, Level, Distance
-
 score_system = scoreboard.score_system([])
 if score_system.read_key(username).empty:
     EXP = 0  # 2 exp per enemy shot down
@@ -67,57 +48,39 @@ else:
     EXP = int(df.iloc[-1]["Exp"])
     Level = int(df.iloc[-1]["Level"])
     Distance = 50
-
 # --- Pygame setup (window and display) ---
-
 screen_width = 1366  # 800x600
 screen_height = 720
-
 pygame.init()
-
 screen = pygame.display.set_mode([screen_width, screen_height])
 pygame.display.set_caption("SkyWar")
-
 score = 0
-
 attack_damage = 30  # damage dealt to the player per hit
-
 # pygame only renders still images, not gif frames
-
 # --- Sound Effects ---
-
 bg_musics = [DIR+"/resources/FFbgMusic.mp3", DIR+"/resources/Flying_me_softly.mp3"]
 pygame.mixer.init()
-
 # Background music
 pygame.mixer.music.load(bg_musics[1])
 pygame.mixer.music.play(loops=-1)
-
 explosion_sound = pygame.mixer.Sound(DIR+"/resources/explosion.wav")
 explosion_sound.set_volume(50)
 shoot_sound = pygame.mixer.Sound(DIR+"/resources/shoot.wav")
 shoot_sound.set_volume(50)
 plane_move_sound = pygame.mixer.Sound(DIR+"/resources/airplane.mp3")
 plane_move_sound.set_volume(50)
-
-
 # --- Sprite classes ---
 # self.surf => what you see on screen, self.rect => where you see it on screen
-
-
 class player_health(pygame.sprite.Sprite):
     """Green health bar rendered above the player's ship."""
-
     def __init__(self):
         super(player_health, self).__init__()
         # self.surf = pygame.image.load(DIR+"\Red_bar.png").convert()
         # self.surf = pygame.transform.scale(self.surf,(60,10))
-
         # self.surf = pygame.Surface([60,10])  # red bar
         # self.surf.fill((255, 0, 0))
         self.surf = pygame.Surface([60, 10])  # green bar
         self.surf.fill((0, 255, 0))
-
         self.rect = self.surf.get_rect()
         self.rect = pygame.rect.Rect((0, 0), (60, 10))
         self.scale_x = 60
@@ -126,7 +89,6 @@ class player_health(pygame.sprite.Sprite):
         self.image.fill((0, 255, 0))  # faster for color rendering
         # self.surf.blit(self.image,(self.rect.left,self.rect.bottom))
         self.color_rgb = (0, 255, 0)
-
     def update(self, x=0, y=0, health_scale_x=60) -> None:
         # Color shifts from green to orange/red as health drops
         if health_scale_x < 30:
@@ -140,23 +102,18 @@ class player_health(pygame.sprite.Sprite):
         self.image.fill(self.color_rgb)  # faster for color rendering
         # self.surf.blit(self.image, (0, self.rect.bottom))
         self.surf = self.image
-
-
 class Player(pygame.sprite.Sprite):  # The player's fighter jet
     def __init__(self):
         super(Player, self).__init__()  # initialize the pygame sprite first
         # self.surf = pygame.Surface((75, 25))  # fixed resolution & pixel format
         # self.surf.fill((255, 255, 255))
-
         self.surf = pygame.image.load(DIR+"/jetfighter.png").convert()
         self.surf = pygame.transform.scale(self.surf, (60, 30))  # rescale the sprite
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)
-
         # self.surf.set_alpha(128)
         self.rect = self.surf.get_rect()
         self.rect = pygame.rect.Rect((0, screen_height / 2), (10, 20))
         self.player_speed = 8
-
     def update(self, pressed_keys):
         # Move in the pressed direction and play the engine sound
         if pressed_keys[K_UP]:
@@ -173,7 +130,6 @@ class Player(pygame.sprite.Sprite):  # The player's fighter jet
         if pressed_keys[K_RIGHT]:
             self.rect.move_ip(self.player_speed, 0)
             plane_move_sound.play()
-
         # Keep the ship inside the screen edges
         if self.rect.left < 0:  # rect.left is the left edge of the rectangle
             self.rect.left = 0
@@ -183,37 +139,28 @@ class Player(pygame.sprite.Sprite):  # The player's fighter jet
             self.rect.top = 0
         if self.rect.bottom > screen_height:
             self.rect.bottom = screen_height
-
-
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
         self.surf = pygame.image.load(DIR+"/missile.png").convert()
         self.surf = pygame.transform.scale(self.surf, (80, 20))
         self.surf = pygame.transform.rotate(self.surf, 180)
-
         # set_colorkey makes the given background color transparent
         self.surf.set_colorkey((255, 255, 255), RLEACCEL)
-
         # self.surf = pygame.Surface((20,10))
         # self.surf.fill((255,255,255))
-
         self.rect = self.surf.get_rect(
             center=(
                 random.randint(screen_width + 20, screen_width + 100),
                 random.randint(0, screen_height),
             )
         )
-
         self.speed = random.randint(10, 16)  # random enemy speed
         # random.random() gives a float in [0, 1]
-
     def update(self):
         self.rect.move_ip(-self.speed, 0)
         if self.rect.right < 0:
             self.kill()  # stop processing enemies that left the screen
-
-
 class Cloud(pygame.sprite.Sprite):
     def __init__(self):
         super(Cloud, self).__init__()
@@ -225,13 +172,10 @@ class Cloud(pygame.sprite.Sprite):
         # get_rect() returns a Rect object from an image (the collision box)
         self.surf = pygame.transform.scale(self.surf, (100, 50))
         self.speed = random.randint(1, 5)
-
     def update(self):
         self.rect.move_ip(-self.speed, 0)
         if self.rect.right < 0:
             self.kill()
-
-
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super(Bullet, self).__init__()
@@ -242,15 +186,12 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect(
             center=(x, y),
         )
-
     def update(self):
         self.rect.move_ip(self.speed, 0)
         if self.rect.right > screen_width + 20:
             self.kill()
         # if self.rect.right < 0:
         #     self.kill()
-
-
 class Explosion(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super(Explosion, self).__init__()
@@ -262,59 +203,40 @@ class Explosion(pygame.sprite.Sprite):
         # get_rect() returns a Rect object from an image (the collision box)
         self.surf = pygame.transform.scale(self.surf, (120, 60))
         self.speed = random.randint(1, 2)
-
     def update(self):
         self.rect.move_ip(-self.speed, 0)
         if self.rect.right < self.x - 20:
             self.kill()
-
-
 # --- Sprites creation area ---
-
 health_bar = player_health()
-
 player1 = Player()  # initialization of the player1 object
-
 bullets = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 clouds = pygame.sprite.Group()
 explosion = pygame.sprite.Group()
-
 all_sprites = pygame.sprite.Group()
 # A container class to hold and manage multiple Sprite objects.
 all_sprites.add(player1)  # used for rendering all game objects
 #For rendering game objects
-
-
 # --- Timer events (spawn enemies and clouds) ---
-
 running = True
-
 ADDENEMY = pygame.USEREVENT + 1
 # The last event pygame reserves is called USEREVENT
 pygame.time.set_timer(ADDENEMY, 500)  # spawn a new enemy every 500ms
-
 ADDCLOUD = pygame.USEREVENT + 2
 pygame.time.set_timer(ADDCLOUD, 4000)  # spawn a new cloud every 4s
-
 clock = pygame.time.Clock()
 #Setup the clock for a decent frame rate of the game
 background = pygame.image.load(backgrounds[bg_index])
 background = pygame.transform.scale(background, (screen_width, screen_height))
-
 life = 60  # total life of the character
 init_var = False
-
 # --- Rank display helpers (shown after the game ends) ---
-
-
 def rank_title():
     text_color = (128, 0, 0)
     head_font = pygame.font.SysFont(None, 40)
     text_surface = head_font.render("Player Ranking", True, text_color)
     screen.blit(text_surface, (screen_width / 2 - 100, 40))
-
-
 def rank_item(name, SCORE, pos, rank_number):
     border_color = (255, 0, 0)
     pygame.draw.rect(screen, border_color, [0, 0, screen_width, screen_height], width=10)
@@ -327,34 +249,24 @@ def rank_item(name, SCORE, pos, rank_number):
     print(string)
     rank_string = rank_font.render(string, True, text_color)
     screen.blit(rank_string, (screen_width / 2 - 140, pos))
-
-
 # --- Main loop ---
-
-
 while running:
-
     Distance += 1
     print(Distance)
     font = pygame.font.SysFont("arial", 30, True)
     text = font.render("Score: " + str(score), 1, (0, 0, 0))
     # font.render arguments: text, anti-aliasing, color => a surface for blit
     user_text = font.render(username, 1, (0, 0, 0))
-
     # pygame manages timing through the event list; joysticks also post events
     # after the display module is initialized and the display mode is set
     # screen.fill((135, 206, 250))  # (R,G,B) background
-
     screen.blit(background, (0, 0))
-
     # Render the text positions
     screen.blit(user_text, (screen_width - 200, screen_height - 190))
     screen.blit(text, (screen_width - 200, screen_height - 150))
-
     if init_var:
         print("Welcome to Sky War.")
         init_var = False
-
     for event in pygame.event.get():
         # Handling the event queue => event handler
         if event.type == KEYDOWN:
@@ -370,24 +282,19 @@ while running:
                     shoot_sound.play()
                     shoot_sound.fadeout(1500)  # fade out over 1.5s
                     print("bullet")
-
         elif event.type == pygame.QUIT:
             running = False
-
         elif event.type == ADDENEMY:  # signal to spawn a new enemy
             new_enemy = Enemy()
             enemies.add(new_enemy)
             all_sprites.add(new_enemy)
-
         elif event.type == ADDCLOUD:
             new_cloud = Cloud()
             clouds.add(new_cloud)
             all_sprites.add(new_cloud)
-
     # Draw every sprite in the world
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
-
     # Bullet vs enemy collisions => +1 score and an explosion effect
     for bullet in bullets:
         screen.blit(bullet.surf, bullet.rect)
@@ -401,7 +308,6 @@ while running:
                 all_sprites.add(exp)
                 new_enemy.kill()
                 bullet.kill()
-
     # Player vs enemy collisions => lose health; game over at zero life
     for new_enemy in enemies:
         if pygame.sprite.collide_rect(player1, new_enemy):
@@ -416,47 +322,37 @@ while running:
                 player1.kill()
                 pygame.mixer.music.stop()
                 pygame.mixer.quit()
-
                 Tk().wm_withdraw()  # hide the main window
                 messagebox.showinfo('Game Over', 'OK')
                 running = False
                 Game_Finished = True
-
     # screen.fill((0, 0, 0))
     screen.blit(player1.surf, player1.rect)
     screen.blit(health_bar.surf, health_bar.rect)
     pressed_keys = pygame.key.get_pressed()
-
     player1.update(pressed_keys)
     health_bar.update(player1.rect.left, player1.rect.top, life)  # health bar follows the ship
-
     enemies.update()
     clouds.update()
     bullets.update()
     explosion.update()
-
     pygame.display.flip()
     clock.tick(40)  # maintain the game at 40 frames per second
-
     # flip() updates the whole display; update() refreshes a specific area
-
 # --- Scoring system output (write the result + show the leaderboard) ---
 # columns: Name, Score, Health, Time, Exp, Level, Distance
-
 T = time.asctime(time.localtime(time.time()))
 if Game_Finished == True:  # EXP only grows when a game is finished
     EXP += random.randint(1, 26)  # 1 to 25 exp.
 else:
     EXP += 0
 score_system.write([username, score, life, T, EXP, Level, Distance, bg_index])
-
 # Show the top-10 leaderboard
 rank_number = 1
 rank_title()
 DF = score_system.read_database()
 rank_info = []
 pos = 80
-
 for j in DF.nlargest(10, "Score")[["Name", "Score"]].values:
     rank_info.append([j[0], j[1]])  # [player_name, player_score]
     rank_item(str(j[0]), j[1], pos, rank_number)
@@ -466,24 +362,19 @@ for j in DF.nlargest(10, "Score")[["Name", "Score"]].values:
 print(username)
 print(score)
 pygame.display.update()
-
 # --- Idle loop: wait for the user to close the ranking window ---
-
 while True:
     for event in pygame.event.get():
         if event.type == QUIT or event.type == K_ESCAPE:
             print("Exit!")
             pygame.quit()
             sys.exit()
-
-
 # Collision detection checks whether one sprite's .rect overlaps another's.
 #
 # all_sprites => renders and manages player1, enemies and clouds
 # player1     => player object and functions
 # enemies     => collision detection and positioning
 # clouds      => positioning
-
 """
 Rendering is done using all_sprites.
 Position updates are done using clouds and enemies.

@@ -734,7 +734,6 @@ const uint8_t FreeSansOblique24pt7bBitmaps[] PROGMEM = {
   0x0F, 0x00, 0x7F, 0x00, 0x7E, 0x00, 0xF8, 0x00, 0x0F, 0x00, 0x01, 0xFE,
   0x00, 0xCF, 0xFC, 0x0E, 0xE3, 0xF0, 0xE6, 0x07, 0xFF, 0x60, 0x0F, 0xF0,
   0x00, 0x1E, 0x00 };
-
 const GFXglyph FreeSansOblique24pt7bGlyphs[] PROGMEM = {
   {     0,   0,   0,  13,    0,    1 },   // 0x20 ' '
   {     0,  11,  34,  13,    6,  -33 },   // 0x21 '!'
@@ -831,7 +830,6 @@ const GFXglyph FreeSansOblique24pt7bGlyphs[] PROGMEM = {
   {  8638,  12,  44,  12,    3,  -33 },   // 0x7C '|'
   {  8704,  16,  44,  16,   -1,  -33 },   // 0x7D '}'
   {  8792,  21,   7,  27,    6,  -19 } }; // 0x7E '~'
-
 const GFXfont FreeSansOblique24pt7b PROGMEM = {
   (uint8_t  *)FreeSansOblique24pt7bBitmaps,
   (GFXglyph *)FreeSansOblique24pt7bGlyphs,
@@ -840,5 +838,4 @@ const GFXfont FreeSansOblique24pt7b PROGMEM = {
   0, 0
   #endif
   };
-
 // Approx. 9483 bytes

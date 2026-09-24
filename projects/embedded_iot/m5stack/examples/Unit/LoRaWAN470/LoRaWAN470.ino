@@ -1,10 +1,8 @@
 #include "M5Stack.h"
 #include "freertos/queue.h"
-
 #include "TFTTerminal.h"
 TFT_eSprite TerminalBuff = TFT_eSprite(&M5.Lcd);
 TFTTerminal terminal(&TerminalBuff);
-
 String waitRevice()
 {
     String recvStr;
@@ -16,13 +14,11 @@ String waitRevice()
     terminal.println(recvStr);
     return recvStr;
 }
-
 void sendATCMD(String cmdStr)
 {
     Serial2.print(cmdStr);
     delay(100);
 }
-
 int sendATCMDAndRevice(String cmdStr)
 {
     Serial2.print(cmdStr);
@@ -38,7 +34,6 @@ int sendATCMDAndRevice(String cmdStr)
         return -1;
     }
 }
-
 void setup()
 {
     M5.begin();
@@ -55,8 +50,6 @@ void setup()
     TerminalBuff.createSprite(240,200);
     terminal.setGeometry(20,55,300,200);
     terminal.setFontsize(1);
-
-
     sendATCMD("AT?\r\n");
     delay(100);
     Serial2.flush();
@@ -75,9 +68,7 @@ void setup()
     //Set ClassC mode
     sendATCMDAndRevice("AT+CCLASS=2\r\n");
     sendATCMDAndRevice("AT+CWORKMODE=2\r\n");
-
     sendATCMDAndRevice("AT+CRXP=0,0,505300000\r\n");
-
     // TX Freq
     // 486.3
     // 486.5
@@ -88,9 +79,7 @@ void setup()
     // 487.5
     // 487.7
     //MARK 0000 0100 0000 0000 | 0x0400
-
     sendATCMDAndRevice("AT+CFREQBANDMASK=0400\r");
-
     // RX Freq
     //506.7 (RX1)
     //506.9 (RX1)
@@ -101,10 +90,8 @@ void setup()
     //507.9 (RX1)
     //508.1 (RX1)
     //505.3 (RX2)| 505300000
-    
     sendATCMDAndRevice("AT+CJOIN=1,0,10,8\r\n");
 }
-
 enum systemstate
 {
     kIdel = 0,
@@ -114,10 +101,8 @@ enum systemstate
     kEnd,
 };
 int system_fsm = kIdel;
-
 int loraWanSendNUM = -1;
 int loraWanSendCNT = -1;
-
 void loop()
 {
     String recvStr = waitRevice();
@@ -170,7 +155,6 @@ void loop()
         //Serial.printf(" [ INFO ] SEND CNT %s \r\n",snedcnt.c_str());
         loraWanSendCNT = snedcnt.toInt();
     }
-
     if (system_fsm == kSending)
     {
         terminal.println("LoraWan Sending");
@@ -195,4 +179,3 @@ void loop()
     delay(10);
     M5.update();
 }
-

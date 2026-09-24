@@ -4,25 +4,20 @@
 #include <WiFiClient.h>
 #include "WebServer.h"
 #include <Preferences.h>
-
 const IPAddress apIP(192, 168, 4, 1);
 const char* apSSID = "M5STACK_SETUP";
 boolean settingMode;
 String ssidList;
 String wifi_ssid;
 String wifi_password;
-
 // DNSServer dnsServer;
 WebServer webServer(80);
-
 // wifi config store
 Preferences preferences;
-
 void setup() {
   m5.begin();
   M5.Power.begin();
   preferences.begin("wifi-config");
-
   delay(10);
   if (restoreConfig()) {
     if (checkConnection()) {
@@ -34,13 +29,11 @@ void setup() {
   settingMode = true;
   setupMode();
 }
-
 void loop() {
   if (settingMode) {
   }
   webServer.handleClient();
 }
-
 boolean restoreConfig() {
   wifi_ssid = preferences.getString("WIFI_SSID");
   wifi_password = preferences.getString("WIFI_PASSWD");
@@ -53,14 +46,12 @@ boolean restoreConfig() {
   Serial.println(wifi_password);
   M5.Lcd.println(wifi_password);
   WiFi.begin(wifi_ssid.c_str(), wifi_password.c_str());
-
   if(wifi_ssid.length() > 0) {
     return true;
 } else {
     return false;
   }
 }
-
 boolean checkConnection() {
   int count = 0;
   Serial.print("Waiting for Wi-Fi connection");
@@ -82,7 +73,6 @@ boolean checkConnection() {
   M5.Lcd.println("Timed out.");
   return false;
 }
-
 void startWebServer() {
   if (settingMode) {
     Serial.print("Starting Web Server at ");
@@ -109,13 +99,11 @@ void startWebServer() {
       M5.Lcd.println(pass);
       Serial.println("Writing SSID to EEPROM...");
       M5.Lcd.println("Writing SSID to EEPROM...");
-
       // Store wifi config
       Serial.println("Writing Password to nvr...");
       M5.Lcd.println("Writing Password to nvr...");
       preferences.putString("WIFI_SSID", ssid);
       preferences.putString("WIFI_PASSWD", pass);
-
       Serial.println("Write nvr done!");
       M5.Lcd.println("Write nvr done!");
       String s = "<h1>Setup complete.</h1><p>device will be connected to \"";
@@ -151,7 +139,6 @@ void startWebServer() {
   }
   webServer.begin();
 }
-
 void setupMode() {
   WiFi.mode(WIFI_MODE_STA);
   WiFi.disconnect();
@@ -182,7 +169,6 @@ void setupMode() {
   Serial.println("\"");
   M5.Lcd.println("\"");
 }
-
 String makePage(String title, String contents) {
   String s = "<!DOCTYPE html><html><head>";
   s += "<meta name=\"viewport\" content=\"width=device-width,user-scalable=0\">";
@@ -193,7 +179,6 @@ String makePage(String title, String contents) {
   s += "</body></html>";
   return s;
 }
-
 String urlDecode(String input) {
   String s = input;
   s.replace("%20", " ");

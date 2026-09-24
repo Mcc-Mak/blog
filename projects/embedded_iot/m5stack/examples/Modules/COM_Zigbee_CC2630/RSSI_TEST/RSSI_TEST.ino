@@ -4,32 +4,22 @@
     After booting, `Coordinator` will continuously broadcast data, `End Device` will display the current signal strength and data packet loss
     Note: 16 and 17 of the DIP switch are set to ON.
 */
-
-
 #include "M5Stack.h"
 #include "byteArray.h"
 #include "DRFZigbee.h"
-
 #include <stdarg.h>
 #include <initializer_list>
-
 #include "resource.h"
-
 DRFZigbee zigbee;
-
 #define ZIGBEE_PANID    0x1620
 //#define ZIGBEE_PANID    0x162A
 //#define COORDINNATOR
-
 #define ZIGBEE_RSSI_TEST
-
 #ifdef ZIGBEE_RSSI_TEST
     TFT_eSprite rssiPrintSprite(&M5.Lcd);
 #endif
-
 uint16_t reviceCount = 0,timeoutCount = 0,errorCount = 0;
 unsigned long reviceTime = 0;
-
 const uint8_t *iconptrbuff[3] = {
     coordinator_jpeg_120x140,
     endDevice_jpeg_120x140,
@@ -40,25 +30,20 @@ size_t iconSizeBuff[3] = {
     24609,
     26433,
 };
-
 uint16_t posbuff[10][2] = {
     {180,60},
     {200,60},
     {220,60},
     {240,60},
     {260,60},
-
     {180,80},
     {200,80},
     {220,80},
     {240,80},
     {260,80},
 };
-
 char asciiHexList[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-
 bool flushFlag = true;
-
 void configZigbee()
 {
 #ifdef COORDINNATOR
@@ -69,7 +54,6 @@ void configZigbee()
     DRFZigbee::zigbee_arg_t *arg = new DRFZigbee::zigbee_arg_t;
     zigbee.linkMoudle();
     zigbee.readModuleparm(arg);
-
 #ifdef COORDINNATOR
     arg->main_pointType = DRFZigbee::kCoordinator;
 #else
@@ -79,32 +63,24 @@ void configZigbee()
     arg->main_channel = 20;
     arg->main_transmissionMode = DRFZigbee::kN2Ntransmission;
     arg->main_ATN = DRFZigbee::kANTEXP;
-
     Serial.printf("PAIN ID:%04X\r\n",arg->main_PANID);
-
     zigbee.setModuleparm(*arg);
     zigbee.rebootModule();
     delay(500);
 }
-
 void setup()
 {
     M5.begin();
     Serial2.begin(38400, SERIAL_8N1, 16, 17);
     zigbee.begin(Serial2);
-
     M5.Lcd.fillRect(0, 0, 320, 240, M5.Lcd.color565(56, 56, 56));
-
     #ifdef ZIGBEE_RSSI_TEST
     rssiPrintSprite.createSprite(140,40);
     rssiPrintSprite.fillRect(0, 0, 140, 40, M5.Lcd.color565(56, 56, 56));
     #endif
-
     configZigbee();
-
     reviceTime = millis();
 }
-
 void loop()
 {
 #ifdef COORDINNATOR
@@ -134,7 +110,6 @@ void loop()
         char strbuff[256];
         sprintf(strbuff,"%d %d %d %ld\r\n",reviceCount + errorCount,reviceCount,errorCount,(millis() - reviceTime));
         M5.Lcd.setTextDatum(TL_DATUM);
-
         M5.Lcd.fillRect(180 + 2,120 + 2,20,20,M5.Lcd.color565(0x10,0x10,0x10));
         if(((millis() - reviceTime) < 2500 )&&( errorCount < 2 ))
         {
@@ -149,17 +124,14 @@ void loop()
             M5.Lcd.drawString("FAILED",210,120,4);
         }
         //M5.Lcd.drawString(strbuff,180,153,2);
-
         int8_t rssi = -1;
         do
         {
             rssi = zigbee.getModuleRSSI();
             delay(100);
         } while ( rssi == -1 );
-
         sprintf(strbuff,"RSSI:%d\r\n",rssi);
         M5.Lcd.drawString(strbuff,180,160,4);
-
         while(1)
         {
             if( M5.BtnB.wasPressed())
@@ -171,7 +143,6 @@ void loop()
             M5.update();
             delay(10);
         }
-
         reviceTime = millis();
         errorCount = 0;
         reviceCount = 0;
@@ -184,7 +155,6 @@ void loop()
     {
         char strbuff[256];
         sprintf(strbuff,"RSSI:%d\r\n",rssi);
-
         rssiPrintSprite.setTextColor(M5.Lcd.color565(0xab,0xff,0x58));
         rssiPrintSprite.fillRect(0, 0, 140, 40, M5.Lcd.color565(56, 56, 56));
         rssiPrintSprite.drawString(strbuff,0,0,4);
@@ -192,7 +162,6 @@ void loop()
     }
     delay(200);
     */
-
 #endif
     M5.update();
     delay(10);

@@ -8,11 +8,9 @@
 #define DHT12_h 
 #include "Arduino.h"
 #include "Wire.h"
-
 #define CELSIUS		1
 #define KELVIN		2
 #define FAHRENHEIT	3
-
 class DHT12
 {
 	public:
@@ -25,5 +23,4 @@ class DHT12
 		uint8_t _id;
 		uint8_t _scale;
 };
-
 #endif

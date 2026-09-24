@@ -3,37 +3,27 @@
     Please install library before compiling:  
     TinyGPSPlus: file in M5stack lib examples -> modules -> GPS -> TinyGPSPlus-1.0.2.zip （unzip the lib zip file to the Arduino Lib path）
 */
-
 #include <M5Stack.h>
 #include <TinyGPS++.h>
-
-
 // A sample NMEA stream.
 const char *gpsStream =
   "$GPRMC,045103.000,A,3014.1984,N,09749.2872,W,0.67,161.46,030913,,,A*7C\r\n";
-
 // The TinyGPS++ object
 TinyGPSPlus gps;
-
 void setup()
 {
   M5.begin();
   Serial2.begin(9600, SERIAL_8N1, 5, 13);
   M5.Lcd.setTextColor(GREEN, BLACK);
-
 //  while (*gpsStream)
 //    if (gps.encode(*gpsStream++))
 //      displayInfo();
-
-  
 }
-
 void loop()
 {
   displayInfo();
   smartDelay(1000);
 }
-
 static void smartDelay(unsigned long ms)
 {
   unsigned long start = millis();
@@ -44,7 +34,6 @@ static void smartDelay(unsigned long ms)
   } while (millis() - start < ms);
   M5.Lcd.clear();
 }
-
 void displayInfo()
 {
   M5.Lcd.setCursor(0, 40, 4);
@@ -52,13 +41,11 @@ void displayInfo()
   if (gps.location.isValid())
   {
     M5.Lcd.print(gps.location.lat(), 6);
-    
   }
   else
   {
     M5.Lcd.print(F("INVALID"));
   }
-  
   M5.Lcd.println();
   M5.Lcd.print(F("Longitude:    ")); 
   if (gps.location.isValid())
@@ -69,7 +56,6 @@ void displayInfo()
   {
     M5.Lcd.print(F("INVALID"));
   }
-  
   M5.Lcd.println();
   M5.Lcd.print(F("Altitude:    ")); 
   if (gps.altitude.isValid())
@@ -80,7 +66,6 @@ void displayInfo()
   {
     M5.Lcd.print(F("INVALID"));
   }
-
   M5.Lcd.println();
   M5.Lcd.print(F("Satellites:    "));
   if (gps.satellites.isValid())
@@ -91,7 +76,6 @@ void displayInfo()
   {
     M5.Lcd.print(F("INVALID"));
   }
-
   M5.Lcd.println();
   M5.Lcd.print(F("Date: "));
   if (gps.date.isValid())
@@ -106,7 +90,6 @@ void displayInfo()
   {
     M5.Lcd.print(F("INVALID"));
   }
-
   M5.Lcd.println();
   M5.Lcd.print(F("Time: "));
   if (gps.time.isValid())
@@ -127,5 +110,4 @@ void displayInfo()
   {
     M5.Lcd.print(F("INVALID"));
   }
-
 }

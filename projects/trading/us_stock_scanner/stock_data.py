@@ -1,18 +1,14 @@
 """Stock data getters: HKEX codes and Yahoo Finance price data."""
-
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
 import yfinance as yf
 import stock_algo as algo
-
 from datetime import date
 import datetime
 import yahoo_fin.stock_info as stock_info
 import time
 import math
-
-
 from bs4 import BeautifulSoup
 from datetime import datetime
 from typing import List
@@ -21,11 +17,7 @@ import re
 import pandas as pd
 import numpy as np
 import quandl
-
-
 import ssl
-
-
 # --- ssl workaround (allow unverified https context) ---
 try:
     _create_unverified_https_context = ssl._create_unverified_context
@@ -33,39 +25,30 @@ except AttributeError:
     pass
 else:
     ssl._create_default_https_context = _create_unverified_https_context
-
-
 # --- HK stock code getter ---
 class HKStock_Getter:
     def __init__(self):
         pass
-
     def get_codes(self) -> List[int]:
         # http://billylkc.com/2021/06/21/getting-hkex-data-with-quandl-in-python/
         regex = re.compile(r"\s*(\d{5})(.*)")  # get 5 digit codes only
         # re_chinese = re.compile(r"(\d{5})")  # get HK stock Chinese name
-
         url = "https://www.hkexnews.hk/sdw/search/stocklist_c.aspx?sortby=stockcode&shareholdingdate={}".format(
             datetime.today().strftime("%Y%m%d")
         )  # derive url, e.g. https://www.hkexnews.hk/sdw/search/stocklist_c.aspx?sortby=stockcode&shareholdingdate=20210621
-
         res = requests.get(url)
         soup = BeautifulSoup(res.text, "html.parser")
-
         # scrape 5-digit codes from the main board table
         codes = []
         count = 0
         for s in soup.select("table.table > tbody > tr"):
             count += 1
-
             text = s.get_text().replace(" ", "").strip()  # replace extra spaces
             matchResult = regex.search(text)
-
             if matchResult:
                 code = int(matchResult.group(1).lstrip("0"))  # convert to int, e.g. 00005 to 5
                 if code <= 10000:  # main board only
                     codes.append((code, text.split()[1]))
-
         # format codes as yahoo tickers with .HK suffix
         tickers = []
         for c in codes:
@@ -79,13 +62,10 @@ class HKStock_Getter:
                 tickers.append([c0, c1])
         return tickers
         # all tickers are tested for availability with Yahoo Finance
-
-
 # --- stock data getter (yahoo finance) ---
 class StockGetter(object):
     def __init__(self):  # initial setup parameters here e.g year, duration, number of data
         pass
-
     # fetch price data between start and end date from yahoo finance online
     def get_data(self, s, e, stock):
         self.start_date = s
@@ -93,7 +73,6 @@ class StockGetter(object):
         self.token = stock  # stock name
         self.data = yf.download(self.token, self.start_date, self.end_date)
         return self.data
-
     # You can input data as the data in y-axis e.g Open price of stock, methods => methods of plotting
     # functions set => functions to process your data and plot out on graph, key => optional - for data df from online
     # The plot will be stored on a parameter "plt" and WILL NOT be automatically plotted out
@@ -108,7 +87,6 @@ class StockGetter(object):
         # hkex_names = [hkex_stocks[i][1] for _ in range(len(hkex_stocks))]
         tokens = naq + dow + sp500 + other_stocks + hkex_tickers  # all stock data input
         return tokens
-
     def price_plot_data(self, data, methods, functions, key="Open"):
         global plt
         x = np.array([i for i in range(len(data))])
@@ -158,7 +136,6 @@ class StockGetter(object):
                 # print(ret_func)
                 # print(y_open['2021-09-13'])
                 # print(y_close['2021-09-13'])
-
                 plt.title("{} Daily Return Rate".format(self.token))
                 plt.xlabel('Return Rate(%)')
                 plt.ylabel('Frequency')
@@ -188,17 +165,12 @@ class StockGetter(object):
                     plt.title("{} News Analysis".format(self.token))
                     plt.ylabel("S Scores")
                     plt.xlabel("Dates")
-
                 except:
                     pass
-
-
 if __name__ == "__main__":
     pass
-
     """
     i = 0
-
     sg = sdata.StockGetter()
     today = date.today()
     now = today.strftime('%Y-%m-%d')
@@ -207,7 +179,6 @@ if __name__ == "__main__":
     #Daily_stock: get_day_gainers(),get_day_most_active(),get_day_losers(),get_top_crypto()
     print(tickers)
     np.random.shuffle(tickers)
-    
     while i < len(tickers): 
         try:
             data = sg.get_data('2020-9-1',now,tickers[i]).keys()
@@ -220,12 +191,9 @@ if __name__ == "__main__":
             plt.subplot(1,2,2)
             sg.price_plot_data(data,methods,functions,'Volume')
             plt.show()
-            
         except KeyboardInterrupt:
             exit()
-
     """
-
     """
     while True:
         sg = StockGetter()
@@ -244,5 +212,4 @@ if __name__ == "__main__":
         functions = ['regression','mean','volatility']
         sg.price_plot_data(data,methods,functions,key)
         """
-
 # Reference: https://algotrading101.com/learn/yahoo-finance-api-guide/

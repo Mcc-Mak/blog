@@ -1,48 +1,37 @@
 // Reads a screen image off the TFT and send it to a processing client sketch
 // over the serial port. Use a high baud rate, e.g. for an ESP8266:
 // Serial.begin(921600);
-
 // At 921600 baud a 320 x 240 image with 16 bit colour transfers can be sent to the
 // PC client in ~1.67s and 24 bit colour in ~2.5s which is close to the theoretical
 // minimum transfer time.
-
 // This sketch has been created to work with the TFT_eSPI library here:
 // https://github.com/Bodmer/TFT_eSPI
-
 // Created by: Bodmer 27/1/17
 // Updated by: Bodmer 10/3/17
 // Version: 0.07
-
 // MIT licence applies, all text above must be included in derivative works
-
 //====================================================================================
 //                                  Definitions
 //====================================================================================
 #define BAUD_RATE 250000      // Maximum Serial Monitor rate for other messages
 #define DUMP_BAUD_RATE 921600 // Rate used for screen dumps
-
 #define PIXEL_TIMEOUT 100     // 100ms Time-out between pixel requests
 #define START_TIMEOUT 10000   // 10s Maximum time to wait at start transfer
-
 #define BITS_PER_PIXEL 16     // 24 for RGB colour format, 16 for 565 colour format
-
 // File names must be alpha-numeric characters (0-9, a-z, A-Z) or "/" underscore "_"
 // other ascii characters are stripped out by client, including / generates
 // sub-directories
 #define DEFAULT_FILENAME "tft_screenshots/screenshot" // In case none is specified
 #define FILE_TYPE "png"       // jpg, bmp, png, tif are valid
-
 // Filename extension
 // '#' = add 0-9, '@' = add timestamp, '%' add millis() timestamp, '*' = add nothing
 // '@' and '%' will generate new unique filenames, so beware of cluttering up your
 // hard drive with lots of images! The PC client sketch is set to limit the number of
 // saved images to 1000 and will then prompt for a restart.
 #define FILE_EXT  '%'         
-
 // Number of pixels to send in a burst (minimum of 1), no benefit above 8
 // NPIXELS values and render times: 1 = 5.0s, 2 = 1.75s, 4 = 1.68s, 8 = 1.67s
 #define NPIXELS 8  // Must be integer division of both TFT width and TFT height
-
 //====================================================================================
 //                           Screen server call with no filename
 //====================================================================================
@@ -53,7 +42,6 @@ boolean screenServer(void)
   // where # is a number 0-9 and xxx is a file type specified below
   return screenServer(DEFAULT_FILENAME);
 }
-
 //====================================================================================
 //                           Screen server call with filename
 //====================================================================================
@@ -63,21 +51,16 @@ boolean screenServer(String filename)
   Serial.end();                 // Stop the serial port (clears buffers too)
   Serial.begin(DUMP_BAUD_RATE); // Force baud rate to be high
   delay(0); // Equivalent to yield() for ESP8266;
-
   boolean result = serialScreenServer(filename); // Screenshot serial port server
   //boolean result = wifiScreenServer(filename);   // Screenshot WiFi UDP port server (WIP)
-
   Serial.end();                 // Stop the serial port (clears buffers too)
   Serial.begin(BAUD_RATE);      // Return baud rate to normal
   delay(0); // Equivalent to yield() for ESP8266;
-
   //Serial.println();
   //if (result) Serial.println(F("Screen dump passed :-)"));
   //else        Serial.println(F("Screen dump failed :-("));
-
   return result;
 }
-
 //====================================================================================
 //                Serial server function that sends the data to the client
 //====================================================================================
@@ -86,10 +69,8 @@ boolean serialScreenServer(String filename)
   // Precautionary receive buffer garbage flush for 50ms
   uint32_t clearTime = millis() + 50;
   while ( millis() < clearTime && Serial.read() >= 0) delay(0); // Equivalent to yield() for ESP8266;
-
   boolean wait = true;
   uint32_t lastCmdTime = millis();     // Initialise start of command time-out
-
   // Wait for the starting flag with a start time-out
   while (wait)
   {
@@ -103,10 +84,8 @@ boolean serialScreenServer(String filename)
         // Precautionary receive buffer garbage flush for 50ms
         clearTime = millis() + 50;
         while ( millis() < clearTime && Serial.read() >= 0) delay(0); // Equivalent to yield() for ESP8266;
-
         wait = false;           // No need to wait anymore
         lastCmdTime = millis(); // Set last received command time
-
         // Send screen size etc using a simple header with delimiters for client checks
         sendParameters(filename);
       }
@@ -117,9 +96,7 @@ boolean serialScreenServer(String filename)
       if ( millis() > lastCmdTime + START_TIMEOUT) return false;
     }
   }
-
   uint8_t color[3 * NPIXELS]; // RGB and 565 format color buffer for N pixels
-
   // Send all the pixels on the whole screen
   for ( uint32_t y = 0; y < M5.Lcd.height(); y++)
   {
@@ -127,14 +104,12 @@ boolean serialScreenServer(String filename)
     for ( uint32_t x = 0; x < M5.Lcd.width(); x += NPIXELS)
     {
       delay(0); // Equivalent to yield() for ESP8266;
-
       // Wait here for serial data to arrive or a time-out elapses
       while ( Serial.available() == 0 )
       {
         if ( millis() > lastCmdTime + PIXEL_TIMEOUT) return false;
         delay(0); // Equivalent to yield() for ESP8266;
       }
-
       // Serial data must be available to get here, read 1 byte and
       // respond with N pixels, i.e. N x 3 RGB bytes or N x 2 565 format bytes
       if ( Serial.read() == 'X' ) {
@@ -145,7 +120,6 @@ boolean serialScreenServer(String filename)
       }
       // Save arrival time of the read command (for later time-out check)
       lastCmdTime = millis();
-
 #if defined BITS_PER_PIXEL && BITS_PER_PIXEL >= 24
       // Fetch N RGB pixels from x,y and put in buffer
       M5.Lcd.readRectRGB(x, y, NPIXELS, 1, color);
@@ -159,12 +133,9 @@ boolean serialScreenServer(String filename)
 #endif
     }
   }
-
   Serial.flush(); // Make sure all pixel bytes have been despatched
-
   return true;
 }
-
 //====================================================================================
 //    Send screen size etc using a simple header with delimiters for client checks
 //====================================================================================
@@ -173,22 +144,14 @@ void sendParameters(String filename)
   Serial.write('W'); // Width
   Serial.write(M5.Lcd.width()  >> 8);
   Serial.write(M5.Lcd.width()  & 0xFF);
-
   Serial.write('H'); // Height
   Serial.write(M5.Lcd.height() >> 8);
   Serial.write(M5.Lcd.height() & 0xFF);
-
   Serial.write('Y'); // Bits per pixel (16 or 24)
   Serial.write(BITS_PER_PIXEL);
-
   Serial.write('?'); // Filename next
   Serial.print(filename);
-
   Serial.write('.'); // End of filename marker
-
   Serial.write(FILE_EXT); // Filename extension identifier
-
   Serial.write(*FILE_TYPE); // First character defines file type j,b,p,t
 }
-
-

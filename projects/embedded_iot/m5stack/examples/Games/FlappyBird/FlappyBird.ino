@@ -1,10 +1,8 @@
 // By Ponticelli Domenico.
 // 12NOV2020 EEPROM Fix added, modified by Zontex
 // https://github.com/pcelli85/M5Stack_FlappyBird_game
-
 #include <M5Stack.h>
 #include <EEPROM.h>
-
 #define TFTW            320     // screen width
 #define TFTH            240     // screen height
 #define TFTW2           160     // half screen width
@@ -27,7 +25,6 @@
 #define FLOORH           30     // floor height (from bottom of the screen)
 // grass size
 #define GRASSH            4     // grass height (inside floor, starts at floor y)
-
 int address = 0;
 int maxScore = EEPROM.readInt(address);
 const int buttonPin = 2;     
@@ -46,7 +43,6 @@ const unsigned int FLOORCOL = M5.Lcd.color565(246,240,163);
 // grass (col2 is the stripe color)
 const unsigned int GRASSCOL  = M5.Lcd.color565(141,225,87);
 const unsigned int GRASSCOL2 = M5.Lcd.color565(156,239,88);
-
 // bird sprite
 // bird sprite colors (Cx name for values to keep the array readable)
 #define C0 BCKGRDCOL
@@ -55,7 +51,6 @@ const unsigned int GRASSCOL2 = M5.Lcd.color565(156,239,88);
 #define C3 TFT_WHITE
 #define C4 TFT_RED
 #define C5 M5.Lcd.color565(251,216,114)
-
 static unsigned int birdcol[] =
 { C0, C0, C1, C1, C1, C1, C1, C0, C0, C0, C1, C1, C1, C1, C1, C0,
   C0, C1, C2, C2, C2, C1, C3, C1, C0, C1, C2, C2, C2, C1, C3, C1,
@@ -65,33 +60,27 @@ static unsigned int birdcol[] =
   C1, C2, C2, C2, C1, C5, C4, C0, C1, C2, C2, C2, C1, C5, C4, C0,
   C0, C1, C2, C1, C5, C5, C5, C0, C0, C1, C2, C1, C5, C5, C5, C0,
   C0, C0, C1, C5, C5, C5, C0, C0, C0, C0, C1, C5, C5, C5, C0, C0};
-
 // bird structure
 static struct BIRD {
   long x, y, old_y;
   long col;
   float vel_y;
 } bird;
-
 // pipe structure
 static struct PIPES {
   long x, gap_y;
   long col;
 } pipes;
-
 // score
 int score;
 // temporary x and y var
 static short tmpx, tmpy;
-
 // ---------------
 // draw pixel
 // ---------------
 // faster drawPixel method by inlining calls and using setAddrWindow and pushColor
 // using macro to force inlining
 #define drawPixel(a, b, c) M5.Lcd.setAddrWindow(a, b, a, b); M5.Lcd.pushColor(c)
-
-
 void setup() {
   // put your setup code here, to run once:
   M5.begin();
@@ -101,16 +90,12 @@ void setup() {
   Serial.println("last score:");
   Serial.println(EEPROM.readInt(address));
 }
-
 void loop() {
   // put your main code here, to run repeatedly:
   game_start();
   game_loop();
   game_over();
 }
-
-
-
 // ---------------
 // game loop
 // ---------------
@@ -141,7 +126,6 @@ void game_loop() {
   bool passed_pipe = false;
   // temp var for setAddrWindow
   unsigned char px;
-
   while (1) {
     loops = 0;
     while( millis() > next_game_tick && loops < MAX_FRAMESKIP) {
@@ -155,7 +139,6 @@ void game_loop() {
         else bird.vel_y = 0;
       }
       M5.update();
-      
       // ===============
       // update
       // ===============
@@ -164,12 +147,10 @@ void game_loop() {
       old_time = current_time;
       current_time = millis();
       delta = (current_time-old_time)/1000;
-
       // bird
       // ---------------
       bird.vel_y += GRAVITY * delta;
       bird.y += bird.vel_y;
-
       // pipe
       // ---------------
       pipes.x -= SPEED;
@@ -178,12 +159,10 @@ void game_loop() {
         pipes.x = TFTW;
         pipes.gap_y = random(10, GAMEH-(10+GAPHEIGHT));
       }
-
       // ---------------
       next_game_tick += SKIP_TICKS;
       loops++;
     }
-
     // ===============
     // draw
     // ===============
@@ -208,7 +187,6 @@ void game_loop() {
     }
     // erase behind pipe
     if (pipes.x <= TFTW) M5.Lcd.drawFastVLine(pipes.x+PIPEW, 0, GAMEH, BCKGRDCOL);
-
     // bird
     // ---------------
     tmpx = BIRDW-1;
@@ -229,14 +207,12 @@ void game_loop() {
     } while (tmpx--);
     // save position to erase bird on next draw
     bird.old_y = bird.y;
-
     // grass stripes
     // ---------------
     grassx -= SPEED;
     if (grassx < 0) grassx = TFTW;
     M5.Lcd.drawFastVLine( grassx    %TFTW, GAMEH+1, GRASSH-1, GRASSCOL);
     M5.Lcd.drawFastVLine((grassx+64)%TFTW, GAMEH+1, GRASSH-1, GRASSCOL2);
-
     // ===============
     // collision
     // ===============
@@ -260,18 +236,14 @@ void game_loop() {
       // increase score since we successfully passed a pipe
       score++;
     }
-
     // update score
     // ---------------
     M5.Lcd.setCursor( TFTW2, 4);
     M5.Lcd.print(score);
   }
-  
   // add a small delay to show how the player lost
   delay(1200);
 }
-
-
 // ---------------
 // game start
 // ---------------
@@ -298,12 +270,10 @@ void game_start() {
         break;
       }
     M5.update();
-        
     }
       // init game settings
       game_init();
 }
-
 void game_init() {
   // clear screen
   M5.Lcd.fillScreen(BCKGRDCOL);
@@ -320,15 +290,12 @@ void game_init() {
   pipes.x = 0;
   pipes.gap_y = random(20, TFTH-60);
 }
-
-
 // ---------------
 // game over
 // ---------------
 void game_over() {
   M5.Lcd.fillScreen(TFT_BLACK);
   maxScore = EEPROM.readInt(address);
-  
   if(score>maxScore)
   {
     EEPROM.writeInt(address, score);
@@ -339,7 +306,6 @@ void game_over() {
     M5.Lcd.setCursor( TFTW2 - (13*6), TFTH2 - 26);
     M5.Lcd.println("NEW HIGHSCORE");
   }
-  
   M5.Lcd.setTextColor(TFT_WHITE);
   M5.Lcd.setTextSize(3);
   // half width - num char * char width in pixels
@@ -362,10 +328,8 @@ void game_over() {
     M5.update();
   }
 }
-
 void resetMaxScore()
 {
   EEPROM.writeInt(address, 0);
   EEPROM.commit();
 }
-

@@ -3,13 +3,11 @@
     Please install library before compiling:  
     Adafruit MCP4725: https://github.com/adafruit/Adafruit_MCP4725
 */
-
 #include <Wire.h>
 #include <Adafruit_MCP4725.h>
 #include <M5Stack.h>
 #define DAC_ADDR
 Adafruit_MCP4725 dac;
-
 void setup(void) {
     M5.begin(true, false, false);
     M5.Power.begin();
@@ -22,12 +20,9 @@ void setup(void) {
     // For MCP4725A0 the address is 0x60 or 0x61
     // For MCP4725A2 the address is 0x64 or 0x65
     dac.begin(0x60);
-        
     Serial.println("Generating a triangle wave");
     dac.setVoltage(2048, false);
-
 }
-
 void loop(void) {
     // 12bit value , false mean not write EEPROM
     dac.setVoltage(1024, false);

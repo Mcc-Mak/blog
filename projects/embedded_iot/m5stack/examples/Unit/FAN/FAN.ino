@@ -1,9 +1,7 @@
 /*
     Description: Adjust the speed of FAN Unit through PWM.
 */
-
 #include <M5Stack.h>
-
 const int motor_pin = 21;
 int freq = 10000;
 int ledChannel = 0;
@@ -16,9 +14,7 @@ void setup() {
   M5.Lcd.println("MOTOR");
   ledcSetup(ledChannel, freq, resolution);
   ledcAttachPin(motor_pin, ledChannel);
-
 }
-
 void loop() {
   // put your main code here, to run repeatedly:
     ledcWrite(ledChannel, 512);

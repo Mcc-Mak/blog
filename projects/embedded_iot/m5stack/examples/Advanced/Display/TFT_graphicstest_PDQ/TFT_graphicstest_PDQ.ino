@@ -1,23 +1,16 @@
 /*
  Adapted from the Adafruit and Xark's PDQ graphicstest sketch.
-
  See end of file for original header text and MIT license info.
- 
  This sketch uses the GLCD font only.
-
  Make sure all the display driver and pin comnenctions are correct by
  editting the User_Setup.h file in the TFT_eSPI library folder.
-
  #########################################################################
  ###### DON'T FORGET TO UPDATE THE User_Setup.h FILE IN THE LIBRARY ######
  #########################################################################
  */
-
 #include <M5Stack.h>
-
 unsigned long total = 0;
 unsigned long tn = 0;
-
 void setup() {
 	M5.begin();
 	M5.Power.begin();
@@ -25,84 +18,66 @@ void setup() {
 	Serial.println(""); Serial.println("");
 	Serial.println("Bodmer's M5Stack library Test!"); 
 }
-
 void loop(void)
 {
-
 	Serial.println(F("Benchmark                Time (microseconds)"));
-
 	uint32_t usecHaD = testHaD();
 	Serial.print(F("HaD pushColor            "));
 	Serial.println(usecHaD);
 	delay(100);
-
 	uint32_t usecFillScreen = testFillScreen();
 	Serial.print(F("Screen fill              "));
 	Serial.println(usecFillScreen);
 	delay(100);
-
 	uint32_t usecText = testText();
 	Serial.print(F("Text                     "));
 	Serial.println(usecText);
 	delay(100);
-
 	uint32_t usecPixels = testPixels();
 	Serial.print(F("Pixels                   "));
 	Serial.println(usecPixels);
 	delay(100);
-
 	uint32_t usecLines = testLines(TFT_BLUE);
 	Serial.print(F("Lines                    "));
 	Serial.println(usecLines);
 	delay(100);
-
 	uint32_t usecFastLines = testFastLines(TFT_RED, TFT_BLUE);
 	Serial.print(F("Horiz/Vert Lines         "));
 	Serial.println(usecFastLines);
 	delay(100);
-
 	uint32_t usecRects = testRects(TFT_GREEN);
 	Serial.print(F("Rectangles (outline)     "));
 	Serial.println(usecRects);
 	delay(100);
-
 	uint32_t usecFilledRects = testFilledRects(TFT_YELLOW, TFT_MAGENTA);
 	Serial.print(F("Rectangles (filled)      "));
 	Serial.println(usecFilledRects);
 	delay(100);
-
 	uint32_t usecFilledCircles = testFilledCircles(10, TFT_MAGENTA);
 	Serial.print(F("Circles (filled)         "));
 	Serial.println(usecFilledCircles);
 	delay(100);
-
 	uint32_t usecCircles = testCircles(10, TFT_WHITE);
 	Serial.print(F("Circles (outline)        "));
 	Serial.println(usecCircles);
 	delay(100);
-
 	uint32_t usecTriangles = testTriangles();
 	Serial.print(F("Triangles (outline)      "));
 	Serial.println(usecTriangles);
 	delay(100);
-
 	uint32_t usecFilledTrangles = testFilledTriangles();
 	Serial.print(F("Triangles (filled)       "));
 	Serial.println(usecFilledTrangles);
 	delay(100);
-
 	uint32_t usecRoundRects = testRoundRects();
 	Serial.print(F("Rounded rects (outline)  "));
 	Serial.println(usecRoundRects);
 	delay(100);
-
 	uint32_t usedFilledRoundRects = testFilledRoundRects();
 	Serial.print(F("Rounded rects (filled)   "));
 	Serial.println(usedFilledRoundRects);
 	delay(100);
-
 	Serial.println(F("Done!"));
-
 	uint16_t c = 4;
 	int8_t d = 1;
 	for (int32_t i = 0; i < M5.Lcd.height(); i++)
@@ -112,106 +87,83 @@ void loop(void)
 		if (c <= 4 || c >= 11)
 			d = -d;
 	}
-	
 	M5.Lcd.setCursor(0, 0);
 	M5.Lcd.setTextColor(TFT_MAGENTA);
 	M5.Lcd.setTextSize(2);
-
  	M5.Lcd.println(F("   M5Stack test"));
-
 	M5.Lcd.setTextSize(1);
 	M5.Lcd.setTextColor(TFT_WHITE);
 	M5.Lcd.println(F(""));
 	M5.Lcd.setTextSize(1);
 	M5.Lcd.println(F(""));
 	M5.Lcd.setTextColor(M5.Lcd.color565(0x80, 0x80, 0x80));
-
 	// M5.Lcd.println(F(""));
-
-
 	M5.Lcd.setTextColor(TFT_GREEN);
 	M5.Lcd.println(F(" Benchmark               microseconds"));
 	M5.Lcd.println(F(""));
 	M5.Lcd.setTextColor(TFT_YELLOW);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("HaD pushColor      "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecHaD);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Screen fill        "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecFillScreen);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Text               "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecText);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Pixels             "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecPixels);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Lines              "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecLines);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Horiz/Vert Lines   "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecFastLines);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Rectangles         "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecRects);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Rectangles-filled  "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecFilledRects);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Circles            "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecCircles);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Circles-filled     "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecFilledCircles);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Triangles          "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecTriangles);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Triangles-filled   "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecFilledTrangles);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Rounded rects      "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usecRoundRects);
-
 	M5.Lcd.setTextColor(TFT_CYAN); M5.Lcd.setTextSize(1);
 	M5.Lcd.print(F("Rounded rects-fill "));
 	M5.Lcd.setTextColor(TFT_YELLOW); M5.Lcd.setTextSize(2);
 	printnice(usedFilledRoundRects);
-
 	M5.Lcd.setTextSize(1);
 	M5.Lcd.println(F(""));
 	M5.Lcd.setTextColor(TFT_GREEN); M5.Lcd.setTextSize(2);
 	M5.Lcd.print(F("Benchmark Complete!"));
-
 	delay(60 * 1000L);
 }
-
 void printnice(int32_t v)
 {
 	char	str[32] = { 0 };
@@ -220,7 +172,6 @@ void printnice(int32_t v)
 	{
 		memmove(p+1, p, strlen(p)+1);
 		*p = ',';
-		
 	}
 	while (strlen(str) < 10)
 	{
@@ -229,7 +180,6 @@ void printnice(int32_t v)
 	}
 	M5.Lcd.println(str);
 }
-
 static inline uint32_t micros_start() __attribute__ ((always_inline));
 static inline uint32_t micros_start()
 {
@@ -238,7 +188,6 @@ static inline uint32_t micros_start()
 		;
 	return micros();
 }
-
 uint32_t testHaD()
 {
 	// pseudo-code for cheesy RLE
@@ -328,21 +277,15 @@ uint32_t testHaD()
 		0x13, 0x44, 0x12, 0x80, 0x89, 0x12, 0x42, 0x11, 0x80, 0x8d, 0x11, 0x40, 0x0f, 0x80, 0x93, 0x0f, 
 		0x45, 0x04, 0x80, 0x9d, 0x04, 0xb9, 0x56, 
 	};
-	
 	M5.Lcd.fillScreen(TFT_BLACK);
-
 	uint32_t start = micros_start();
-	
 	for (int i = 0; i < 0x10; i++)
 	{
 		M5.Lcd.setAddrWindow(0, 0, 240, 320);
-
 		uint16_t cnt = 0;
 		uint16_t color = M5.Lcd.color565((i << 4) | i, (i << 4) | i, (i << 4) | i);
 		uint16_t curcolor = 0;
-
 		const uint8_t *cmp = &HaD_240x320[0];
-
 		while (cmp < &HaD_240x320[sizeof(HaD_240x320)])
 		{
 			cnt = pgm_read_byte(cmp++);
@@ -351,21 +294,16 @@ uint32_t testHaD()
 			curcolor ^= color;
 		}
 	}
-
 	uint32_t t = micros() - start;
-
 	M5.Lcd.setTextColor(TFT_YELLOW);
 	M5.Lcd.setTextSize(2);
 	M5.Lcd.setCursor(8, 285);
 	M5.Lcd.print(F("http://hackaday.io/"));
 	M5.Lcd.setCursor(96, 302);
 	M5.Lcd.print(F("Xark"));
-
 	delay(3 * 1000L);
-	
 	return t;
 }
-
 uint32_t testFillScreen()
 {
 	uint32_t start = micros_start();
@@ -375,10 +313,8 @@ uint32_t testFillScreen()
 		M5.Lcd.fillScreen(TFT_GREEN);
 		M5.Lcd.fillScreen(TFT_BLUE);
 		M5.Lcd.fillScreen(TFT_BLACK);
-
 	return (micros() - start)/5;
 }
-
 uint32_t testText()
 {
 	M5.Lcd.fillScreen(TFT_BLACK);
@@ -421,14 +357,11 @@ uint32_t testText()
 	delay(1000);
 	return t;
 }
-
 uint32_t testPixels()
 {
 	int32_t	w = M5.Lcd.width();
 	int32_t	h = M5.Lcd.height();
-
 	uint32_t start = micros_start();
-
 	for (uint16_t y = 0; y < h; y++)
 	{
 		for (uint16_t x = 0; x < w; x++)
@@ -436,68 +369,48 @@ uint32_t testPixels()
 			M5.Lcd.drawPixel(x, y, M5.Lcd.color565(x<<3, y<<3, x*y));
 		}
 	}
-	
 	return micros() - start;
 }
-
-
 uint32_t testLines(uint16_t color)
 {
 	uint32_t start, t;
 	int32_t	x1, y1, x2, y2;
 	int32_t	w = M5.Lcd.width();
 	int32_t	h = M5.Lcd.height();
-
 	M5.Lcd.fillScreen(TFT_BLACK);
-
 	x1 = y1 = 0;
 	y2 = h - 1;
-
 	start = micros_start();
-
 	for (x2 = 0; x2 < w; x2 += 6)
 	{
 		M5.Lcd.drawLine(x1, y1, x2, y2, color);
 	}
-
 	x2 = w - 1;
-
 	for (y2 = 0; y2 < h; y2 += 6)
 	{
 		M5.Lcd.drawLine(x1, y1, x2, y2, color);
 	}
-
 	t = micros() - start; // fillScreen doesn't count against timing
-
 	M5.Lcd.fillScreen(TFT_BLACK);
-
 	x1 = w - 1;
 	y1 = 0;
 	y2 = h - 1;
-
 	start = micros_start();
-
 	for (x2 = 0; x2 < w; x2 += 6)
 	{
 		M5.Lcd.drawLine(x1, y1, x2, y2, color);
 	}
-
 	x2 = 0;
 	for (y2 = 0; y2 < h; y2 += 6)
 	{
 		M5.Lcd.drawLine(x1, y1, x2, y2, color);
 	}
-
 	t += micros() - start;
-
 	M5.Lcd.fillScreen(TFT_BLACK);
-
 	x1 = 0;
 	y1 = h - 1;
 	y2 = 0;
-
 	start = micros_start();
-
 	for (x2 = 0; x2 < w; x2 += 6)
 	{
 		M5.Lcd.drawLine(x1, y1, x2, y2, color);
@@ -508,57 +421,43 @@ uint32_t testLines(uint16_t color)
 		M5.Lcd.drawLine(x1, y1, x2, y2, color);
 	}
 	t += micros() - start;
-
 	M5.Lcd.fillScreen(TFT_BLACK);
-
 	x1 = w - 1;
 	y1 = h - 1;
 	y2 = 0;
-
 	start = micros_start();
-
 	for (x2 = 0; x2 < w; x2 += 6)
 	{
 		M5.Lcd.drawLine(x1, y1, x2, y2, color);
 	}
-
 	x2 = 0;
 	for (y2 = 0; y2 < h; y2 += 6)
 	{
 		M5.Lcd.drawLine(x1, y1, x2, y2, color);
 	}
-
 	t += micros() - start;
-
 	return t;
 }
-
 uint32_t testFastLines(uint16_t color1, uint16_t color2)
 {
 	uint32_t start;
 	int32_t x, y;
 	int32_t w = M5.Lcd.width();
 	int32_t h = M5.Lcd.height();
-
 	M5.Lcd.fillScreen(TFT_BLACK);
-
 	start = micros_start();
-
 	for (y = 0; y < h; y += 5)
 		M5.Lcd.drawFastHLine(0, y, w, color1);
 	for (x = 0; x < w; x += 5)
 		M5.Lcd.drawFastVLine(x, 0, h, color2);
-
 	return micros() - start;
 }
-
 uint32_t testRects(uint16_t color)
 {
 	uint32_t start;
 	int32_t n, i, i2;
 	int32_t cx = M5.Lcd.width() / 2;
 	int32_t cy = M5.Lcd.height() / 2;
-
 	M5.Lcd.fillScreen(TFT_BLACK);
 	n = min(M5.Lcd.width(), M5.Lcd.height());
 	start = micros_start();
@@ -567,45 +466,33 @@ uint32_t testRects(uint16_t color)
 		i2 = i / 2;
 		M5.Lcd.drawRect(cx-i2, cy-i2, i, i, color);
 	}
-
 	return micros() - start;
 }
-
 uint32_t testFilledRects(uint16_t color1, uint16_t color2)
 {
 	uint32_t start, t = 0;
 	int32_t n, i, i2;
 	int32_t cx = M5.Lcd.width() / 2 - 1;
 	int32_t cy = M5.Lcd.height() / 2 - 1;
-
 	M5.Lcd.fillScreen(TFT_BLACK);
 	n = min(M5.Lcd.width(), M5.Lcd.height());
 	for (i = n; i > 0; i -= 6)
 	{
 		i2 = i / 2;
-
 		start = micros_start();
-
 		M5.Lcd.fillRect(cx-i2, cy-i2, i, i, color1);
-
 		t += micros() - start;
-
 		// Outlines are not included in timing results
 		M5.Lcd.drawRect(cx-i2, cy-i2, i, i, color2);
 	}
-
 	return t;
 }
-
 uint32_t testFilledCircles(uint8_t radius, uint16_t color)
 {
 	uint32_t start;
 	int32_t x, y, w = M5.Lcd.width(), h = M5.Lcd.height(), r2 = radius * 2;
-
 	M5.Lcd.fillScreen(TFT_BLACK);
-
 	start = micros_start();
-
 	for (x = radius; x < w; x += r2)
 	{
 		for (y = radius; y < h; y += r2)
@@ -613,21 +500,17 @@ uint32_t testFilledCircles(uint8_t radius, uint16_t color)
 			M5.Lcd.fillCircle(x, y, radius, color);
 		}
 	}
-
 	return micros() - start;
 }
-
 uint32_t testCircles(uint8_t radius, uint16_t color)
 {
 	uint32_t start;
 	int32_t x, y, r2 = radius * 2;
 	int32_t w = M5.Lcd.width() + radius;
 	int32_t h = M5.Lcd.height() + radius;
-
 	// Screen is not cleared for this one -- this is
 	// intentional and does not affect the reported time.
 	start = micros_start();
-
 	for (x = 0; x < w; x += r2)
 	{
 		for (y = 0; y < h; y += r2)
@@ -635,22 +518,17 @@ uint32_t testCircles(uint8_t radius, uint16_t color)
 			M5.Lcd.drawCircle(x, y, radius, color);
 		}
 	}
-
 	return micros() - start;
 }
-
 uint32_t testTriangles()
 {
 	uint32_t start;
 	int32_t n, i;
 	int32_t cx = M5.Lcd.width()/ 2 - 1;
 	int32_t cy = M5.Lcd.height() / 2 - 1;
-
 	M5.Lcd.fillScreen(TFT_BLACK);
 	n = min(cx, cy);
-
 	start = micros_start();
-
 	for (i = 0; i < n; i += 5)
 	{
 		M5.Lcd.drawTriangle(
@@ -659,21 +537,16 @@ uint32_t testTriangles()
 			cx + i, cy + i, // bottom right
 			M5.Lcd.color565(0, 0, i));
 	}
-
 	return micros() - start;
 }
-
 uint32_t testFilledTriangles()
 {
 	uint32_t start, t = 0;
 	int32_t i;
 	int32_t cx = M5.Lcd.width() / 2 - 1;
 	int32_t cy = M5.Lcd.height() / 2 - 1;
-
 	M5.Lcd.fillScreen(TFT_BLACK);
-
 	start = micros_start();
-
 	for (i = min(cx,cy); i > 10; i -= 5) {
 		start = micros_start();
 		M5.Lcd.fillTriangle(cx, cy - i, cx - i, cy + i, cx + i, cy + i,
@@ -682,67 +555,50 @@ uint32_t testFilledTriangles()
 		M5.Lcd.drawTriangle(cx, cy - i, cx - i, cy + i, cx + i, cy + i,
 			M5.Lcd.color565(i, i, 0));
 	}
-
 	return t;
 }
-
 uint32_t testRoundRects()
  {
 	uint32_t start;
 	int32_t w, i, i2;
 	int32_t cx = M5.Lcd.width() / 2 - 1;
 	int32_t cy = M5.Lcd.height() / 2 - 1;
-
 	M5.Lcd.fillScreen(TFT_BLACK);
-	
 	w = min(M5.Lcd.width(), M5.Lcd.height());
-	
 	start = micros_start();
-
 	for (i = 0; i < w; i += 6)
 	{
 		i2 = i / 2;
 		M5.Lcd.drawRoundRect(cx-i2, cy-i2, i, i, i/8, M5.Lcd.color565(i, 0, 0));
 	}
-
 	return micros() - start;
 }
-
 uint32_t testFilledRoundRects()
 {
 	uint32_t start;
 	int32_t i, i2;
 	int32_t cx = M5.Lcd.width() / 2 - 1;
 	int32_t cy = M5.Lcd.height() / 2 - 1;
-
 	M5.Lcd.fillScreen(TFT_BLACK);
-
 	start = micros_start();
-
 	for (i = min(M5.Lcd.width(), M5.Lcd.height()); i > 20; i -= 6)
 	{
 		i2 = i / 2;
 		M5.Lcd.fillRoundRect(cx-i2, cy-i2, i, i, i/8, M5.Lcd.color565(0, i, 0));
 	}
-
 	return micros() - start;
 }
-
 /***************************************************
   Original sketch text:
-
   This is an example sketch for the Adafruit 2.2" SPI display.
   This library works with the Adafruit 2.2" TFT Breakout w/SD card
   ----> http://www.adafruit.com/products/1480
- 
   Check out the links above for our tutorials and wiring diagrams
   These displays use SPI to communicate, 4 or 5 pins are required to
   interface (RST is optional)
   Adafruit invests time and resources providing this open source code,
   please support Adafruit and open-source hardware by purchasing
   products from Adafruit!
-
   Written by Limor Fried/Ladyada for Adafruit Industries.
   MIT license, all text above must be included in any redistribution
  ****************************************************/
- 

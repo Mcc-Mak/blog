@@ -3,17 +3,13 @@
 */
 #include <M5Stack.h>
 #include "GrblControl.h"
-
 /*
  * The I2C address of GRBL 13.2  Module is 0x70 by default.
  * You could use the DIP Switch for modify I2C address to 0x71
  */
-
 #define STEPMOTOR_I2C_ADDR 0x70
 // #define STEPMOTOR_I2C_ADDR 0x71
-
 GRBL _GRBL = GRBL(STEPMOTOR_I2C_ADDR);
-
 void setup() {
   // put your setup code here, to run once:
   M5.begin();
@@ -31,7 +27,6 @@ void setup() {
   M5.Lcd.println("Control Motor");
   _GRBL.SetMode("absolute");
 }
-
 void loop() {
   /*
       If Button A was pressed,
@@ -43,14 +38,12 @@ void loop() {
     _GRBL.SetMotor(5,5,5,200);
     _GRBL.SetMotor(0,0,0,200);
   }
-
   if (M5.BtnB.wasPressed())
   {
        //USE Gcode
       _GRBL.Gcode("G1 X5Y5Z5 F200");
       _GRBL.Gcode("G1 X0Y0Z0 F200");
   }
-
   if (M5.BtnC.wasReleased()) {
       _GRBL.UnLock();   
   }

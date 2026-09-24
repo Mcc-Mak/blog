@@ -2,7 +2,6 @@
     Description: Use RELAY to switch on and off the circuit.
 */
 #include <M5Stack.h>
-
 void setup() {
   M5.begin();
   M5.Power.begin();
@@ -15,7 +14,6 @@ void setup() {
   dacWrite(25, 0);
   pinMode(26, OUTPUT);
 }
-
 void loop(void) {
   digitalWrite(26, HIGH);
   delay(500);

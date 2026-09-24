@@ -2,8 +2,6 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
-
 # --- Entry point for all Django management commands ---
 def main():
     """Run administrative tasks."""
@@ -17,8 +15,6 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-
-
 # --- Invoke main() when run directly ---
 if __name__ == "__main__":
     main()

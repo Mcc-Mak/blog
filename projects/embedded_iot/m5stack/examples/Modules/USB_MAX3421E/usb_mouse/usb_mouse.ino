@@ -3,7 +3,6 @@
     Please install library before compiling:  
     USB_Host_SHield_Library_2.0: file in M5stack lib examples -> modules -> USB -> USB_Host_SHield_Library_2.0 （unzip the lib zip file to the Arduino Lib path）
 */
-
 #include <M5Stack.h>
 // #include <SPI.h>
 #include <Usb.h>
@@ -11,32 +10,26 @@
 #include <hidboot.h>
 #include <usbhub.h>
 #include "M5Mouse.h"
-
 USB Usb;
 USBHub Hub(&Usb);
 HIDBoot<USB_HID_PROTOCOL_MOUSE> HidMouse(&Usb);
 MouseRptParser Prs;
-
 int StaPotX = 160, StaPotY = 120;
-
 void Mouse_Pointer(int PotDataX, int PotDataY)
 {
   static int OldDataX, OldDataY;
-
   if ((StaPotX + PotDataX) <= 320 && (StaPotX + PotDataX) > 0)
     StaPotX = (StaPotX + PotDataX);
   else if ((StaPotX + PotDataX) <= 0)
     StaPotX = 0;
   else
     StaPotX = 319;
-
   if ((StaPotY + PotDataY) <= 240 && (StaPotY + PotDataY) > 0)
     StaPotY = (StaPotY + PotDataY);
   else if ((StaPotY + PotDataY) <= 0)
     StaPotY = 0;
   else
     StaPotY = 239;
-
   // clear draw
   if (OldDataX != StaPotX || OldDataY != StaPotY)
   {
@@ -46,18 +39,15 @@ void Mouse_Pointer(int PotDataX, int PotDataY)
     M5.Lcd.drawLine(OldDataX + 4, OldDataY + 7, OldDataX + 0, OldDataY + 10, BLACK);
     M5.Lcd.drawLine(OldDataX + 3, OldDataY + 7, OldDataX + 6, OldDataY + 12, BLACK);
   }
-
   // draw
   M5.Lcd.drawLine(StaPotX + 0, StaPotY + 0, StaPotX + 0, StaPotY + 10, WHITE);
   M5.Lcd.drawLine(StaPotX + 0, StaPotY + 0, StaPotX + 7, StaPotY + 7, WHITE);
   M5.Lcd.drawLine(StaPotX + 4, StaPotY + 7, StaPotX + 7, StaPotY + 7, WHITE);
   M5.Lcd.drawLine(StaPotX + 4, StaPotY + 7, StaPotX + 0, StaPotY + 10, WHITE);
   M5.Lcd.drawLine(StaPotX + 3, StaPotY + 7, StaPotX + 6, StaPotY + 12, WHITE);
-
   OldDataX = StaPotX;
   OldDataY = StaPotY;
 }
-
 void setup()
 {
   M5.begin();
@@ -68,7 +58,6 @@ void setup()
   HidMouse.SetReportParser(0, (HIDReportParser *)&Prs);
   delay(200);
 }
-
 void loop()
 {
   Usb.Task();

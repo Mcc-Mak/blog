@@ -3,9 +3,7 @@
 */
 #include <Wire.h>
 #include <M5Stack.h>
-
 #define CARDKB_ADDR 0x5F
-
 void setup()
 {
   M5.begin();

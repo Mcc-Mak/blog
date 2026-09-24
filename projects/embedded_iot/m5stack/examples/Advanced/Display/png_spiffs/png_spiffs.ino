@@ -6,7 +6,6 @@
  * Select Tools > ESP32 Sketch Data Upload menu item. This should start uploading the files into ESP32 flash file system.
 */
 #include <M5Stack.h>
-
 void setup()
 {
   M5.begin();
@@ -15,17 +14,14 @@ void setup()
     Serial.println("SPIFFS Mount Failed");
     return;
   }
-
   M5.Lcd.drawPngFile(SPIFFS, "/test.png", 0, 0);
 }
-
 void loop()
 {
   M5.update();
   if(M5.BtnA.wasPressed()) {
     M5.Lcd.drawPngFile(SPIFFS, "/test.png", 0, 0);
   }
-
   if(M5.BtnB.wasPressed()) {
     M5.Lcd.drawPngFile(SPIFFS, "/test1.png", 0, 0);
   }

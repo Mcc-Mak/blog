@@ -97,7 +97,6 @@ const uint8_t FreeMonoBoldOblique9pt7bBitmaps[] PROGMEM = {
   0x00, 0x33, 0x32, 0x26, 0x66, 0x44, 0xCC, 0xC8, 0x0C, 0x0E, 0x04, 0x0C,
   0x0C, 0x0C, 0x0F, 0x0F, 0x18, 0x18, 0x10, 0x30, 0xF0, 0xE0, 0x38, 0x7C,
   0xF7, 0xC1, 0xC0 };
-
 const GFXglyph FreeMonoBoldOblique9pt7bGlyphs[] PROGMEM = {
   {     0,   0,   0,  11,    0,    1 },   // 0x20 ' '
   {     0,   5,  11,  11,    4,  -10 },   // 0x21 '!'
@@ -194,7 +193,6 @@ const GFXglyph FreeMonoBoldOblique9pt7bGlyphs[] PROGMEM = {
   {  1141,   4,  14,  11,    4,  -10 },   // 0x7C '|'
   {  1148,   8,  14,  11,    2,  -10 },   // 0x7D '}'
   {  1162,   9,   4,  11,    2,   -6 } }; // 0x7E '~'
-
 const GFXfont FreeMonoBoldOblique9pt7b PROGMEM = {
   (uint8_t  *)FreeMonoBoldOblique9pt7bBitmaps,
   (GFXglyph *)FreeMonoBoldOblique9pt7bGlyphs,
@@ -203,5 +201,4 @@ const GFXfont FreeMonoBoldOblique9pt7b PROGMEM = {
   0, 0
   #endif
   };
-
 // Approx. 1839 bytes

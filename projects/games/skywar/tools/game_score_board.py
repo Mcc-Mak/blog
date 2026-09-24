@@ -1,8 +1,6 @@
 """Draft pygame leaderboard screen, superseded by the CSV/tkinter version.
-
 Only the tiny sanity check at the bottom still runs.
 """
-
 # import pygame
 # import sys
 # from pygame.locals import QUIT
@@ -44,9 +42,6 @@ Only the tiny sanity check at the bottom still runs.
 #         if event.type == QUIT:
 #             pygame.quit()
 #            sys.exit()
-
-
 # --- Sanity check: format() accepts a plain string ---
-
 number = str(5)
 print(type("{}.".format(number)))

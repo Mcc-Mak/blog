@@ -1,9 +1,7 @@
 #ifndef _SH200Q_H_
 #define _SH200Q_H_
-
 #include <Wire.h>
 #include <Arduino.h>
-
 #define SH200I_ADDRESS 0x6C //7bit i2c address 
 #define SH200I_WHOAMI 0x30
 #define SH200I_ACC_CONFIG 0x0E
@@ -20,12 +18,10 @@
 #define SH200I_ADC_RESET  0xC2   //drive reset
 #define SH200I_SOFT_RESET 0x7F
 #define SH200I_RESET 0x75
-
 //#define G (9.8)
 #define RtA     57.324841
 #define AtR     0.0174533
 #define Gyro_Gr 0.0010653
-
 class SH200Q {
 public:
   enum Ascale {
@@ -33,7 +29,6 @@ public:
     AFS_8G,
     AFS_16G
   };
-
   enum Gscale {
     GFS_2000DPS = 0,
     GFS_1000DPS,
@@ -41,32 +36,23 @@ public:
     GFS_250DPS,
     GFS_125DPS,
   };
-
-
-
 public:
   SH200Q();
-
   int Init(void);
-
   void getAccelAdc(int16_t* ax, int16_t* ay, int16_t* az);
   void getGyroAdc(int16_t* gx, int16_t* gy, int16_t* gz);
   void getTempAdc(int16_t *t);
-
   void getAccelData(float* ax, float* ay, float* az);
   void getGyroData(float* gx, float* gy, float* gz);
   void getTempData(float *t);
   void getAhrsData(float *pitch,float *roll,float *yaw);
-
   void setGyroFsr(Gscale scale);
   void setAccelFsr(Ascale scale);
-
 public:
   float aRes, gRes;
   uint8_t imuId;
   Gscale Gyscale;
   Ascale Acscale;
-
 protected:
   void I2C_Read_NBytes(uint8_t driver_Addr, uint8_t start_Addr, uint8_t number_Bytes, uint8_t *read_Buffer);
   void I2C_Write_NBytes(uint8_t driver_Addr, uint8_t start_Addr, uint8_t number_Bytes, uint8_t *write_Buffer);

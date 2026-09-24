@@ -13,13 +13,10 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-
 /* Update by K. Townsend (Adafruit Industries) for lighter typedefs, and
  * extended sensor support to include color, voltage and current */
- 
 #ifndef _ADAFRUIT_SENSOR_H
 #define _ADAFRUIT_SENSOR_H
-
 #ifndef ARDUINO
  #include <stdint.h>
 #elif ARDUINO >= 100
@@ -28,10 +25,8 @@
 #else
  #include "WProgram.h"
 #endif
-
 /* Intentionally modeled after sensors.h in the Android API:
  * https://github.com/android/platform_hardware_libhardware/blob/master/include/hardware/sensors.h */
-
 /* Constants */
 #define SENSORS_GRAVITY_EARTH             (9.80665F)              /**< Earth's gravity in m/s^2 */
 #define SENSORS_GRAVITY_MOON              (1.6F)                  /**< The moon's gravity in m/s^2 */
@@ -42,7 +37,6 @@
 #define SENSORS_PRESSURE_SEALEVELHPA      (1013.25F)              /**< Average sea level pressure is 1013.25 hPa */
 #define SENSORS_DPS_TO_RADS               (0.017453293F)          /**< Degrees/s to rad/s multiplier */
 #define SENSORS_GAUSS_TO_MICROTESLA       (100)                   /**< Gauss to micro-Tesla multiplier */
-
 /** Sensor types */
 typedef enum
 {
@@ -62,7 +56,6 @@ typedef enum
   SENSOR_TYPE_CURRENT               = (16),
   SENSOR_TYPE_COLOR                 = (17)
 } sensors_type_t;
-
 /** struct sensors_vec_s is used to return a vector in a common format. */
 typedef struct {
     union {
@@ -82,7 +75,6 @@ typedef struct {
     int8_t status;
     uint8_t reserved[3];
 } sensors_vec_t;
-
 /** struct sensors_color_s is used to return color data in a common format. */
 typedef struct {
     union {
@@ -96,7 +88,6 @@ typedef struct {
     };
     uint32_t rgba;         /**< 24-bit RGBA value */
 } sensors_color_t;
-
 /* Sensor event (36 bytes) */
 /** struct sensor_event_s is used to provide a single sensor event in a common format. */
 typedef struct
@@ -123,7 +114,6 @@ typedef struct
         sensors_color_t color;                /**< color in RGB component values */
     };
 } sensors_event_t;
-
 /* Sensor details (40 bytes) */
 /** struct sensor_s is used to describe basic information about a specific sensor. */
 typedef struct
@@ -137,20 +127,16 @@ typedef struct
     float    resolution;                      /**< smallest difference between two values reported by this sensor */
     int32_t  min_delay;                       /**< min delay in microseconds between events. zero = not a constant rate */
 } sensor_t;
-
 class Adafruit_Sensor {
  public:
   // Constructor(s)
   Adafruit_Sensor() {}
   virtual ~Adafruit_Sensor() {}
-
   // These must be defined by the subclass
   virtual void enableAutoRange(bool enabled) { (void)enabled; /* suppress unused warning */ };
   virtual bool getEvent(sensors_event_t*) = 0;
   virtual void getSensor(sensor_t*) = 0;
-  
  private:
   bool _autoRange;
 };
-
 #endif

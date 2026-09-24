@@ -41,5 +41,4 @@ function WalkingWorker() {
     </div>
   );
 }
-
 export default WalkingWorker;

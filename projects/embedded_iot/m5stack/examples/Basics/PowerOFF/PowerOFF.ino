@@ -9,7 +9,6 @@
 *******************************************************************************
 */
 #include <M5Stack.h>
-
 // After M5Core is started or reset
 // the program in the setUp () function will be run, and this part will only be run once.
 void setup(){
@@ -19,7 +18,6 @@ void setup(){
   M5.Lcd.setTextSize(2);  // Set the font size
   M5.Lcd.print("press ButtonA: shutdown,  use power button to turn  back on");// Screen printing the formatted string
 }  
-
 //After the program in setup() runs, it runs the program in loop()
 //The loop() function is an infinite loop in which the program runs repeatedly
 void loop() {

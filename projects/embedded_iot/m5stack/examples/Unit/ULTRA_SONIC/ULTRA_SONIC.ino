@@ -1,27 +1,19 @@
 /*
     Description: Display the distance measured by ultrasonic
 */
-
 #include <M5Stack.h>
-
 TFT_eSprite Terminalbuff = TFT_eSprite(&M5.Lcd);
-
 void setup() {
   // put your setup code here, to run once:
     M5.begin();
-    
     Wire.begin(21,22);
-    
     Terminalbuff.createSprite(160, 80);
     Terminalbuff.fillRect(80,20,160,80,BLACK);
-    
     Terminalbuff.pushSprite(80,20);
     Terminalbuff.setTextFont(4);
     M5.Lcd.setCursor(105, 0, 4);
-    
     M5.Lcd.print("Ultrasonic");
 }
-
 float readEUS()
 {
     uint32_t data;
@@ -34,20 +26,14 @@ float readEUS()
     data |= Wire.read();data <<= 8;
     data |= Wire.read();
     return float(data) / 1000;
-    
 }
-
 void loop() {
-                                                                            
     float newvalue = 0;
-
     while(1)
     {
         newvalue = readEUS();
-
         Terminalbuff.fillRect(80,20,160,80,BLACK);
         Terminalbuff.setCursor(30,50);
-
         if(( newvalue < 1500 )&&( newvalue > 20 ))
         {
             Terminalbuff.printf("%.2fmm",newvalue);
@@ -55,5 +41,4 @@ void loop() {
         }
         delay(100);
     }
-
 }

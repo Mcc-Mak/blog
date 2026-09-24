@@ -1,15 +1,11 @@
 #include <M5Stack.h>
-
 #define Faces_Encoder_I2C_ADDR     0X5E
-
 int encoder_increment;//positive: clockwise nagtive: anti-clockwise
 int encoder_value=0;
 uint8_t direction;//0: clockwise 1: anti-clockwise
 uint8_t last_button, cur_button;
-
 void GetValue(void){
     int temp_encoder_increment;
-
     Wire.requestFrom(Faces_Encoder_I2C_ADDR, 3);
     if(Wire.available()){
        temp_encoder_increment = Wire.read();
@@ -24,7 +20,6 @@ void GetValue(void){
         encoder_increment = temp_encoder_increment;
     }
 }
-
 void Led(int i, int r, int g, int b){
     Wire.beginTransmission(Faces_Encoder_I2C_ADDR);
     Wire.write(i);
@@ -33,7 +28,6 @@ void Led(int i, int r, int g, int b){
     Wire.write(b);
     Wire.endTransmission();
 }
-
 void setup()
 {
     M5.begin();
@@ -44,7 +38,6 @@ void setup()
     M5.Lcd.setTextFont(2);
     M5.Lcd.println("FACES ENCODER I2C Read Example");
     Serial.println("FACES ENCODER I2C Read Example");
-
     for(int i=0;i<12;i++)
     {
         Led(i, 0, 0xff, 0);
@@ -56,7 +49,6 @@ void setup()
         delay(10);
     }
 }
-
 void loop()
 {
     int i;
@@ -64,7 +56,6 @@ void loop()
     M5.Lcd.setCursor(0,60); M5.Lcd.print("  Key State : ");
     M5.Lcd.setCursor(0,80); M5.Lcd.print("  Key Value : ");
     GetValue();
-
     if(last_button != cur_button){
         M5.Lcd.fillRect(100,60,100,25,BLACK);
         M5.Lcd.fillRect(100,80,100,25,BLACK);
@@ -84,7 +75,6 @@ void loop()
             Led(i, 255, 255, 255);
         }
     }
-
     M5.Lcd.fillRect(100,40,50,25,BLACK);
     if(direction){
         encoder_value -= encoder_increment;

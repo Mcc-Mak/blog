@@ -1,8 +1,6 @@
 #include <M5Stack.h>
-
 #define KEYBOARD_I2C_ADDR     0X08
 #define KEYBOARD_INT          5
-
 void setup()
 {
   M5.begin();
@@ -12,7 +10,6 @@ void setup()
   M5.Lcd.println("FACES Keyboard I2C Read Example");
   pinMode(KEYBOARD_INT, INPUT_PULLUP);
 }
-
 void loop()
 {
   if(digitalRead(KEYBOARD_INT) == LOW) {

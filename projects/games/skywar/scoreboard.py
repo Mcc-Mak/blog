@@ -1,31 +1,25 @@
 """Persistent SkyWar scoreboard stored in a CSV database (scoredata.csv).
-
 Reads, ranks and appends player records, and creates the CSV with a header
 row the first time it runs. Each method derives the CSV path from the main
 script (argv[0]) so the file lands next to skywar_game.py.
 """
-
 import pandas as pd
 import csv
 import os
 import sys
 import numpy as np
 import time
-
 # print(os.getcwd())
 # print(sys.path)
 #
 # print(sys.argv)
 # print(__file__)
-
 class score_system:
     default_first_row = ["Name", "Score", "Health", "Time", "Exp", "Level", "Distance", "Map"]
-
     def __init__(self, data_LIST):
         """Load the existing database (creating it on first run)."""
         self.data = data_LIST
         return self.update_data()
-
     def update_data(self):
         """Make sure the CSV exists and has its header row."""
         file_path = sys.argv[0][::-1]
@@ -34,7 +28,6 @@ class score_system:
                 break
             file_path = file_path.replace(i, "", 1)
         file_path = "".join(file_path[::-1])
-
         try:
             f = open(file_path + "scoredata.csv", encoding="utf-8")
             df = pd.read_csv(f)
@@ -46,7 +39,6 @@ class score_system:
             # csv_reader = csv.reader(csv_file,delimiter=",")
             csv_file.close()
             # time.sleep(1)
-
     def read(self, key) -> str:  # str key => str element
         """Return the value stored in the newest record of a column."""
         file_path = sys.argv[0][::-1]
@@ -55,7 +47,6 @@ class score_system:
                 break
             file_path = file_path.replace(i, "", 1)
         file_path = "".join(file_path[::-1])
-
         try:
             f = open(file_path + "scoredata.csv", encoding="utf-8")
             df = pd.read_csv(f)
@@ -70,7 +61,6 @@ class score_system:
             csv_file = open(csv_file.name, csv_file.mode)
             f = csv_file
             # df = None  # pd.read_csv(f)
-
         if not df.empty:
             try:
                 # return df.iloc[-1][key]
@@ -80,7 +70,6 @@ class score_system:
         else:
             # print("Data is not updated.Please recall again to update.")
             return ""
-
     def readlines(self, number):  # number of rows to return => DataFrame
         """Return the first ``number`` rows, or the last few if negative."""
         file_path = sys.argv[0][::-1]
@@ -89,7 +78,6 @@ class score_system:
                 break
             file_path = file_path.replace(i, "", 1)
         file_path = "".join(file_path[::-1])
-
         try:
             f = open(file_path + "scoredata.csv", encoding="utf-8")
             df = pd.read_csv(f)
@@ -104,7 +92,6 @@ class score_system:
             csv_file = open(csv_file.name, csv_file.mode)
             f = csv_file
             # df = None  # pd.read_csv(f)
-
         if not df.empty:
             length = df.shape[0]  # (rows, columns)
             print(length)
@@ -119,7 +106,6 @@ class score_system:
         else:
             # print("Data is not updated.Please recall again to update.")
             return df
-
     def read_key(self, key):  # str => DataFrame/None
         """Return the whole database so callers can filter by player name."""
         file_path = sys.argv[0][::-1]
@@ -128,7 +114,6 @@ class score_system:
                 break
             file_path = file_path.replace(i, "", 1)
         file_path = "".join(file_path[::-1])
-
         try:
             f = open(file_path + "scoredata.csv", encoding="utf-8")
             df = pd.read_csv(f)
@@ -144,7 +129,6 @@ class score_system:
             f = csv_file
             # df = None  # pd.read_csv(f)
         return df
-
     def write(self, values) -> None:  # list => None
         """Append one new player record, column-aligned, to the CSV."""
         file_path = sys.argv[0][::-1]
@@ -153,7 +137,6 @@ class score_system:
                 break
             file_path = file_path.replace(i, "", 1)
         file_path = "".join(file_path[::-1])
-
         try:
             f = open(file_path + "scoredata.csv", encoding="utf-8")
             df = pd.read_csv(f)
@@ -184,7 +167,6 @@ class score_system:
             new_df.to_csv(file_path + 'scoredata.csv', index=False)
         else:
             print("Data is not updated.Please recall again to update.")
-
     def read_database(self) -> pd.DataFrame:  # str key => str element
         """Return the whole scoreboard database as a DataFrame."""
         file_path = sys.argv[0][::-1]
@@ -193,7 +175,6 @@ class score_system:
                 break
             file_path = file_path.replace(i, "", 1)
         file_path = "".join(file_path[::-1])
-
         try:
             f = open(file_path + "scoredata.csv", encoding="utf-8")
             df = pd.read_csv(f)
@@ -208,14 +189,11 @@ class score_system:
             csv_file = open(csv_file.name, csv_file.mode)
             f = csv_file
             # df = None  # pd.read_csv(f)
-
         if not df.empty:
             return df
         else:
             # print("Data is not updated.Please recall again to update.")
             return ""
-
-
 if __name__ == "__main__":
     # --- Test zone ---
     SCORE_SYSTEM = score_system([])

@@ -6,22 +6,18 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
 node_modules
 dist
 dist-ssr
 *.local
-
 # Python / venvs
 __pycache__/
 *.py[cod]
 venv/
 django_env/
 db.sqlite3
-
 # Build artifacts
 build/
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -32,7 +28,5 @@ build/
 *.njsproj
 *.sln
 *.sw?
-
 .git
-
 !.gitkeep

@@ -3,9 +3,7 @@
 */
 #include <M5Stack.h>
 #include <Wire.h>
-
 #define NOTE_D1 294
-
 #define NOTE_DL1 261
 #define NOTE_DL2 293
 #define NOTE_DL3 329
@@ -13,7 +11,6 @@
 #define NOTE_DL5 392
 #define NOTE_DL6 440
 #define NOTE_DL7 494
-
 void setup() {
   // Power ON Stabilizing...
   delay(500);
@@ -29,12 +26,10 @@ void setup() {
 }
 int Key1 = 0, Key2 = 0, Index = 0;
 void showKey() {
-
   M5.Lcd.setCursor(20, 200);
   M5.Lcd.setTextColor(BLUE, BLACK);
   M5.Lcd.print(Index);
   M5.Lcd.print("   ");
-
   M5.Lcd.setCursor(5 + 0 * 16, 110);
   if ((Key1 & (0x01 << 0)) == 0x00)
     M5.Lcd.setTextColor(WHITE, BLACK);
@@ -91,7 +86,6 @@ void showKey() {
     M5.Speaker.tone(NOTE_DL7, 20);
   }
   M5.Lcd.print("7");
-
   M5.Lcd.setCursor(10 + 7 * 16, 110);
   if ((Key1 & (0x01 << 7)) == 0x00)
     M5.Lcd.setTextColor(WHITE, BLACK);
@@ -99,9 +93,7 @@ void showKey() {
     M5.Lcd.setTextColor(RED, BLACK);
     M5.Speaker.tone(NOTE_D1, 20);
   }
-
 }
-
 int CommandStatus = 0;
 void loop() {
   Wire.requestFrom(0x51, 2);

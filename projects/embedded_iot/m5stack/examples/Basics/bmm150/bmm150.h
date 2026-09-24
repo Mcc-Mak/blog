@@ -44,33 +44,24 @@
  * @version	1.0.0
  *
  */
-
 /*! @file bmm150.h */
 /*!
  * @defgroup BMM150 SENSOR API
  * @{*/
-
 #ifndef BMM150_H__
 #define BMM150_H__
-
 /*! CPP guard */
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
 /********************************************************************/
 /* header files */
-
 #include "bmm150_defs.h"
-
 /********************************************************************/
 /* (extern) variable declarations */
-
-
 /********************************************************************/
 /* function prototype declarations */
-
 /*!
  *  @brief This API is the entry point, Call this API before using other APIs.
  *  This API reads the chip-id of the sensor which is the first step to
@@ -84,7 +75,6 @@ extern "C"
  *  @retval zero -> Success / +ve value -> Warning / -ve value -> Error
  */
 int8_t bmm150_init(struct bmm150_dev *dev);
-
 /*!
  * @brief This API writes the given data to the register address
  * of the sensor.
@@ -99,7 +89,6 @@ int8_t bmm150_init(struct bmm150_dev *dev);
  * @retval zero -> Success / +ve value -> Warning / -ve value -> Error
  */
 int8_t bmm150_set_regs(uint8_t reg_addr, uint8_t *reg_data, uint8_t len, const struct bmm150_dev *dev);
-
 /*!
  * @brief This API reads the data from the given register address of sensor.
  *
@@ -112,7 +101,6 @@ int8_t bmm150_set_regs(uint8_t reg_addr, uint8_t *reg_data, uint8_t len, const s
  * @retval zero -> Success / +ve value -> Warning / -ve value -> Error
  */
 int8_t bmm150_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint8_t len, const struct bmm150_dev *dev);
-
 /*!
  * @brief This API is used to perform soft-reset of the sensor
  * where all the registers are reset to their default values except 0x4B.
@@ -123,7 +111,6 @@ int8_t bmm150_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint8_t len, const s
  * @retval zero -> Success / +ve value -> Warning / -ve value -> Error
  */
 int8_t bmm150_soft_reset(const struct bmm150_dev *dev);
-
 /*!
  * @brief This API is used to set the power mode of the sensor.
  *
@@ -140,7 +127,6 @@ int8_t bmm150_soft_reset(const struct bmm150_dev *dev);
  * @retval zero -> Success / +ve value -> Warning / -ve value -> Error
  */
 int8_t bmm150_set_op_mode(struct bmm150_dev *dev);
-
 /*!
  * @brief This API is used to get the power mode of the sensor.
  *
@@ -158,7 +144,6 @@ int8_t bmm150_set_op_mode(struct bmm150_dev *dev);
  * @retval zero -> Success / +ve value -> Warning / -ve value -> Error
  */
 int8_t bmm150_get_op_mode(uint8_t *op_mode, const struct bmm150_dev *dev);
-
 /*!
  * @brief This API is used to set the preset mode of the sensor.
  *
@@ -175,7 +160,6 @@ int8_t bmm150_get_op_mode(uint8_t *op_mode, const struct bmm150_dev *dev);
  * @retval zero -> Success / +ve value -> Warning / -ve value -> Error
  */
 int8_t bmm150_set_presetmode(struct bmm150_dev *dev);
-
 /*!
  * @brief This API sets the sensor settings based on the desired_settings
  * and the dev structure configuration
@@ -215,7 +199,6 @@ int8_t bmm150_set_presetmode(struct bmm150_dev *dev);
  * @retval zero -> Success / +ve value -> Warning / -ve value -> Error
  */
 int8_t bmm150_set_sensor_settings(uint16_t desired_settings, const struct bmm150_dev *dev);
-
 /*!
  * @brief This API gets all the sensor settings and updates the dev structure
  *
@@ -225,7 +208,6 @@ int8_t bmm150_set_sensor_settings(uint16_t desired_settings, const struct bmm150
  * @retval zero -> Success / +ve value -> Warning / -ve value -> Error
  */
 int8_t bmm150_get_sensor_settings(struct bmm150_dev *dev);
-
 /*!
  * @brief This API reads the magnetometer data from registers 0x42 to 0x49
  * and updates the dev structure with compensated mag data in micro-tesla
@@ -249,7 +231,6 @@ int8_t bmm150_get_sensor_settings(struct bmm150_dev *dev);
  * @retval zero -> Success / +ve value -> Warning / -ve value -> Error
  */
 int8_t bmm150_read_mag_data(struct bmm150_dev *dev);
-
 /*!
  * @brief This API is used to perform the complete self test
  * (both normal and advanced) for the BMM150 sensor
@@ -284,7 +265,6 @@ int8_t bmm150_read_mag_data(struct bmm150_dev *dev);
  *
  */
 int8_t bmm150_perform_self_test(uint8_t self_test_mode, struct bmm150_dev *dev);
-
 /*!
  * @brief This API obtains the status flags of all interrupt
  * which is used to check for the assertion of interrupts
@@ -320,10 +300,8 @@ int8_t bmm150_get_interrupt_status(struct bmm150_dev *dev);
  * @retval zero -> Success / +ve value -> Warning / -ve value -> Error
  */
 int8_t bmm150_aux_mag_data(uint8_t *aux_data, struct bmm150_dev *dev);
-
 #ifdef __cplusplus
 }
 #endif /* End of CPP guard */
-
 #endif /* BMM150_H__ */
 /** @}*/

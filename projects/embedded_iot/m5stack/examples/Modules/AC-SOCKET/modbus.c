@@ -1,5 +1,4 @@
 #include "modbus.h"
-
 typedef enum
 {
   STATE_RX_INIT,              /*!< Receiver is in initial state. */
@@ -7,12 +6,10 @@ typedef enum
   STATE_RX_RCV,               /*!< Frame is beeing received. */
   STATE_RX_ERROR              /*!< If the frame is invalid. */
 } eMBRcvState;
-
 typedef enum {
   STATE_TX_IDLE,              /*!< Transmitter is in idle state. */
   STATE_TX_XMIT               /*!< Transmitter is in transfer state. */
 } eMBSndState;
-
 /* ----------------------- Static variables ---------------------------------*/
 static volatile eMBSndState eSndState;
 static volatile eMBRcvState eRcvState;
@@ -22,7 +19,6 @@ volatile uint32_t *puiTimeTicks;
 volatile uint32_t usFrameIdleTicks;
 static volatile uint8_t ucMasterRTURcvBuf[MB_SER_PDU_SIZE_MAX];
 static volatile uint16_t usRcvBuffPos;
-
 static const uint8_t aucCRCHi[] = {
   0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,
   0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,
@@ -47,7 +43,6 @@ static const uint8_t aucCRCHi[] = {
   0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,
   0x00, 0xC1, 0x81, 0x40
 };
-
 static const uint8_t aucCRCLo[] = {
   0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02, 0xC2, 0xC6, 0x06, 0x07, 0xC7,
   0x05, 0xC5, 0xC4, 0x04, 0xCC, 0x0C, 0x0D, 0xCD, 0x0F, 0xCF, 0xCE, 0x0E,
@@ -72,12 +67,10 @@ static const uint8_t aucCRCLo[] = {
   0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86, 0x82, 0x42, 0x43, 0x83,
   0x41, 0x81, 0x80, 0x40
 };
-
 uint16_t usMBCRC16(uint8_t * pucFrame, uint16_t usLen) {
   uint8_t ucCRCHi = 0xFF;
   uint8_t ucCRCLo = 0xFF;
   int iIndex;
-
   while (usLen--) {
     iIndex = ucCRCLo ^ *(pucFrame++);
     ucCRCLo = (uint8_t)(ucCRCHi ^ aucCRCHi[iIndex]);
@@ -85,7 +78,6 @@ uint16_t usMBCRC16(uint8_t * pucFrame, uint16_t usLen) {
   }
   return (uint16_t)(ucCRCHi << 8 | ucCRCLo);
 }
-
 void mb_init(uint8_t id, uint32_t boudrate, volatile uint32_t * time_base) {
   ucMbId = id;
   puiTimeTicks = time_base;
@@ -95,7 +87,6 @@ void mb_init(uint8_t id, uint32_t boudrate, volatile uint32_t * time_base) {
     usframeT35_50us = (7UL * 220000UL) / (2UL * boudrate);
   }
 }
-
 void mb_put_rec_data(uint8_t data) {
   usFrameIdleTicks = *puiTimeTicks;
   ucMasterRTURcvBuf[usRcvBuffPos++] = data;
@@ -104,7 +95,6 @@ void mb_put_rec_data(uint8_t data) {
     usRcvBuffPos = 0;
   }
 }
-
 void mb_poll() {
   if ((uint16_t)*puiTimeTicks - usframeT35_50us > usFrameIdleTicks) {
     if (usRcvBuffPos > MB_SER_PDU_SIZE_MIN && usMBCRC16((uint8_t *)ucMasterRTURcvBuf, usRcvBuffPos) == 0) {
@@ -116,7 +106,6 @@ void mb_poll() {
     }
   } 
 }
-
 void mb_send_frame(uint8_t* frame, uint16_t length) {
   uint16_t usCRC16;
   uint8_t frame_out[length + 2];
