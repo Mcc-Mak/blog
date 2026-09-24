@@ -1,3 +1,6 @@
+// Single source of truth for the Projects page:
+// category groupings, project cards, run commands, media and source links.
+
 export const categories = [
   {
     id: "trading",
@@ -36,6 +39,7 @@ export const categories = [
   },
 ];
 
+// Portfolio showcase entries — keep in sync with the root README toctree.
 export const projects = [
   {
     slug: "automated_trading_robot",

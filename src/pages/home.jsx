@@ -4,6 +4,7 @@ function Home() {
   return (
     <div className="content home">
       <WalkingWorker />
+      {/* Profile + resume */}
       <div className="profile">
         <img src={`${import.meta.env.BASE_URL}img/benny.png`} alt="Benny" className="profile-img" />
         <div className="resume">
@@ -81,6 +82,7 @@ function Home() {
           </ul>
         </div>
       </div>
+      {/* Contact links */}
       <div className="contact">
         <h3>Contact Me</h3>
         <div className="contact-links">

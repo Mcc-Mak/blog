@@ -11,6 +11,8 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+# --- Point Django at this project's settings module ---
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_server.settings")
 
+# --- WSGI application entry point for the server ---
 application = get_wsgi_application()

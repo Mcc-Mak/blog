@@ -1,3 +1,4 @@
+"""Tests for the personal_web application."""
 from django.test import TestCase
 
-# Create your tests here.
+# --- Write your test cases here ---
