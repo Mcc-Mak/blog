@@ -1,79 +1,56 @@
 /*
   Example for TFT_eSPI library
-
   Created by Bodmer 31/12/16
-
   This example draws all fonts (as used by the Adafruit_GFX library) onto the
   screen. These fonts are called the GFX Free Fonts (GFXFF) in this library.
-
   The fonts are referenced by a short name, see the Free_Fonts.h file
   attached to this sketch.
-
   Other True Type fonts could be converted using the utility within the
   "fontconvert" folder inside the library. This converted has also been
   copied from the Adafruit_GFX library. 
-
   Since these fonts are a recent addition Adafruit do not have a tutorial
   available yet on how to use the fontconvert utility.   Linux users will
   no doubt figure it out!  In the meantime there are 48 font files to use
   in sizes from 9 point to 24 point, and in normal, bold, and italic or
   oblique styles.
-
   This example sketch uses both the print class and drawString() functions
   to plot text to the screen.
-
   Make sure LOAD_GFXFF is defined in the User_Setup.h file within the
   library folder.
-
   --------------------------- NOTE ----------------------------------------
   The free font encoding format does not lend itself easily to plotting
   the background without flicker. For values that changes on screen it is
   better to use Fonts 1- 8 which are encoded specifically for rapid
   drawing with background.
   -------------------------------------------------------------------------
-
   #########################################################################
   ###### DON'T FORGET TO UPDATE THE User_Setup.h FILE IN THE LIBRARY ######
   ######       TO SELECT YOUR DISPLAY TYPE AND ENABLE FONTS          ######
   #########################################################################
 */
 #include <M5Stack.h>
-
 #define TEXT "aA MWyz~12" // Text that will be printed on screen in any font
-
 #include "Free_Fonts.h" // Include the header file attached to this sketch
-
 // #include "SPI.h"
 // #include "TFT_eSPI.h"
-
 // Use hardware SPI
 // TFT_eSPI tft = TFT_eSPI();
-
 unsigned long drawTime = 0;
-
 void setup(void) {
-
   M5.begin();
   M5.Power.begin();
   // M5.Lcd.setRotation(1);
-
 }
-
 void loop() {
-
   // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   // Show all 48 fonts in centre of screen ( x,y coordinate 160,120)
   // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
   // Where font sizes increase the screen is not cleared as the larger fonts overwrite
   // the smaller one with the background colour.
-
   // Set text datum to middle centre
   M5.Lcd.setTextDatum(MC_DATUM);
-
   // Set text colour to orange with black background
   M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
-  
   M5.Lcd.fillScreen(TFT_BLACK);            // Clear screen
   M5.Lcd.setFreeFont(FF18);                 // Select the font
   M5.Lcd.drawString(sFF1, 160, 60, GFXFF);// Print the string name of the font
@@ -98,7 +75,6 @@ void loop() {
   M5.Lcd.setFreeFont(FF4);
   M5.Lcd.drawString(TEXT, 160, 120, GFXFF);
   delay(1000);
-  
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setFreeFont(FF18);                 // Select the font
   M5.Lcd.drawString(sFF5, 160, 60, GFXFF);// Print the string name of the font
@@ -123,7 +99,6 @@ void loop() {
   M5.Lcd.setFreeFont(FF8);
   M5.Lcd.drawString(TEXT, 160, 120, GFXFF);
   delay(1000);
-  
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setFreeFont(FF18);                 // Select the font
   M5.Lcd.drawString(sFF9, 160, 60, GFXFF);// Print the string name of the font
@@ -148,7 +123,6 @@ void loop() {
   M5.Lcd.setFreeFont(FF12);
     M5.Lcd.drawString(TEXT, 160, 120, GFXFF);
   delay(1000);
-  
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setFreeFont(FF18);                 // Select the font
   M5.Lcd.drawString(sFF13, 160, 60, GFXFF);// Print the string name of the font
@@ -173,7 +147,6 @@ void loop() {
   M5.Lcd.setFreeFont(FF16);
     M5.Lcd.drawString(TEXT, 160, 120, GFXFF);
   delay(1000);
-  
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setFreeFont(FF18);                 // Select the font
   M5.Lcd.drawString(sFF17, 160, 60, GFXFF);// Print the string name of the font
@@ -198,7 +171,6 @@ void loop() {
   M5.Lcd.setFreeFont(FF20);
     M5.Lcd.drawString(TEXT, 160, 120, GFXFF);
   delay(1000);
-  
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setFreeFont(FF18);                 // Select the font
   M5.Lcd.drawString(sFF21, 160, 60, GFXFF);// Print the string name of the font
@@ -223,7 +195,6 @@ void loop() {
   M5.Lcd.setFreeFont(FF24);
   M5.Lcd.drawString(TEXT, 160, 120, GFXFF);
   delay(1000);
-  
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setFreeFont(FF18);                 // Select the font
   M5.Lcd.drawString(sFF25, 160, 60, GFXFF);// Print the string name of the font
@@ -248,7 +219,6 @@ void loop() {
   M5.Lcd.setFreeFont(FF28);
   M5.Lcd.drawString(TEXT, 160, 120, GFXFF);
   delay(1000);
-  
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setFreeFont(FF18);                 // Select the font
   M5.Lcd.drawString(sFF29, 160, 60, GFXFF);// Print the string name of the font
@@ -273,7 +243,6 @@ void loop() {
   M5.Lcd.setFreeFont(FF32);
   M5.Lcd.drawString(TEXT, 160, 120, GFXFF);
   delay(1000);
-  
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setFreeFont(FF18);                 // Select the font
   M5.Lcd.drawString(sFF33, 160, 60, GFXFF);// Print the string name of the font
@@ -298,7 +267,6 @@ void loop() {
   M5.Lcd.setFreeFont(FF36);
   M5.Lcd.drawString(TEXT, 160, 120, GFXFF);
   delay(1000);
-  
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setFreeFont(FF18);                 // Select the font
   M5.Lcd.drawString(sFF37, 160, 60, GFXFF);// Print the string name of the font
@@ -323,7 +291,6 @@ void loop() {
   M5.Lcd.setFreeFont(FF40);
   M5.Lcd.drawString(TEXT, 160, 120, GFXFF);
   delay(1000);
-  
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setFreeFont(FF18);                 // Select the font
   M5.Lcd.drawString(sFF41, 160, 60, GFXFF);// Print the string name of the font
@@ -348,7 +315,6 @@ void loop() {
   M5.Lcd.setFreeFont(FF44);
   M5.Lcd.drawString(TEXT, 160, 120, GFXFF);
   delay(1000);
-  
   M5.Lcd.fillScreen(TFT_BLACK);
   M5.Lcd.setFreeFont(FF18);                 // Select the font
   M5.Lcd.drawString(sFF45, 160, 60, GFXFF);// Print the string name of the font
@@ -373,9 +339,7 @@ void loop() {
   M5.Lcd.setFreeFont(FF48);
   M5.Lcd.drawString(TEXT, 160, 120, GFXFF);
   delay(1000);
-
 }
-
 // There follows a crude way of flagging that this example sketch needs fonts which
 // have not been enbabled in the User_Setup.h file inside the TFT_HX8357 library.
 //
@@ -386,12 +350,9 @@ void loop() {
 //
 // Either delete all the following lines if you do not want warnings, or change the lines
 // to suit your sketch modifications.
-
 #ifndef LOAD_GLCD
 //ERROR_Please_enable_LOAD_GLCD_in_User_Setup
 #endif
-
 #ifndef LOAD_GFXFF
 ERROR_Please_enable_LOAD_GFXFF_in_User_Setup!
 #endif
-

@@ -110,7 +110,6 @@ def benny_jenga_18_layers():
   rg_index = 0
   on_gripper[rg_index] = True
   #======    OnRobot Globals    ======#
-  
   ON_MATH_PI=3.141593
   ON_ZEROPOSE=p[0.0,0.0,0.0,0.0,0.0,0.0]
   ON_ZEROFRAME=p[0.0,0.0,0.0,0.0,0.0,0.0]
@@ -138,10 +137,8 @@ def benny_jenga_18_layers():
   on_cog_actual=ON_ZEROFRAME
   on_mass_actual=0.0
   on_robot_mount=[0.0,0.0]
-  
   #======    End of OnRobot Globals    ======#
   #======    OnRobot RG Globals    ======#
-  
   RG_DEVICE_ID_RG2=32
   RG_DEVICE_ID_RG6=33
   if ON_DEBUG_LOG:
@@ -172,7 +169,6 @@ def benny_jenga_18_layers():
   rg_mounting_angle_arr=[0,0,0]
   rg_fingertip_arr=[0,0,0]
   rg_Grip_guard_arr=[False,False,False]
-  
   rg_Width=0
   rg_Depth=0
   rg_DepthRel=0
@@ -193,17 +189,14 @@ def benny_jenga_18_layers():
   def get_rg_Grip_detected():
   return rg_Grip_detected
   end 
-  
   rg2_mount_bracket_offset=35.0/1000.0
   rg2_mount_body_offset=p[0.0,0.0,0.180,0.0,0.0,0.0]
   rg2_mount_cog_offset=p[0.0,0.0,0.065,0.0,0.0,0.0]
   rg6_mount_bracket_offset=35.0/1000.0
   rg6_mount_body_offset=p[0.0,0.0,0.230,0.0,0.0,0.0]
   rg6_mount_cog_offset=p[0.0,0.0,0.080,0.0,0.0,0.0]
-  
   #======    End of OnRobot RG Globals    ======#
   #======    OnRobot Interface Messages    ======#
-  
   on_devices_primary_log="OnRobot Devices"
   on_devices_secondary_log="OnRobot Secondary Device"
   on_program_halted="<br>Program halted."
@@ -235,10 +228,8 @@ def benny_jenga_18_layers():
   on_rtde_feed_error_title="OnRobot - RTDE error"
   on_rtde_feed_count_error="Invalid RTDE offset setup detected. Please check RTDE Offsets at the OnRobot Setup page in the Installation Tab.<br>Program halted."
   on_rtde_feed_open_error="Establishing connection with the devices was timed out.<br>Ensure that the OnRobot devices are operational, and check the status in the OnRobot Setup page in the Installation Tab."
-  
   #======    End of OnRobot Interface Messages    ======#
   #======    OnRobot Interface    ======#
-  
   on_portopened_javaSocket=False
   on_rtde_feed_opened=False
   on_dataProcess_running=False
@@ -411,26 +402,20 @@ def benny_jenga_18_layers():
   on_dataProcess_running=False
   kill on_dataProcess_thrd
   end 
-  
   #======    End of OnRobot Interface    ======#
   #======    OnRobot QC Setup Tool Connector    ======#
-  
   def tc_setup_tool():
   if ON_DEBUG_LOG:
   textmsg("QC Setup Tool Connector start...")
   end 
   set_tool_voltage(24)
-  
   set_tool_communication(True,1000000,2,1,1.5,3.5)
-  
   if ON_DEBUG_LOG:
   textmsg("QC Setup Tool Connector end.")
   end 
   end 
-  
   #======    End of OnRobot QC Setup Tool Connector    ======#
   #======    OnRobot RG Interface    ======#
-  
   rg_dataRead_running=False
   def rg_dataRead_RTDE(tool_index):
   local reg_offset_bool=ON_TOOL_SHIFT_BOOL_ARR[tool_index]
@@ -483,17 +468,13 @@ def benny_jenga_18_layers():
   textmsg("Stopping rg_dataRead thread")
   end 
   end 
-  
   #======    End of OnRobot RG Interface    ======#
   #======    OnRobot TCP Messages    ======#
-  
   on_tcp_log_msg_default="OnRobot: Robot TCP Offset set to:"
   on_tcp_log_msg_primary="OnRobot: Robot TCP Offset set to Primary:"
   on_tcp_log_msg_secondary="OnRobot: Robot TCP Offset set to Secondary:"
-  
   #======    End of OnRobot TCP Messages    ======#
   #======    OnRobot TCP    ======#
-  
   on_tcp_offset_actual=ON_ZEROFRAME
   on_tcp_offset_primary=ON_ZEROFRAME
   on_tcp_static_primary=ON_ZEROFRAME
@@ -573,25 +554,20 @@ def benny_jenga_18_layers():
   end 
   def on_tcp_offset_forced_set_actual(isPrimary=True):
   if(not on_follow_tcp):
-  
   local tcp_log_msg=on_tcp_log_msg_default
-  
   textmsg(tcp_log_msg,on_tcp_offset_actual)
   set_tcp(on_tcp_offset_actual)
   end 
   end 
   def on_tcp_update(isPrimary=True):
   on_tcp_update_primary()
-  
   on_tcp_set_actual_to(isPrimary)
   end 
   def on_tcp_set_actual_to(isPrimary=True):
-  
   on_tcp_offset_actual=on_tcp_offset_primary
   if(on_follow_tcp):
   textmsg(on_tcp_log_msg_default,on_tcp_offset_actual)
   end 
-  
   on_tcp_active_is_primary=isPrimary
   on_tcp_offset_set(on_tcp_offset_actual)
   end 
@@ -610,7 +586,6 @@ def benny_jenga_18_layers():
   local tool_offset=p[xyz[0],xyz[1],xyz[2],rotvec[0],rotvec[1],rotvec[2]]
   return tool_offset
   end 
-  
   def on_tcp_update_tool(tool_offset,tool_index=0):
   if ON_DEBUG_LOG:
   textmsg("TCP Update Tool start..")
@@ -618,7 +593,6 @@ def benny_jenga_18_layers():
   if(tool_index!=ON_DI_SECONDARY):
   on_tcp_update_tool_primary(tool_offset)
   local isPrimary=True
-  
   end 
   on_tcp_set_actual_to(isPrimary)
   if ON_DEBUG_LOG:
@@ -633,16 +607,12 @@ def benny_jenga_18_layers():
   end 
   return actual_tcp
   end 
-  
   #======    End of OnRobot TCP    ======#
   #======    OnRobot Payload Messages    ======#
-  
   on_mass_log_msg="OnRobot: Robot Payload Mass set to:"
   on_cog_log_msg="OnRobot: Robot Payload Center of Gravity set to:"
-  
   #======    End of OnRobot Payload Messages    ======#
   #======    OnRobot Payload    ======#
-  
   on_cog_actual=ON_ZEROFRAME
   on_mass_actual=0.0
   on_cog_primary=ON_ZEROFRAME
@@ -739,17 +709,13 @@ def benny_jenga_18_layers():
   end 
   def on_payload_update():
   on_payload_update_primary()
-  
   on_mass_actual =on_mass_primary
   on_cog_actual=on_cog_primary
-  
   on_payload_set_actual()
   end 
   def on_payload_set_actual():
-  
   on_mass_actual =on_mass_primary
   on_cog_actual=on_cog_primary
-  
   local CoG=[on_cog_actual[0],on_cog_actual[1],on_cog_actual[2]]
   on_payload_set(on_mass_actual,CoG)
   end 
@@ -782,12 +748,10 @@ def benny_jenga_18_layers():
   textmsg("Payload mass, CoG set to: ",str_cat(str_cat(mass,", "),CoG))
   end 
   end 
-  
   def on_payload_update_secondary():
   end 
   def on_payload_init_secondary():
   end 
-  
   def on_payload_update_tool(tool_mass,tool_cog=[0.0,0.0,0.0],tool_index=0):
   if ON_DEBUG_LOG:
   textmsg("Payload Update Tool start..")
@@ -812,12 +776,9 @@ def benny_jenga_18_layers():
   end 
   return cog_tool
   end 
-  
   #======    End of OnRobot Payload    ======#
   #======    OnRobot QC TCP    ======#
-  
   onrobotmini=0
-  
   def on_tcp_offset_send(TCP_offset):
   on_robot_TCP_offset=TCP_offset
   end 
@@ -825,11 +786,8 @@ def benny_jenga_18_layers():
   on_robot_payload_cog=CoG
   on_robot_payload_mass=mass
   end 
-  
-  
   #======    End of OnRobot QC TCP    ======#
   #======    OnRobot RG TCP    ======#
-  
   def rg_mount_tcp(gripper_angle,isRG2=True):
   if ON_DEBUG_LOG:
   textmsg("RG Mount TCP command starting..")
@@ -899,10 +857,8 @@ def benny_jenga_18_layers():
   textmsg("RG Payload mass command ended.")
   end 
   end 
-  
   #======    End of OnRobot RG TCP    ======#
   #======    OnRobot  Speedl    ======#
-  
   on_speedl_thread_handler=0
   on_speedl_is_enabled=False
   on_speedl_is_running=False
@@ -963,7 +919,6 @@ def benny_jenga_18_layers():
   speedSum=[speedSumP[0],speedSumP[1],speedSumP[2],speedSumP[3],speedSumP[4],speedSumP[5]]
   return speedSum
   end 
-  
   thread on_speedl_thread():
   if ON_DEBUG_LOG:
   textmsg("Speedl thread started..")
@@ -974,12 +929,9 @@ def benny_jenga_18_layers():
   exit_critical
   on_speedL=ON_ZERO6D
   on_speedL_last=ON_ZERO6D
-  
   while on_speedl_is_running:
   on_speedBase=on_speedCB_get()
   on_speedL=on_speedBase
-  
-  
   if on_speedl_is_enabled:
   if(on_speedL==ON_ZERO6D):
   on_speedL=[on_speedL_last[0]/100,on_speedL_last[1]/100,on_speedL_last[2]/100,on_speedL_last[3]/100,on_speedL_last[4]/100,on_speedL_last[5]/100]
@@ -990,7 +942,6 @@ def benny_jenga_18_layers():
   end 
   on_speedL_last=on_speedL
   end 
-  
   on_speedL=ON_ZERO6D
   if ON_DEBUG_LOG:
   textmsg("Speedl thread ended.")
@@ -1052,7 +1003,6 @@ def benny_jenga_18_layers():
   enter_critical
   on_speedl_is_running=False
   exit_critical
-  
   end 
   if ON_DEBUG_LOG:
   textmsg("Speedl thread stopped")
@@ -1069,10 +1019,8 @@ def benny_jenga_18_layers():
   on_speedl_is_enabled=True
   return on_speedl_integer_get()
   end 
-  
   #======    End of OnRobot  Speedl    ======#
   #======    OnRobot RG Engine Messages    ======#
-  
   rg_error_title="OnRobot - RG error"
   rg_device_id_waiting="Waiting for valid OnRobot RG ID..."
   rg_device_id_timeout="Waiting for valid OnRobot RG ID timed out.<br>Program halted."
@@ -1112,10 +1060,8 @@ def benny_jenga_18_layers():
   rg_status_error_s2_pushed_secondary="The S2 Safety Switch has been pushed on Secondary RG."
   rg_status_error_s2_triggered_secondary="The S2 Safety Switch has been triggered on Secondary RG.<br>Please restart the Secondary RG gripper."
   rg_status_error_safety_system_secondary="The Safety System error.<br>Please restart the Secondary RG gripper."
-  
   #======    End of OnRobot RG Engine Messages    ======#
   #======    OnRobot RG Engine    ======#
-  
   rg_dataProcess_running=False
   rg_start_flange=ON_ZEROPOSE
   rg_start_pose=ON_ZEROPOSE
@@ -1135,7 +1081,6 @@ def benny_jenga_18_layers():
   end 
   rg_stop=on_error((rg_device_id_arr[tool_index]!=tool_index),rg_status_error_missing,rg_status_error_title,rg_stop)
   rg_stop=on_error((rg_product_code_arr[tool_index]==ON_DEVICE_ID_MISSING),rg_status_error_missing,rg_status_error_title,rg_stop)
-  
   local switch_error_single=rg_status_int_get(tool_index)
   local status_error_single=floor(rg_Status_arr[tool_index]/RG_STATUS_IGNORE_SHIFT)
   if(status_error_single!=switch_error_single):
@@ -1148,7 +1093,6 @@ def benny_jenga_18_layers():
   rg_stop=on_error(rg_S2_triggered_arr[tool_index],rg_status_error_s2_triggered_single,rg_status_error_title,rg_stop)
   rg_stop=on_error(rg_Safety_error_arr[tool_index],rg_status_error_safety_system_single,rg_status_error_title,rg_stop)
   end 
-  
   exit_critical
   return rg_stop
   end 
@@ -1195,7 +1139,6 @@ def benny_jenga_18_layers():
   def rg_index_get():
   return rg_index
   end 
-  
   #======    End of OnRobot RG Engine    ======#
   rg_mounting_angle_arr[0] = 0.0
   rg_fingertip_arr[0] = 4.599999904632568
@@ -1216,16 +1159,12 @@ def benny_jenga_18_layers():
   on_tcp_tool_primary = p[0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
   on_cog_tool_primary = p[0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
   on_mass_tool_primary = 0.0
-  
   #======    End of OnRobot RG Depth    ======#
   #======    OnRobot RG Width Messages    ======#
-  
   rg_grip_title="OnRobot - RG Grip"
   rg_grip_return_error_n1="RG Grip command returned with error.<br>Please be sure that the required width is between the limits.<br>Program halted."
-  
   #======    End of OnRobot RG Width Messages    ======#
   #======    OnRobot RG Width    ======#
-  
   RG_MIN_WIDTH=0
   RG_MAX_WIDTH_RG2=110
   RG_MAX_WIDTH_RG6=160
@@ -1350,16 +1289,12 @@ def benny_jenga_18_layers():
   end 
   return retVal
   end 
-  
   #======    End of OnRobot RG Width    ======#
   #======    OnRobot VG Monitor Messages    ======#
-  
   rg_monitor_error_title="OnRobot - RG Grip lost"
   rg_monitor_grip_lost_error="Grip lost detected.<br>Program halted."
-  
   #======    End of OnRobot VG Monitor Messages    ======#
   #======    OnRobot RG Monitor    ======#
-  
   thread rg_monitor_thread():
   while True:
   sync()
@@ -1386,10 +1321,8 @@ def benny_jenga_18_layers():
   end 
   return error
   end 
-  
   #======    End of OnRobot RG Monitor    ======#
   #======    OnRobot Run    ======#
-  
   on_portopen_javaSocket()
   sync()
   textmsg(on_xmlrpc_start_ip,on_conn_ip)
@@ -1417,25 +1350,20 @@ def benny_jenga_18_layers():
   on_payload_init_adapters()
   on_tcp_init_primary()
   on_payload_init_primary()
-  
   on_tcp_set_actual_to(on_tcp_active_is_primary)
   if(on_follow_tcp):
   on_payload_set_actual()
   end 
   on_watchdog_thrd=run on_set_watchdog_thread()
   sync()
-  
   #======    End of OnRobot Run    ======#
   #======    OnRobot QC Start    ======#
-  
   if(on_toolConnector):
   tc_setup_tool()
   end 
   sync()
-  
   #======    End of OnRobot QC Start    ======#
   #======    OnRobot RG Run    ======#
-  
   def rg_wait_for_init(tool_index):
   local rg_timeout=0
   while not((rg_product_code_arr[tool_index]==RG_DEVICE_ID_RG2)or(rg_product_code_arr[tool_index]==RG_DEVICE_ID_RG6)):
@@ -1468,7 +1396,6 @@ def benny_jenga_18_layers():
   sync()
   rg_monitor_thread_handle=run rg_monitor_thread()
   sync()
-  
   #======    End of OnRobot RG Run    ======#
   # end: URCap Installation Node
   $ 1 "Robot Program"
@@ -1486,11 +1413,8 @@ rg_payload_set(mass = 0.0, tool_index = 0, use_guard = True)
   def gripper_close():
   	rg_grip(55.5,40,rg_index_get())
   end
-  
   global a = 1 #0.5
   global v = 0.5 #0.25
-  
-  
   # Pick a block from position pk and place it at p1/p2, then return home
   def pick_place(pk1,pk2,p1,p2,home):
           movel(pk1,a=a,v=v)
@@ -1510,8 +1434,6 @@ rg_payload_set(mass = 0.0, tool_index = 0, use_guard = True)
           movel(home,a=a,v=v)
           sleep(0.5)
   end
-  
-  
   # Pick a block and place it on a sloped spot (no separate place-approach point)
   def pick_place_slope(pk1,pk2,p2,home): #Place With a slope
           movel(pk1,a=a,v=v)
@@ -1529,16 +1451,10 @@ rg_payload_set(mass = 0.0, tool_index = 0, use_guard = True)
           movel(home,a=a,v=v)
           sleep(0.5)
   end
-  
-  
-  
   global y_offset =-(0.096/2)-0.0045 #-(0.096/2)-0.0045
   global x_offset = 0.0117 #0.0117
-  
   #global x_offset = 0
   #global y_offset = 0
-  
-  
   #90 degree orientation : 2.219 2.219 0.0
   global ort_90 = [2.219,2.219,0.0]
   global z_offset = 0.399
@@ -1548,85 +1464,57 @@ rg_payload_set(mass = 0.0, tool_index = 0, use_guard = True)
   global ort_0 = [0.007,3.143,-0.004]
   global level = 0.015 #0.015 height for placing up one level
   global up_offset = 0.025 # The offset for high jenga
-  
   global home = p[.430071711366+x_offset, -.001876999629+y_offset, .132460146262, ort_90[0], ort_90[1], ort_90[2]] #z = .132460146262
   global pl_u_general =  p[.531+x_offset-0.0117, .010+y_offset, .211917717864+level,  ort_0[0], ort_0[1], ort_0[2]]
   global error = 0.006
-  
-  
   #Add an inclination point as the level 1 approach point
   global place_incline_angle_radian = d2r(5)
   global incline_shift = -0.026
   global pl_incline_2_u = p[-0.2119*tan(place_incline_angle_radian)+.506+x_offset+(0*incline_shift)-0.0192,.052+y_offset,.211917717864,ort_90[0],ort_90[1],ort_90[2]]
   global pl_incline_1_u = p[-0.2119*tan(place_incline_angle_radian)+.531+x_offset+(1*incline_shift)-0.0152,.052+y_offset,.211917717864,ort_90[0],ort_90[1],ort_90[2]]
   global pl_incline_0_u = p[-0.2119*tan(place_incline_angle_radian)+.556+x_offset+(2*incline_shift)-0.0122,.052+y_offset,.211917717864,ort_90[0],ort_90[1],ort_90[2]]
-  
   global second_level_offset = -.003
-  
-  
   global pk_0_d = p[.430196943850+x_offset, .052+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
   global pk_0_u = p[.429+x_offset, .052+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
   global pl_0_u = p[.556+x_offset-0.0122, .052+y_offset, .211917717864+up_offset,  ort_90[0], ort_90[1], ort_90[2]]
   global pl_0_d = p[.556+x_offset-0.0122, .052+y_offset,  z_down_pl+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
-  
   global pk_1_d = p[.403+x_offset, .052+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
   global pk_1_u = p[.403+x_offset, .052+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
   global pl_1_u = p[.531+x_offset-0.0152, .052+y_offset, .211917717864+up_offset,  ort_90[0], ort_90[1], ort_90[2]]
   global pl_1_d = p[.531+x_offset-0.0152, .052+y_offset,  z_down_pl+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
-  
-  
   global pk_2_d = p[.369+x_offset, .052+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
   global pk_2_u = p[.369+x_offset, .052+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
   global pl_2_u = p[.506+x_offset-0.0172, .052+y_offset, .211917717864+up_offset,  ort_90[0], ort_90[1], ort_90[2]]
   global pl_2_d = p[.506+x_offset-0.0172, .052+y_offset,  z_down_pl+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
-  
-  
   global pk_3_d = p[.343+x_offset, .052+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
   global pk_3_u = p[.343+x_offset, .052+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
   global pl_3_u = p[.531+x_offset-0.0122+second_level_offset, .077+y_offset, .211917717864+level+up_offset,  ort_0[0], ort_0[1], ort_0[2]]
   global pl_3_d = p[.531+x_offset-0.0122+second_level_offset, .077+y_offset,  z_down_pl+z_offset+level,  ort_0[0], ort_0[1], ort_0[2]]
-  
-  
   global pk_4_d = p[.309+x_offset+error, .052+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
   global pk_4_u = p[.309+x_offset+error, .052+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
   global pl_4_u = p[.531+x_offset-0.0122+second_level_offset, .052+y_offset, .211917717864+level+up_offset,  ort_0[0], ort_0[1], ort_0[2]]
   global pl_4_d = p[.531+x_offset-0.0122+second_level_offset, .052+y_offset,  z_down_pl+z_offset+level,  ort_0[0], ort_0[1], ort_0[2]]
-  
-  
   global pk_5_d = p[.283+x_offset+error, .052+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
   global pk_5_u = p[.283+x_offset+error, .052+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
   global pl_5_u = p[.531+x_offset-0.0122+second_level_offset, .027+y_offset, .211917717864+level+up_offset,  ort_0[0], ort_0[1], ort_0[2]]
   global pl_5_d = p[.531+x_offset-0.0122+second_level_offset, .027+y_offset+second_level_offset,  z_down_pl+z_offset+level,  ort_0[0], ort_0[1], ort_0[2]]
-  
-  
   global pp_x = [.4315,.4065,.376,.3505,.3205,.295,.58625,.5675,.53075,.50525,.58625,.5675,.53075,.50525,.58625,.5675,.53075,.50525,.43625,.41075,.38075,.35525,.28625,.26075,.23075,.20525,.43625,.41075,.38075,.35525,.28625,.26075,.23075,.20525,.23075,.20525,.43625,.41075,.38075,.35525,.28625,.26075,.58625,.5675,.53075,.50525,.43625,.41075,.38075,.35525,.28625,.26075,.23075,.20525] #irregular pick points x
   global pp_y = [.052,.052,.052,.052,.052,.052,-.059,-.059,-.059,-.059,.163,.163,.163,.163,.264,.264,.264,.264,.264,.264,.264,.264,.264,.264,.264,.264,.163,.163,.163,.163,.163,.163,.163,.163,-.059,-.059,-.059,-.059,-.059,-.059,-.059,-.059,-.16,-.16,-.16,-.16,-.16,-.16,-.16,-.16,-.16,-.16,-.16,-.16] #irregular pick points y
   #19-22
   #33-36
   global count = 0 #6
-  
-  
-  
-  
   # Lay one tower level: 6 blocks, alternating orientations
   def stack(pl_up_general,home,pk_0_u,pl_0_u,pl_0_d,pl_incline_0_u,pk_1_u,pl_1_u,pl_1_d,pl_incline_1_u,pk_2_u,pl_2_u,pl_2_d,pl_incline_2_u,pk_3_d,pk_3_u,pl_3_u,pl_3_d,pk_4_d,pk_4_u,pl_4_u,pl_4_d,pk_5_d,pk_5_u,pl_5_u,pl_5_d):
   	pick_place(pk_0_u,pk_0_d,pl_incline_0_u,pl_0_d,home)
-  
   	#pick_place_slope(pk_1_u,pk_1_d,pl_1_d,home)
   	#pick_place_slope(pk_2_u,pk_2_d,pl_2_d,home)
-  
   	pick_place(pk_1_u,pk_1_d,pl_incline_1_u,pl_1_d,home)
   	pick_place(pk_2_u,pk_2_d,pl_incline_2_u,pl_2_d,home)
-  
-  
-  
   	#Then rotate 90 degree and move up z-axis for place for second floor
   	pick_place(pk_3_u,pk_3_d,pl_u_general,pl_3_d,home)
   	pick_place(pk_4_u,pk_4_d,pl_u_general,pl_4_d,home)
   	pick_place(pk_5_u,pk_5_d,pl_u_general,pl_5_d,home)
-  
   end
-  
   global pk_offset = 0
   global pk_offset_s = 0
   global p1_offset = 0.0112
@@ -1635,22 +1523,14 @@ rg_payload_set(mass = 0.0, tool_index = 0, use_guard = True)
   global p4_offset = 0.003
   global p5_offset = 0.002
   global p6_offset = 0.002
-  
-  
-  
   global block_gap = 0 #-0.0045
   # every 2 blocks
-  
   global p1_shift = 0
   global p2_shift = 0
   global p3_shift = 0
   global p4_shift = 0
   global p5_shift = 0
   global p6_shift = 0
-  
-  
-  
-  
   # Build the whole tower: 9 levels, each laid by stack()
   def main():
   	i = 1
@@ -1658,8 +1538,6 @@ rg_payload_set(mass = 0.0, tool_index = 0, use_guard = True)
   		if count == 6:
   			pk_offset = 0.001-x_offset
   			pk_offset_s = -x_offset-error
-  
-  
   			#pk_offset = - .006
   			p1_offset = p1_offset
   			p2_offset = p2_offset -0.004
@@ -1674,42 +1552,32 @@ rg_payload_set(mass = 0.0, tool_index = 0, use_guard = True)
   			p4_shift = 0.002 #0.004
   			p5_shift = 0.006 #0.006
   			p6_shift = 0.007 #0.007
-  
   		end
   		home = p[.430071711366+x_offset, -.001876999629+y_offset, .132460146262+(2*level*i), ort_90[0], ort_90[1], ort_90[2]]
   		pk_0_d = p[pp_x[0+count]-0.002+p1_shift+x_offset+pk_offset, pp_y[0+count]+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
   		pk_0_u = p[pp_x[0+count]-0.002+p1_shift+x_offset+pk_offset, pp_y[0+count]+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
    		pl_0_u = p[.556+x_offset-p1_offset, .052+y_offset, .211917717864+up_offset+(2*level*(i-1)),  ort_90[0], ort_90[1], ort_90[2]]
   		pl_0_d = p[.556+x_offset-p1_offset, .052+y_offset,  z_down_pl+z_offset+(2*level*(i-1)),  ort_90[0], ort_90[1], ort_90[2]]
-  
   		pk_1_d = p[pp_x[1+count]-0.003+p2_shift+x_offset+pk_offset+block_gap, pp_y[1+count]+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
   		pk_1_u = p[pp_x[1+count]-0.003+p2_shift+x_offset+pk_offset+block_gap, pp_y[1+count]+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
   		pl_1_u = p[.531+x_offset-p2_offset, .052+y_offset, .211917717864+up_offset+(2*level*(i-1)),  ort_90[0], ort_90[1], ort_90[2]]
   		pl_1_d = p[.531+x_offset-p2_offset, .052+y_offset,  z_down_pl+z_offset+(2*level*(i-1)),  ort_90[0], ort_90[1], ort_90[2]]
-  
   		pk_2_d = p[pp_x[2+count]-0.004+p3_shift+x_offset+pk_offset, pp_y[2+count]+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
   		pk_2_u = p[pp_x[2+count]-0.004+p3_shift+x_offset+pk_offset, pp_y[2+count]+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
   		pl_2_u = p[.506+x_offset-p3_offset, .052+y_offset, .211917717864+up_offset+(2*level*(i-1)),  ort_90[0], ort_90[1], ort_90[2]]
   		pl_2_d = p[.506+x_offset-p3_offset, .052+y_offset,  z_down_pl+z_offset+(2*level*(i-1)),  ort_90[0], ort_90[1], ort_90[2]]
-  
-  
   		pk_3_d = p[pp_x[3+count]-0.004+p4_shift+x_offset+error+pk_offset_s+block_gap, pp_y[3+count]+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
   		pk_3_u= p[pp_x[3+count]-0.004+p4_shift+x_offset+error+pk_offset_s+block_gap, pp_y[3+count]+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
   		pl_3_u = p[.531+x_offset-0.0122+second_level_offset, .077+y_offset+p4_offset, .211917717864+up_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
   		pl_3_d = p[.531+x_offset-0.0122+second_level_offset, .077+y_offset+p4_offset,  z_down_pl+z_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
-  
-  
   		pk_4_d = p[pp_x[4+count]-0.006+p5_shift+x_offset+error+pk_offset_s,pp_y[4+count]+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
   		pk_4_u = p[pp_x[4+count]-0.006+p5_shift+x_offset+error+pk_offset_s, pp_y[4+count]+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
   		pl_4_u = p[.531+x_offset-0.0122+second_level_offset, .052+y_offset+p5_offset, .211917717864+up_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
   		pl_4_d = p[.531+x_offset-0.0122+second_level_offset, .052+y_offset+p5_offset,  z_down_pl+z_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
-  
-  
   		pk_5_d = p[pp_x[5+count]-0.007+p6_shift+x_offset+error+pk_offset_s+block_gap, pp_y[5+count]+y_offset, z_down+z_offset,  ort_90[0], ort_90[1], ort_90[2]]
   		pk_5_u = p[pp_x[5+count]-0.007+p6_shift+x_offset+error+pk_offset_s+block_gap, pp_y[5+count]+y_offset, .132460146262,  ort_90[0], ort_90[1], ort_90[2]]
   		pl_5_u = p[.531+x_offset-0.0122+second_level_offset, .027+y_offset+p6_offset, .211917717864+up_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
   		pl_5_d = p[.531+x_offset-0.0122+second_level_offset, .027+y_offset+second_level_offset+p6_offset,  z_down_pl+z_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
-  
   		pl_u_general =  p[.531+x_offset-0.0117, .010+y_offset, .211917717864+up_offset+(2*level*i-level),  ort_0[0], ort_0[1], ort_0[2]]
   		pl_incline_2_u = p[-0.2119*tan(place_incline_angle_radian)+.506+x_offset+(0*incline_shift)-0.0192-p3_offset,.052+y_offset,.211917717864+up_offset+(2*level*i),ort_90[0],ort_90[1],ort_90[2]]
   		pl_incline_1_u = p[-0.2119*tan(place_incline_angle_radian)+.531+x_offset+(1*incline_shift)-0.0152-p2_offset,.052+y_offset,.211917717864+up_offset+(2*level*i),ort_90[0],ort_90[1],ort_90[2]]
@@ -1718,10 +1586,6 @@ rg_payload_set(mass = 0.0, tool_index = 0, use_guard = True)
   		i = i + 1
   		count = count + 6
   	end
-  
-  
   end
-  
-  
   main()
 end

@@ -9,7 +9,6 @@
 #define M5STACK_MPU6886 
 // #define M5STACK_200Q
 #include "M5Stack.h"
-
 extern void imu_CalcInit();
 extern void imu_calcGyroOffsets();
 extern void imu_update();

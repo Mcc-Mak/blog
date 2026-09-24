@@ -7,15 +7,12 @@
  */
 #ifndef _MPU9250_H_
   #define _MPU9250_H_
-
   #include <SPI.h>
   #include <Wire.h>
-
   // See also MPU-9250 Register Map and Descriptions, Revision 4.0,
   // RM-MPU-9250A-00, Rev. 1.4, 9/9/2013 for registers not listed in above
   // document; the MPU9250 and MPU9150 are virtually identical but the latter has
   // a different register map
-
   //Magnetometer Registers
   #define AK8963_ADDRESS   0x0C
   #define WHO_AM_I_AK8963  0x00 // should return 0x48
@@ -34,11 +31,9 @@
   #define AK8963_ASAX      0x10  // Fuse ROM x-axis sensitivity adjustment value
   #define AK8963_ASAY      0x11  // Fuse ROM y-axis sensitivity adjustment value
   #define AK8963_ASAZ      0x12  // Fuse ROM z-axis sensitivity adjustment value
-
   #define SELF_TEST_X_GYRO 0x00
   #define SELF_TEST_Y_GYRO 0x01
   #define SELF_TEST_Z_GYRO 0x02
-
   /*#define X_FINE_GAIN      0x03 // [7:0] fine gain
   #define Y_FINE_GAIN      0x04
   #define Z_FINE_GAIN      0x05
@@ -48,13 +43,10 @@
   #define YA_OFFSET_L_TC   0x09
   #define ZA_OFFSET_H      0x0A
   #define ZA_OFFSET_L_TC   0x0B */
-
   #define SELF_TEST_X_ACCEL 0x0D
   #define SELF_TEST_Y_ACCEL 0x0E
   #define SELF_TEST_Z_ACCEL 0x0F
-
   #define SELF_TEST_A       0x10
-
   #define XG_OFFSET_H       0x13  // User-defined trim values for gyroscope
   #define XG_OFFSET_L       0x14
   #define YG_OFFSET_H       0x15
@@ -68,7 +60,6 @@
   #define ACCEL_CONFIG2     0x1D
   #define LP_ACCEL_ODR      0x1E
   #define WOM_THR           0x1F
-
   // Duration counter threshold for motion interrupt generation, 1 kHz rate,
   // LSB = 1 ms
   #define MOT_DUR           0x20
@@ -77,7 +68,6 @@
   // Duration counter threshold for zero motion interrupt generation, 16 Hz rate,
   // LSB = 64 ms
   #define ZRMOT_DUR         0x22
-
   #define FIFO_EN            0x23
   #define I2C_MST_CTRL       0x24
   #define I2C_SLV0_ADDR      0x25
@@ -166,7 +156,6 @@
   #define YA_OFFSET_L        0x7B
   #define ZA_OFFSET_H        0x7D
   #define ZA_OFFSET_L        0x7E
-
   // Using the MPU-9250 breakout board, ADO is set to 0
   // Seven-bit device address is 110100 for ADO = 0 and 110101 for ADO = 1
   #define ADO 0
@@ -176,7 +165,6 @@
     #define MPU9250_ADDRESS 0x68  // Device address when ADO = 0
     #define AK8963_ADDRESS  0x0C   // Address of magnetometer
   #endif // AD0
-
   class MPU9250 {
     protected:
       // Set initial input parameters
@@ -186,19 +174,16 @@
         AFS_8G,
         AFS_16G
       };
-
       enum Gscale {
         GFS_250DPS = 0,
         GFS_500DPS,
         GFS_1000DPS,
         GFS_2000DPS
       };
-
       enum Mscale {
         MFS_14BITS = 0, // 0.6 mG per LSB
         MFS_16BITS      // 0.15 mG per LSB
       };
-
       // Specify sensor full scale
       uint8_t Gscale = GFS_250DPS;
       uint8_t Ascale = AFS_2G;
@@ -206,18 +191,15 @@
       uint8_t Mscale = MFS_16BITS;
       // 2 for 8 Hz, 6 for 100 Hz continuous magnetometer data read
       uint8_t Mmode = 0x02;
-
     public:
       float pitch, yaw, roll;
       float temperature;   // Stores the real internal chip temperature in Celsius
       int16_t tempCount;   // Temperature raw count output
       uint32_t delt_t = 0; // Used to control display output rate
-
       uint32_t count = 0, sumCount = 0; // used to control display output rate
       float deltat = 0.0f, sum = 0.0f;  // integration interval for both filter schemes
       uint32_t lastUpdate = 0, firstUpdate = 0; // used to calculate integration interval
       uint32_t Now = 0;        // used to calculate integration interval
-
       int16_t gyroCount[3];   // Stores the 16-bit signed gyro sensor output
       int16_t magCount[3];    // Stores the 16-bit signed magnetometer sensor output
       // Scale resolutions per LSB for the sensors
@@ -231,7 +213,6 @@
       float SelfTest[6];
       // Stores the 16-bit signed accelerometer sensor output
       int16_t accelCount[3];
-
     public:
       void getMres();
       void getGres();
@@ -249,5 +230,4 @@
       uint8_t readByte(uint8_t, uint8_t);
       void readBytes(uint8_t, uint8_t, uint8_t, uint8_t *);
   };  // class MPU9250
-
 #endif // _MPU9250_H_

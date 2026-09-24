@@ -3,17 +3,14 @@
 */
 #include <M5Stack.h>
 #include <Wire.h>
-
 /*
  * The I2C address of StepMotor Module is 0x70 by default.
  * But if you change this I2C address through burning this firmware
  * (https://github.com/m5stack/stepmotor_module/blob/master/Firmware%20for%20stepmotor%20module/GRBL-Arduino-Library/examples/GRBL_I2C/GRBL_I2C_0x71.hex),
  * you need to use I2C address `0x71` for correct communication.
  */
-
 #define STEPMOTOR_I2C_ADDR 0x70
 // #define STEPMOTOR_I2C_ADDR 0x71
-
 void setup() {
   // put your setup code here, to run once:
   M5.begin();
@@ -28,13 +25,11 @@ void setup() {
   M5.Lcd.setCursor(4, 30);
   M5.Lcd.println("Press A: 0x70");
 }
-
 void SendByte(byte addr, byte b) {
   Wire.beginTransmission(addr);
   Wire.write(b);
   Wire.endTransmission();
 }
-
 void SendCommand(byte addr, char *c) {
   Wire.beginTransmission(addr);
   while ((*c) != 0) {
@@ -45,7 +40,6 @@ void SendCommand(byte addr, char *c) {
   Wire.write(0x0a);
   Wire.endTransmission();
 }
-
 void loop() {
   /*
       If Button A was pressed,

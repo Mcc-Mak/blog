@@ -2,27 +2,18 @@
 from django.shortcuts import render, redirect
 from .models import Model
 from .forms import BlogForm
-
 # --- Static pages ---
 def index(request):
     return render(request, "home.html")
-
-
 def resume(request):
     return render(request, "resume.html")
-
-
 def blog(request):
     entries = Model.objects.all()
     context = {"entries": entries}
     # Pass context into the HTML template
     return render(request, "blog.html", context)
-
-
 def gallery(request):
     return render(request, "gallery.html")
-
-
 # from django.views.decorators.csrf import csrf_protect
 # @csrf_protect
 def add(request):
@@ -39,8 +30,6 @@ def add(request):
     # context = {"entries": entries}
     print(context)
     return render(request, 'blog.html', context)
-
-
 def delete(request):
     if request.method == 'POST':
         for key in request.POST.keys():

@@ -13,9 +13,7 @@
  * letter to Creative Commons, 171 Second Street, Suite 300,            *
  * San Francisco, California, 94105, USA.                               *
  *----------------------------------------------------------------------*/
-
 #include "Button.h"
-
 /*----------------------------------------------------------------------*
  * Button(pin, puEnable, invert, dbTime) instantiates a button object.  *
  * pin      Is the Arduino pin the button is connected to.              *
@@ -44,7 +42,6 @@ Button::Button(uint8_t pin, uint8_t invert, uint32_t dbTime) {
   _lastChange = _time;
   _pressTime = _time;
 }
-
 /*----------------------------------------------------------------------*
  * read() returns the state of the button, 1==pressed, 0==released,     *
  * does debouncing, captures and maintains times, previous states, etc. *
@@ -52,7 +49,6 @@ Button::Button(uint8_t pin, uint8_t invert, uint32_t dbTime) {
 uint8_t Button::read(void) {
   static uint32_t ms;
   static uint8_t pinVal;
-
   ms = millis();
   pinVal = digitalRead(_pin);
   if (_invert != 0) pinVal = !pinVal;
@@ -78,7 +74,6 @@ uint8_t Button::read(void) {
     return _state;
   }
 }
-
 /*----------------------------------------------------------------------*
  * isPressed() and isReleased() check the button state when it was last *
  * read, and return false (0) or true (!=0) accordingly.                *
@@ -87,11 +82,9 @@ uint8_t Button::read(void) {
 uint8_t Button::isPressed(void) {
   return _state == 0 ? 0 : 1;
 }
-
 uint8_t Button::isReleased(void) {
   return _state == 0 ? 1 : 0;
 }
-
 /*----------------------------------------------------------------------*
  * wasPressed() and wasReleased() check the button state to see if it   *
  * changed between the last two reads and return false (0) or           *
@@ -101,11 +94,9 @@ uint8_t Button::isReleased(void) {
 uint8_t Button::wasPressed(void) {
   return _state && _changed;
 }
-
 uint8_t Button::wasReleased(void) {
   return !_state && _changed && millis() - _pressTime < _hold_time;
 }
-
 uint8_t Button::wasReleasefor(uint32_t ms) {
   _hold_time = ms;
   return !_state && _changed && millis() - _pressTime >= ms;
@@ -119,7 +110,6 @@ uint8_t Button::wasReleasefor(uint32_t ms) {
 uint8_t Button::pressedFor(uint32_t ms) {
   return (_state == 1 && _time - _lastChange >= ms) ? 1 : 0;
 }
-
 uint8_t Button::pressedFor(uint32_t ms, uint32_t continuous_time) {
   if (_state == 1 && _time - _lastChange >= ms && _time - _lastLongPress >= continuous_time) {
     _lastLongPress = _time;
@@ -127,7 +117,6 @@ uint8_t Button::pressedFor(uint32_t ms, uint32_t continuous_time) {
   } 
   return 0;
 }
-
 uint8_t Button::releasedFor(uint32_t ms) {
   return (_state == 0 && _time - _lastChange >= ms) ? 1 : 0;
 }

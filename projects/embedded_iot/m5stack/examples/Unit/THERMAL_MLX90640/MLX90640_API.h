@@ -16,9 +16,7 @@
  */
 #ifndef _MLX640_API_H_
 #define _MLX640_API_H_
-
 #define SCALEALPHA 0.000001
-    
 typedef struct
     {
         int16_t kVdd;
@@ -49,7 +47,6 @@ typedef struct
         uint16_t brokenPixels[5];
         uint16_t outlierPixels[5];  
     } paramsMLX90640;
-    
     int MLX90640_DumpEE(uint8_t slaveAddr, uint16_t *eeData);
     int MLX90640_GetFrameData(uint8_t slaveAddr, uint16_t *frameData);
     int MLX90640_ExtractParameters(uint16_t *eeData, paramsMLX90640 *mlx90640);
@@ -66,5 +63,4 @@ typedef struct
     int MLX90640_SetInterleavedMode(uint8_t slaveAddr);
     int MLX90640_SetChessMode(uint8_t slaveAddr);
     void MLX90640_BadPixelsCorrection(uint16_t *pixels, float *to, int mode, paramsMLX90640 *params);
-    
 #endif

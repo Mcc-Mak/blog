@@ -1,9 +1,7 @@
 #include <M5Stack.h>
 #include "finger.h"
-
 uint8_t userNum;           //User number
 FingerPrint FP_M;
-
 void CleanScreen()
 {
     M5.Lcd.setTextColor(WHITE);
@@ -14,7 +12,6 @@ void CleanScreen()
     M5.Lcd.print("userNum:");
     M5.Lcd.println(userNum);
 }
-
 void setup() {
     M5.begin();
     M5.Power.begin();
@@ -35,7 +32,6 @@ void setup() {
     M5.Lcd.print("userNum:");
     M5.Lcd.println(userNum);
 }
-
 //ButtonA: Add user
 //ButtonB: Matching
 //ButtonC: Delete All User
@@ -44,7 +40,6 @@ void loop(){
     if(M5.BtnA.wasPressed()){
         CleanScreen();
         M5.Lcd.println("Fingerprint Typing");
-        
         res1 = FP_M.fpm_addUser(userNum,1);
         if(res1 == ACK_SUCCESS){
             M5.Lcd.println("Success");
@@ -60,11 +55,9 @@ void loop(){
         }
         userNum++;
     }
-
     if(M5.BtnB.wasPressed()){
       CleanScreen();
       M5.Lcd.println("Matching");
-      
       res1 = FP_M.fpm_compareFinger();
       if(res1 == ACK_SUCCESS){
           M5.Lcd.println("Success");
@@ -76,11 +69,9 @@ void loop(){
           M5.Lcd.println("Timeout");
       }
     }
-
     if(M5.BtnC.wasPressed()){
       res1 = FP_M.fpm_deleteAllUser();
       CleanScreen();
-      
       if(res1 == ACK_SUCCESS){
           M5.Lcd.println("Delete All User Successful");
       }

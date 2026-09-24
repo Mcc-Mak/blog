@@ -5,11 +5,9 @@
  * put jpg or bmp file in (<project directory>/data)
  * Select Tools > ESP32 Sketch Data Upload menu item. This should start uploading the files into ESP32 flash file system.
 */
-
 #include "FS.h"
 #include "SPIFFS.h"
 #include "M5Stack.h"
-
 void setup(){
     M5.begin(true, false, false, false);
     M5.Power.begin();
@@ -20,7 +18,6 @@ void setup(){
     }
     M5.Lcd.drawJpgFile(SPIFFS, "/m5_logo.jpg", 0, 0);
 }
-
 void loop(){
   M5.update();
   if(M5.BtnA.wasPressed()) {

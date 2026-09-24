@@ -45,9 +45,7 @@
 ** Twitter: @skelliam
 ** 
 */
-
 #define TOMTHUMB_USE_EXTENDED 0
-
 const uint8_t TomThumbBitmaps[] PROGMEM = {
    0x00,                                /* 0x20 space */
    0x80, 0x80, 0x80, 0x00, 0x80,        /* 0x21 exclam */
@@ -256,8 +254,6 @@ const uint8_t TomThumbBitmaps[] PROGMEM = {
    0xE0, 0xA0, 0xA0, 0xA0, 0xE0,        /* 0xFFFD uniFFFD */
 #endif /* (TOMTHUMB_USE_EXTENDED)  */
   };
-
-
 /* {offset, width, height, advance cursor, x offset, y offset} */
 const GFXglyph TomThumbGlyphs[] PROGMEM = {
    { 0, 8, 1, 2, 0, -5 },    /* 0x20 space */
@@ -467,7 +463,6 @@ const GFXglyph TomThumbGlyphs[] PROGMEM = {
    { 899, 8, 5, 4, 0, -5 },  /* 0xFFFD uniFFFD */
 #endif /* (TOMTHUMB_USE_EXTENDED) */
 };
-
 const GFXfont TomThumb PROGMEM = {
   (uint8_t  *)TomThumbBitmaps,
   (GFXglyph *)TomThumbGlyphs,

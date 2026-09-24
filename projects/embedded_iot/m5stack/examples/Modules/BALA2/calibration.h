@@ -1,5 +1,4 @@
 #pragma once
-
 void calibrationGryo();
 void calibrationInit();
 void calibrationSaveCenterAngle(float angle);

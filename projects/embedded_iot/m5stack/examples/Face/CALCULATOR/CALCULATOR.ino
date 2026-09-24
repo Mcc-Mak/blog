@@ -1,8 +1,6 @@
 #include <M5Stack.h>
-
 #define KEYBOARD_I2C_ADDR     0X08
 #define KEYBOARD_INT          5
-
 float Num1 = 0;
 float Num2 = 0;
 float Num3 = 0;
@@ -15,8 +13,6 @@ int SumFlag = 0;
 float Sum;
 String Datain;
 uint8_t key_val;
-
-
 void setup()
 {
   M5.begin();
@@ -26,14 +22,11 @@ void setup()
   CalNum = 1;
   Draw_Screen();
  }
-
-
 void loop()
 {
   if(digitalRead(KEYBOARD_INT) == LOW) 
    {
     Wire.requestFrom(KEYBOARD_I2C_ADDR, 1);  // request 1 byte from keyboard
-    
     while (Wire.available()) 
      { 
       uint8_t key_val = Wire.read();                  // receive a byte as character
@@ -48,7 +41,6 @@ void loop()
           Datain += (char)key_val;
           IsNumber(); 
          }
-
         if( key_val == 'A' || key_val == '+' || key_val == '-' || key_val == '*' || key_val == '/' || key_val == '=' )
          {
           FunKey(key_val); 
@@ -57,8 +49,6 @@ void loop()
     }
   }   
 }           
-   
-
 void FunKey( uint8_t key_in )  
  {   
    switch (key_in) 
@@ -72,33 +62,27 @@ void FunKey( uint8_t key_in )
       Datain = "                     ";
       CalNum = 1;
      break;
-
      case '=':
       if( Fun == '+' )
        {
         Sum = Num1 + Num2; 
        }
-
       if( Fun == '-' )
        {
         Sum = Num1 - Num2;
        }
-
       if( Fun == '*' )
        {
         Sum = Num1 * Num2;
        }
-
       if( Fun == '/' )
        {
         Sum = Num1 / Num2;
        }
- 
       M5.Lcd.setCursor(105,190);
       M5.Lcd.print(Sum); 
       SumFlag = 1;
      break;
-
      case '+': 
       Fun = '+';
       CalNum += 1 ;
@@ -108,7 +92,6 @@ void FunKey( uint8_t key_in )
       M5.Lcd.setCursor(20, 140);
       M5.Lcd.print(Fun);
      break;  
-
      case '-':
       Fun = '-';
       CalNum += 1;
@@ -118,7 +101,6 @@ void FunKey( uint8_t key_in )
       M5.Lcd.setCursor(20, 140);
       M5.Lcd.print(Fun);   
      break;
-
      case '*':
       Fun = '*';
       CalNum += 1; 
@@ -128,7 +110,6 @@ void FunKey( uint8_t key_in )
       M5.Lcd.setCursor(20, 140);
       M5.Lcd.print(Fun);
      break;
-
      case '/':
       Fun = '/';
       CalNum += 1; 
@@ -138,13 +119,10 @@ void FunKey( uint8_t key_in )
       M5.Lcd.setCursor(20, 140);
       M5.Lcd.print(Fun);
      break;
-
      default:
      break;
    } 
  }
- 
-
 void StoreData( void )    
 {
  Num1 = Sum;
@@ -162,8 +140,6 @@ void StoreData( void )
  M5.Lcd.setCursor(105,190);
  M5.Lcd.print("                 ");
 }
-
-
 void IsNumber( void )
  {
   if( CalNum == 1 )
@@ -172,7 +148,6 @@ void IsNumber( void )
     M5.Lcd.setCursor(70,100);
     M5.Lcd.print(Num1);
    } 
-         
   if( CalNum >= 2 )
    {
     Num2 = Datain.toFloat();
@@ -180,8 +155,6 @@ void IsNumber( void )
     M5.Lcd.print(Num2);
    }
  }
-
- 
  void DrawBox( int LocX, int LocY, int W, int H )
   {
    M5.Lcd.drawLine( LocX, LocY, LocX + W, LocY, TFT_WHITE);
@@ -189,7 +162,6 @@ void IsNumber( void )
    M5.Lcd.drawLine( LocX, LocY, LocX, LocY + H, TFT_WHITE);
    M5.Lcd.drawLine( LocX + W, LocY, LocX + W, LocY + H, TFT_WHITE);
   }
-
  void Draw_Screen( void )
   {
    M5.Lcd.clear();

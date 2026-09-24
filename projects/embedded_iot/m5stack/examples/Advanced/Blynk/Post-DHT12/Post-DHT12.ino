@@ -21,7 +21,6 @@
   App project setup:
     Value Display widget attached to Virtual Pin V5
  *************************************************************/
-
 #include <M5Stack.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -29,15 +28,12 @@
 #include "DHT12.h"
 #include <Wire.h> //The DHT12 uses I2C comunication.
 DHT12 dht12; //Preset scale CELSIUS and ID 0x5c.
-
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
 char auth[] = "auth";
 char ssid[] = "SSID";
 char pass[] = "PASSWD";
-
 BlynkTimer timer;
-
 // This function sends Arduino's up time every second to Virtual Pin (5).
 // In the app, Widget's reading frequency should be set to PUSH. This means
 // that you define how often to send data to Blynk App.
@@ -48,7 +44,6 @@ void myTimerEvent() {
     float tmp = dht12.readTemperature();
     float hum = dht12.readHumidity();
     Serial.printf("Temperatura: %2.2f*C  Humedad: %0.2f%%\r\n", tmp, hum);
-
     Blynk.virtualWrite(V0, tmp);
     Blynk.virtualWrite(V1, hum);
     M5.Lcd.setCursor(0, 0);
@@ -56,24 +51,18 @@ void myTimerEvent() {
     M5.Lcd.setTextSize(3);
     M5.Lcd.printf("Temperatura:%2.1f  \r\nHumedad: %2.0f%%", tmp, hum);
 }
-
 void setup() {
     // Debug console
     M5.begin();
     M5.Power.begin();
     Wire.begin();
-
     //Blynk start
     Blynk.begin(auth, ssid, pass, "blynk.m5stack.com");
-
     // Setup a function to be called every second
     timer.setInterval(2000L, myTimerEvent);
     M5.Lcd.setBrightness(10);
 }
-
 void loop() {
-
     Blynk.run();   
     timer.run(); // Initiates BlynkTimer
 }
-

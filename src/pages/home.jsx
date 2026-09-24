@@ -1,5 +1,4 @@
 import WalkingWorker from "../components/walking_worker";
-
 function Home() {
   return (
     <div className="content home">
@@ -54,7 +53,6 @@ function Home() {
             <li>Optical Character Recognition System for Mandatory Energy Efficiency Labelling Scheme (MEELS AI)</li>
           </ol>
           <p><strong>Main Duties:</strong> project administrator, SRAA management, tendering and procurement, system enhancement and development, system administration, budget and payment administration, communication and negotiation among B/Ds, contractors, internal sub-divisions and vendors, staff training and management, and sub-divisional funds and budget administration.</p>
-
           <h4>City University of Hong Kong — Research Assistant (Oct 2019 – May 2020)</h4>
           <p>Researched and developed the "gypsum block laying robot for the construction industry" — a government-funded project with building services and construction partners, building robot systems for 21st-century construction demand.</p>
           <h4>Horizon Software Asia Ltd. — Client Services Engineer Trainee (Mar – Jun 2019)</h4>
@@ -107,5 +105,4 @@ function Home() {
     </div>
   );
 }
-
 export default Home;

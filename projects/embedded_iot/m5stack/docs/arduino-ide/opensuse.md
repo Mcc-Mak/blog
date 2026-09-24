@@ -1,9 +1,7 @@
 Installation instructions for openSUSE
 ======================================
-
 - Install the latest Arduino IDE from [arduino.cc](https://www.arduino.cc/en/Main/Software).
 - Open Terminal and execute the following command (copy->paste and hit enter):
-
   ```bash
   sudo usermod -a -G dialout $USER && \
   if [ `python --version 2>&1 | grep '2.7' | wc -l` = "1" ]; then \

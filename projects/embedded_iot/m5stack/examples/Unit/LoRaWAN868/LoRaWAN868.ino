@@ -1,6 +1,5 @@
 #include "M5Stack.h"
 #include "freertos/queue.h"
-
 String waitRevice()
 {
     String recvStr;
@@ -11,23 +10,18 @@ String waitRevice()
     Serial.println(recvStr);
     return recvStr;
 }
-
 uint16_t ypos = 55;
-
 void drawLineStr(String str, uint16_t color)
 {
     M5.Lcd.setTextColor(color);
     M5.Lcd.drawString(str, 10, ypos, 4);
     ypos += 32;
 }
-
-
 void sendATCMD(String cmdStr)
 {
     Serial2.print(cmdStr);
     delay(10);
 }
-
 int sendATCMDAndRevice(String cmdStr)
 {
     Serial2.print(cmdStr);
@@ -43,7 +37,6 @@ int sendATCMDAndRevice(String cmdStr)
         return -1;
     }
 }
-
 void setup()
 {
     M5.begin();
@@ -51,7 +44,6 @@ void setup()
     Serial2.flush();
     delay(100);
     //xTaskCreate(serialTask, "serialTask", 1024 * 2, (void *)0, 4, nullptr);
-    
     M5.Lcd.fillRect(0, 0, 320, 240, TFT_BLACK);
     M5.Lcd.fillRect(0, 0, 320, 40, TFT_WHITE);
     M5.Lcd.setTextColor(TFT_BLACK);
@@ -59,7 +51,6 @@ void setup()
     M5.Lcd.drawString("COMX-LoraWan(868) TEST", 160, 10, 4);
     M5.Lcd.setTextDatum(TL_DATUM);
     M5.Lcd.setTextColor(TFT_WHITE);
-
     sendATCMD("AT?\r");
     delay(100);
     Serial2.flush();
@@ -78,7 +69,6 @@ void setup()
     sendATCMDAndRevice("AT+CWORKMODE=2\r");
     sendATCMDAndRevice("AT+CNBTRIALS=0,5\r");
     sendATCMDAndRevice("AT+CNBTRIALS=1,5\r");
-
     // TX Freq
     // 868.1 - SF7BW125 to SF12BW125
     // 868.3 - SF7BW125 to SF12BW125 and SF7BW250
@@ -89,17 +79,12 @@ void setup()
     // 867.7 - SF7BW125 to SF12BW125
     // 867.9 - SF7BW125 to SF12BW125
     // 868.8 - FSK
-
     sendATCMDAndRevice("AT+CFREQBANDMASK=0001\r");
-
     //869.525 - SF9BW125 (RX2)              | 869525000
     //sendATCMDAndRevice("AT+CRXP=0,0,869525000\r");
-
     sendATCMDAndRevice("AT+CSAVE\r");
-    
     sendATCMDAndRevice("AT+CJOIN=1,0,10,8\r");
 }
-
 enum systemstate
 {
     kIdel = 0,
@@ -109,12 +94,10 @@ enum systemstate
     kEnd,
 };
 int system_fsm = kIdel;
-
 int loraWanSendNUM = -1;
 int loraWanSendCNT = -1;
 int loraWanupLinkCNT = 0;
 int loraWanupLinkReviceCNT = 0;
-
 void loop()
 {
     String recvStr = waitRevice();
@@ -144,7 +127,6 @@ void loop()
             //system_fsm = kEnd;
             char strbuff[128];
             loraWanupLinkReviceCNT ++;
-
             //if(( loraWanSendCNT < 5 )&&( loraWanSendNUM == 8 ))
             //{
             //    loraWanupLinkReviceCNT ++;
@@ -170,7 +152,6 @@ void loop()
     else if(recvStr.indexOf("OK+SEND") != -1)
     {
         String snednum = recvStr.substring(8);
-        
         //Serial.printf(" [ INFO ] SEND NUM %s \r\n",snednum.c_str());
         loraWanSendNUM = snednum.toInt();
     }
@@ -188,24 +169,18 @@ void loop()
         M5.Lcd.fillRect(0,183,320,32,TFT_BLACK);
         M5.Lcd.setTextColor(TFT_RED);
         M5.Lcd.drawString(strbuff, 10, 183, 4);
-
         delay(500);
-
         system_fsm = kSending;
     }
     else if(recvStr.indexOf("+CLINKCHECK:") != -1)
     {
         String checkStr = recvStr.substring(String("+CLINKCHECK:").length());
-
         char strbuff[128];
         sprintf(strbuff,"%s (%d/%d)",checkStr.c_str(),loraWanupLinkReviceCNT,loraWanupLinkCNT);
-
         M5.Lcd.fillRect(0,183,320,32,TFT_BLACK);
         M5.Lcd.setTextColor(TFT_GREEN);
         M5.Lcd.drawString(strbuff, 10, 183, 4);
-
     }
-
     if (system_fsm == kSending)
     {
         //drawLineStr("LoraWan Sending", TFT_WHITE);
@@ -216,7 +191,6 @@ void loop()
         loraWanupLinkCNT ++;
         system_fsm = kWaitSend;
     }
-
     //if (M5.BtnA.wasPressed())
     //{
     //    sendATCMDAndRevice("AT+CLINKCHECK=1\r");
@@ -232,7 +206,6 @@ void loop()
     //    sendATCMDAndRevice("AT+DRX?\r");
     //    delay(100);
     //}
-    
     delay(10);
     M5.update();
 }

@@ -1,7 +1,6 @@
 // Created by http://oleddisplay.squix.ch/ Consider a donation
 // In case of problems make sure that you are using the font file with the correct version!
 const uint8_t Orbitron_Light_24Bitmaps[] PROGMEM = {
-
 	// Bitmap Data:
 	0x00, // ' '
 	0xFF,0xFF,0xFF,0x03,0xC0, // '!'

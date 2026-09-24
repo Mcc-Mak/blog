@@ -9,13 +9,11 @@
 *******************************************************************************
 */
 #include <M5Stack.h>
-
 // After M5Core is started or reset
 // the program in the setUp () function will be run, and this part will only be run once.
 void setup() {
   M5.begin(); //Init M5Core
   M5.Power.begin(); //Init Power module
-
   M5.Lcd.fillScreen(WHITE); // Set the screen background color to white
   delay(500); //Delay 500ms
   M5.Lcd.fillScreen(RED);
@@ -26,12 +24,10 @@ void setup() {
   delay(500);
   M5.Lcd.fillScreen(BLACK);
   delay(500);
-
   M5.Lcd.setCursor(10, 10); // Move the cursor position to (x,y)
   M5.Lcd.setTextColor(WHITE); // Set the font color to white,
   M5.Lcd.setTextSize(1);  // Set the font size
   M5.Lcd.printf("Display Test!");  // Serial output format string
-
   // draw graphic
   delay(1000);
   M5.Lcd.drawRect(100, 100, 50, 50, BLUE);  // Draw a 50x50 blue rectangle wireframe at (x,y)
@@ -46,12 +42,9 @@ void setup() {
   delay(1000);
   M5.Lcd.fillTriangle(30, 30, 180, 100, 80, 150, YELLOW); // Construct a triangle with (x1,y1) (x2,y2) (x3,y3) as its vertices
 }
-
 //After the program in setup() runs, it runs the program in loop()
 //The loop() function is an infinite loop in which the program runs repeatedly
 void loop(){
-
   M5.Lcd.fillTriangle(random(M5.Lcd.width()-1), random(M5.Lcd.height()-1), random(M5.Lcd.width()-1), random(M5.Lcd.height()-1), random(M5.Lcd.width()-1), random(M5.Lcd.height()-1), random(0xfffe));
-
   M5.update();  //Read the press state of the key
 }

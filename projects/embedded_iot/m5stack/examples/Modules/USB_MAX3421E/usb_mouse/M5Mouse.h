@@ -1,7 +1,5 @@
 #include <hidboot.h>
-
 int mou_px, mou_py, mou_button;
-
 class MouseRptParser:public MouseReportParser{
 protected:
          void OnMouseMove     (MOUSEINFO *mi);
@@ -15,22 +13,18 @@ protected:
 void SendToBT(MOUSEINFO *mi)
 {
     byte  Button=0;
-      
     if (mi->bmLeftButton)
       Button |= BIT0;
     else
       Button & !BIT0;
-       
      if (mi->bmRightButton)
       Button |= BIT1;
     else
       Button & !BIT1;
-       
      if (mi->bmMiddleButton)
       Button |= BIT2;
     else
       Button & !BIT2;
-
       mou_px = mi->dX;
       mou_py = mi->dY;
       mou_button = Button;
@@ -42,7 +36,6 @@ void SendToBT(MOUSEINFO *mi)
     Serial.println(mi->dY, DEC);
     Serial.println(Button,DEC);
    // */
-    
     /*
     Serial.write(0x08);  //BYTE1     
     Serial.write(0x00);  //BYTE2

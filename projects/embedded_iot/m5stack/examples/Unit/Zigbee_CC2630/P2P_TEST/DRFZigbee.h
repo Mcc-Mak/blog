@@ -1,20 +1,15 @@
 #ifndef _DRFZIGBEE_H_
 #define _DRFZIGBEE_H_
-
 #include "Arduino.h"
 #include "byteArray.h"
 #include <initializer_list>
 #include <map>
-
 #define ZIGBEE_DEBUG
-
 #define ZIGBEE_CMD_LINKMODULE   {0x04,0x44,0x54,0x4b,0x52,0x46}
 #define ZIGBEE_CMD_READPARM     {0x0E,0x44,0x54,0x4b,0x52,0x46}
 #define ZIGBEE_CMD_GETNODERSSI  {0x0c,0x44,0x54,0x4b,0x52,0x46}
-
 class DRFZigbee
 {
-
 public:
     typedef struct zigbee_arg {
         union {
@@ -32,7 +27,6 @@ public:
                 uint16_t    main_res1;
                 uint8_t     main_ATN;
                 uint8_t     main_mac[8];
-
                 uint8_t     preset_pointType;
                 uint16_t    preset_PANID;
                 uint8_t     preset_channel;
@@ -45,7 +39,6 @@ public:
                 uint8_t     preset_uartCheck;
                 uint16_t    preset_res1;
                 uint8_t     preset_ATN;
-
                 uint16_t    shortAddr;
                 uint8_t     res3;
                 uint8_t     encryption;
@@ -55,23 +48,19 @@ public:
         };
         zigbee_arg():main_res0(0xbbaa),main_res1(0xa605),preset_res0(0xddcc),preset_res1(0xa605),res3(0x01){}
     }zigbee_arg_t;
-
     typedef struct reviceData
     {
         size_t length;
         uint16_t addr;
         byteArray *array;
         uint16_t fromAddr;
-
     }reviceData_t;
-
     typedef struct nodeRSSI
     {
         uint8_t  routerLevel;
         uint16_t shortAddr;
         uint8_t  rssi;
     }nodeRSSI_t;
-
     typedef struct node
     {
         union {
@@ -92,37 +81,25 @@ public:
                 uint16_t __parentAddr,
                 uint8_t  __rssi):shortAddr(__shortAddr),cnt(__cnt),routerLevel(__routerLevel),type{__type},parentAddr(__parentAddr),rssi(__rssi){}
     }node_t;
-
-
-
 private:
     HardwareSerial *_uartp = nullptr;
-    
 public:
     DRFZigbee(/* args */){}
     ~DRFZigbee(){}
     void begin(HardwareSerial & uart){ _uartp = &uart;}
-
     void sendData(uint8_t cmd, const std::initializer_list<uint8_t> args);
-    
     int sendCMDAndWaitRevice(uint8_t cmd, byteArray &array, byteArray *reviceArray = nullptr, size_t timeout = 1000);
     int sendCMDAndWaitRevice(uint8_t cmd, const std::initializer_list<uint8_t> args, byteArray *reviceArray = nullptr, size_t timeout = 1000);
-
     int sendDataP2P(uint8_t mode,uint16_t addr,uint8_t *dataptr,size_t length);
     int sendDataP2P(uint8_t mode,uint16_t addr,byteArray &array);
     int sendDataP2P(uint8_t mode,uint16_t addr,const std::initializer_list<uint8_t> args);
-
     int getNetworksTopology();
-
     int linkMoudle();
     int rebootModule();
     int readModuleparm(zigbee_arg_t *parm);
     int setModuleparm(zigbee_arg_t &parm);
-
     int8_t getModuleRSSI(nodeRSSI_t *nodeRSSIPtr = nullptr);
-
     int reviceData(reviceData_t *revice,uint8_t type = kP2PCustomIDMode,size_t timeout = 1000);
-
     template <typename T> static T swap (const T &arg)
     {
         T reArg;
@@ -134,10 +111,8 @@ public:
         for( int i = 0; i < size; i++) { *cri = *cvi; ++cvi; --cri; }
         return reArg;
     }
-
 public:
     int lastErrorcode = kReviceOK;
-    
     enum errorlist{
         kReviceOK = 0,
         kTimeoutError = -1,
@@ -146,13 +121,11 @@ public:
         kPramFormatError = -4,
         kPointerisnullptr = -5,
     };
-
     enum{
         kCoordinator = 1,
         kRouter = 2,
         kEndDevice = 3,
     };
-
     enum{
         kTransparent = 1,
         kCustom = 2,
@@ -160,7 +133,6 @@ public:
         kMACAddr = 4,
         kN2Ntransmission = 5,
     };
-
     enum {
         kBand_1200 = 1,
         kBand_2400,
@@ -171,22 +143,17 @@ public:
         kBand_57600,
         kBand_115200,
     };
-
     enum{
         kANTOB = 0,
         kANTEXP,
     };
-    
     std::map<int,node> nodeList;
-
     enum{
         kP2PShortAddrMode = 0xfd,
         kP2PCustomIDMode = 0xed,
     };
 };
-
 #endif
-
 /******
  * {
   "ProductKey": "a1vvwhzDkfc",

@@ -1,23 +1,18 @@
 /*
   BMP280.cpp
-  
   Bosch BMP280 pressure sensor library for the Arduino microcontroller.
   This library uses I2C connection.
   Uses floating-point equations from BMP280 datasheet.
   modified by mhafuzul islam
   version 1.01     16/9/2014 initial version
-  
   Our example code uses the "pizza-eating" license. You can do anything
   you like with this code. No really, anything. If you find it useful,
   buy me italian pizza someday.
 */
-
 #include "BMP280.h"
 #include <Wire.h>
 #include <stdio.h>
 #include <math.h>
-
-
 BMP280::BMP280()
 {
   //do nothing
@@ -30,22 +25,17 @@ char BMP280::begin(int sdaPin, int sclPin)
   Wire.begin(sdaPin,sclPin);
   return (readCalibration());
 }
-
 char BMP280::begin() 
 {
-  
   // Start up the Arduino's "wire" (I2C) library:
   Wire.begin();
   return (readCalibration());
 }
-
 // The BMP280 includes factory calibration data stored on the device.
 // Each device has different numbers, these must be retrieved and
 // used in the calculations when taking measurements.
-
 // Retrieve calibration data from device:
 char BMP280::readCalibration() {
-  
   if (    
     readUInt(0x88, dig_T1) &&
     readInt(0x8A, dig_T2)  &&
@@ -104,17 +94,14 @@ char BMP280::readCalibration() {
   else 
     return (0);
 }
-
 /*
 **  Read a signed integer (two bytes) from device
 **  @param : address = register to start reading (plus subsequent register)
 **  @param : value   = external variable to store data (function modifies value)
 */
 char BMP280::readInt(char address, double &value)
-
 {
   unsigned char data[2];  //char is 4bit,1byte
-
   data[0] = address;
   if (readBytes(data,2))
   {
@@ -129,7 +116,6 @@ char BMP280::readInt(char address, double &value)
 **  @param : address = register to start reading (plus subsequent register)
 **  @param : value   = external variable to store data (function modifies value)
 */
-
 char BMP280::readUInt(char address, double &value)
 {
   unsigned char data[2];  //4bit
@@ -147,11 +133,9 @@ char BMP280::readUInt(char address, double &value)
 ** @param : value  = external array to hold data. Put starting register in values[0].
 ** @param : length = number of bytes to read
 */
-
 char BMP280::readBytes(unsigned char *values, char length)
 {
   char x;
-
   Wire.beginTransmission(BMP280_ADDR);
   Wire.write(values[0]);
   error = Wire.endTransmission();
@@ -182,12 +166,10 @@ char BMP280::writeBytes(unsigned char *values, char length)
   else
     return(0);
 }
-
 short BMP280::getOversampling(void)
 {
   return oversampling;
 }
-
 char BMP280::setOversampling(short oss)
 {
   oversampling = oss;
@@ -199,12 +181,9 @@ char BMP280::setOversampling(short oss)
 ** @returns : delay in ms to wait, or 0 if I2C error.
 */
 char BMP280::startMeasurment(void)
-
 {
   unsigned char data[2], result, delay;
-  
   data[0] = BMP280_REG_CONTROL;
-
   switch (oversampling)
   {
     case 0:
@@ -248,7 +227,6 @@ char BMP280::startMeasurment(void)
   else
     return(0); // or return 0 if there was a problem communicating with the BMP
 }
-
 /*
 **  Get the uncalibrated pressure and temperature value.
 **  @param : uP = stores the uncalibrated pressure value.(20bit)
@@ -258,9 +236,7 @@ char BMP280::getUnPT(double &uP, double &uT)
 {
   unsigned char data[6];
   char result;
-  
   data[0] = BMP280_REG_RESULT_PRESSURE; //0xF7 
-
   result = readBytes(data, 6); // 0xF7; xF8, 0xF9, 0xFA, 0xFB, 0xFC
   if (result) // good read
   {
@@ -306,7 +282,6 @@ char BMP280::getTemperatureAndPressure(double &T,double &P)
   }
   else 
     error = 1;
-  
   return (9);
 }
 /*
@@ -318,7 +293,6 @@ char BMP280::calcTemperature(double &T, double &adc_T)
 //
 {
   //Serial.print("adc_T = "); Serial.println(adc_T,DEC);
-    
   double var1 = (adc_T/16384.0 - dig_T1/1024.0)*dig_T2;
   double var2 = ((adc_T/131072.0 - dig_T1/8192.0)*(adc_T/131072.0 - dig_T1/8192.0))*dig_T3;
   t_fine = var1+var2;
@@ -332,9 +306,7 @@ char BMP280::calcTemperature(double &T, double &adc_T)
   Serial.print(" ");
   Serial.println(T);
 #endif
-  
   if(T>100 || T <-100)return 0;
-  
   return (1);
 }
 /*
@@ -346,7 +318,6 @@ char BMP280::calcPressure(double &P,double uP)
 {
   //char result;
   double var1 , var2 ;
-  
   var1 = (t_fine/2.0) - 64000.0;
 #ifdef _debugSerial
   Serial.print("var1 = ");Serial.println(var1,2);
@@ -359,12 +330,10 @@ char BMP280::calcPressure(double &P,double uP)
 #ifdef _debugSerial
   Serial.print("var2 = ");Serial.println(var2,2);
 #endif
-    
   var2 = (var2/4.0)+((dig_P4)*65536.0);
 #ifdef _debugSerial
   Serial.print("var2 = ");Serial.println(var2,2);
 #endif
-    
   var1 = (dig_P3 * var1 * var1/524288.0 + dig_P2 * var1) / 524288.0;
 #ifdef _debugSerial
   Serial.print("var1 = ");Serial.println(var1,2);
@@ -373,22 +342,18 @@ char BMP280::calcPressure(double &P,double uP)
 #ifdef _debugSerial
   Serial.print("var1 = ");Serial.println(var1,2);
 #endif
-    
   P = 1048576.0- uP;
 #ifdef _debugSerial
   Serial.print("p = ");Serial.println(p,2);
 #endif
-    
   P = (P-(var2/4096.0))*6250.0/var1 ; //overflow
 #ifdef _debugSerial
   Serial.print("p = ");Serial.println(p,2); 
 #endif
-    
   var1 = dig_P9*P*P/2147483648.0; //overflow
 #ifdef _debugSerial
   Serial.print("var1 = ");Serial.println(var1,2);
 #endif
-
   var2 = P*dig_P8/32768.0;
 #ifdef _debugSerial
   Serial.print("var2 = ");Serial.println(var2,2);
@@ -397,16 +362,10 @@ char BMP280::calcPressure(double &P,double uP)
 #ifdef _debugSerial
   Serial.print("p = ");Serial.println(p,2);
 #endif
-    
   P = P/100.0 ;
-  
   if(P>1200.0 || P < 800.0)return (0);
   return (1);
 }
-
-
-
-
 double BMP280::sealevel(double P, double A)
 // Given a pressure P (mb) taken at a specific altitude (meters),
 // return the equivalent pressure (mb) at sea level.
@@ -414,16 +373,12 @@ double BMP280::sealevel(double P, double A)
 {
   return(P/pow(1-(A/44330.0),5.255));
 }
-
-
 double BMP280::altitude(double P, double P0)
 // Given a pressure measurement P (mb) and the pressure at a baseline P0 (mb),
 // return altitude (meters) above baseline.
 {
   return(44330.0*(1-pow(P/P0,1/5.255)));
 }
-
-
 char BMP280::getError(void)
   // If any library command fails, you can retrieve an extended
   // error code using this command. Errors are from the wire library: 

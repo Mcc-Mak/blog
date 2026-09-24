@@ -1,9 +1,7 @@
 /*
     Description: Control 4 relays and demonstrate the asynchronous control relay LED
 */
-
 #include <M5Stack.h>
-
 /*-----------------------------------------------------------------------------*/
 // |RELAY control reg          | 0x10
 // |-----------------------------------------------------------------------------
@@ -18,7 +16,6 @@
 //                             | LED1| LED2| LED3| LED4| RLY1| RLY2| RLY3| RLY4|
 //
 /*-------------------------------------------------------------------------------*/
-
 void WriteRelayReg( int regAddr, int data )
 {
     Wire.beginTransmission(0x26);
@@ -27,7 +24,6 @@ void WriteRelayReg( int regAddr, int data )
     Wire.endTransmission();
     Serial.printf("[ W ] %02X : %02X. \r\n", regAddr, data);
 }
-
 int readRelayReg(int regAddr)
 {
     Wire.beginTransmission(0x26);
@@ -38,7 +34,6 @@ int readRelayReg(int regAddr)
     Serial.printf("[ R ] %02X : %02X. \r\n", regAddr, data);
     return data;
 }
-
 void WriteRelayNumber( int number, int state )
 {
     int StateFromDevice = readRelayReg(0x11);
@@ -52,7 +47,6 @@ void WriteRelayNumber( int number, int state )
     }
     WriteRelayReg(0x11,StateFromDevice);
 }
-
 void setup() {
   // put your setup code here, to run once:
   M5.begin(true, true, true, true);
@@ -75,11 +69,8 @@ void setup() {
   WriteRelayReg(0x11,0);
   //WriteRelayNumber(0,0);
 }
-
 int count_i = 0;
 bool flag_led, flag_relay = false;
-
-
 void loop() {
     if(M5.BtnA.wasPressed()){
       M5.Lcd.fillRect(160, 50, 100, 20, TFT_BLACK);

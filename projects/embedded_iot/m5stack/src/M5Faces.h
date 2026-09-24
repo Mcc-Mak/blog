@@ -2,9 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 #ifndef M5Faces_h
   #define M5Faces_h
-
   #include "M5Stack.h"
-
   class M5Faces {
     public:
       M5Faces();
@@ -13,5 +11,4 @@
       bool kbhit(void);
     private:
   };
-
 #endif

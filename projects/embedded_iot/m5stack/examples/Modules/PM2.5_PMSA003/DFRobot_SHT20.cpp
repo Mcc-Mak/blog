@@ -1,11 +1,9 @@
 #include "DFRobot_SHT20.h"
-
 void DFRobot_SHT20::initSHT20(TwoWire &wirePort)
 {
     i2cPort = &wirePort;
     i2cPort->begin();
 }
-
 uint16_t DFRobot_SHT20::readValue(byte cmd)
 {
     i2cPort->beginTransmission(SLAVE_ADDRESS);
@@ -30,7 +28,6 @@ uint16_t DFRobot_SHT20::readValue(byte cmd)
     }
     return rawValue & 0xFFFC;
 }
-
 float DFRobot_SHT20::readHumidity(void)
 {
     uint16_t rawHumidity = readValue(TRIGGER_HUMD_MEASURE_NOHOLD);
@@ -41,7 +38,6 @@ float DFRobot_SHT20::readHumidity(void)
     float rh = tempRH - 6.0;
     return (rh);
 }
-
 float DFRobot_SHT20::readTemperature(void)
 {
     uint16_t rawTemperature = readValue(TRIGGER_TEMP_MEASURE_NOHOLD);
@@ -52,7 +48,6 @@ float DFRobot_SHT20::readTemperature(void)
     float realTemperature = tempTemperature - 46.85;
     return (realTemperature);
 }
-
 void DFRobot_SHT20::setResolution(byte resolution)
 {
     byte userRegister = readUserRegister();
@@ -61,7 +56,6 @@ void DFRobot_SHT20::setResolution(byte resolution)
     userRegister |= resolution;
     writeUserRegister(userRegister);
 }
-
 byte DFRobot_SHT20::readUserRegister(void)
 {
     byte userRegister;
@@ -72,7 +66,6 @@ byte DFRobot_SHT20::readUserRegister(void)
     userRegister = i2cPort->read();
     return (userRegister);
 }
-
 void DFRobot_SHT20::writeUserRegister(byte val)
 {
     i2cPort->beginTransmission(SLAVE_ADDRESS);
@@ -80,7 +73,6 @@ void DFRobot_SHT20::writeUserRegister(byte val)
     i2cPort->write(val);
     i2cPort->endTransmission();
 }
-
 byte DFRobot_SHT20::checkCRC(uint16_t message_from_sensor, uint8_t check_value_from_sensor)
 {
     uint32_t remainder = (uint32_t)message_from_sensor << 8;
@@ -94,7 +86,6 @@ byte DFRobot_SHT20::checkCRC(uint16_t message_from_sensor, uint8_t check_value_f
     }
     return (byte)remainder;
 }
-
 void DFRobot_SHT20::showReslut(const char *prefix, int val)
 {
     Serial.print(prefix);
@@ -104,7 +95,6 @@ void DFRobot_SHT20::showReslut(const char *prefix, int val)
         Serial.println("no");
     }
 }
-
 void DFRobot_SHT20::checkSHT20(void)
 {
     byte reg = readUserRegister();

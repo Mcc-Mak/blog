@@ -1,12 +1,7 @@
 """Mathematical algorithms for stock price analysis (volatility, regression, return rate)."""
-
 import numpy as np
-
-
 # std, mean, range (max, min spread)
 # Volatility
-
-
 class ALGORITHMS(object):
     def volatility(self, x, y):
         # variance, e.g. y = price data, x = samples
@@ -16,7 +11,6 @@ class ALGORITHMS(object):
         volatility = variance
         # daily to annualized volatility = variance * np.sqrt(252)
         return volatility
-
     def regression(self, x, y):  # y here is the data set
         try:
             y = np.array(y)
@@ -33,13 +27,10 @@ class ALGORITHMS(object):
         slope = b1
         reg_data = [reg_x, reg_y, slope]
         return reg_data
-
     def return_rate(self, open_price, close_price):
         return_rate_matrix = (close_price - open_price) / open_price
         return_rate_matrix *= 100  # return the return rate in percentage
         return return_rate_matrix
-
-
 if __name__ == "__main__":
     algo = ALGORITHMS()
     print(algo.regression(np.arange(0, 100), np.arange(0, 100)))

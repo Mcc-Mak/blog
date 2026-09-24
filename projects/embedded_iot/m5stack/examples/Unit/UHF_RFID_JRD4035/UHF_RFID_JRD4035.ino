@@ -1,13 +1,9 @@
 #include <M5Stack.h>
 #include "RFID_command.h"
-
 #include "TFTTerminal.h"
 TFT_eSprite TerminalBuff = TFT_eSprite(&M5.Lcd);
 TFTTerminal terminal(&TerminalBuff);
-
 UHF_RFID RFID;
-
-
 String comd = " ";
 CardpropertiesInfo card;
 ManyInfo cards;
@@ -16,31 +12,24 @@ CardInformationInfo Cardinformation;
 QueryInfo Query;
 ReadInfo Read;
 TestInfo Test;
-
-
 void setup()
 {
   M5.begin();
-
   RFID._debug = 0;
   Serial2.begin(115200, SERIAL_8N1, 16, 17);//16.17
   if (RFID._debug == 1)Serial.begin(115200, SERIAL_8N1, 21, 22);
   M5.Lcd.fillRect(0, 0, 340, 280, BLACK);
-
   TerminalBuff.createSprite(280,200);
   terminal.setGeometry(20,30,300,200);
   terminal.setFontsize(1);
-
 // UHF_RFID set UHF_RFID设置
   RFID.Set_transmission_Power(2600);
   RFID.Set_the_Select_mode();
   RFID.Delay(100);
   RFID.Readcallback();
   RFID.clean_data();
-  
 // Prompted to connect to UHF_RFID 提示连接UHF_RFID
   terminal.println("Please connect UHF_RFID to Port C");
-  
 // Determined whether to connect to UHF_RFID 判断是否连接UHF_RFID
   String soft_version;
   soft_version = RFID.Query_software_version();
@@ -53,12 +42,9 @@ void setup()
     RFID.Delay(150);
     soft_version = RFID.Query_software_version();
   }
-
 // The prompt will be RFID card close 提示将RFID卡靠近
   terminal.println("Please approach the RFID card you need to use");
-  
 }
-
 void loop()
 {
  // breathing light 呼吸灯
@@ -66,12 +52,10 @@ void loop()
  RFID.Delay(150);
  M5.Lcd.fillCircle(310, 10, 6, BLACK);
  RFID.Delay(150);
-
 //  A read/write operation specifies a particular card 读写操作需指定某一张卡
 //  comd = RFID.Set_the_select_parameter_directive("30751FEB705C5904E3D50D70");
 //  terminal.println(comd);
 //  RFID.clean_data();
-
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  Query the card information once 查询一次卡的信息例子
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -92,10 +76,7 @@ void loop()
    }
  }
    RFID.clean_data(); //Empty the data after using it 使用完数据后要将数据清空
-  
-
 /*Other feature usage examples 其他功能使用例子*/
-
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Read multiple RFID cards at once 一次读取多张RFID卡
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -112,7 +93,6 @@ void loop()
 //  }
 //  terminal.println(" ");  
 //  RFID.clean_data();
-
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Used to get the SELECT parameter 用于获取Select参数
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -127,7 +107,6 @@ void loop()
 //    terminal.println(" ");
 //  }
 //    RFID.clean_data();
-
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Used to change the PSF bit of the NXP G2X label 用于改变 NXP G2X 标签的 PSF 位
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -145,8 +124,6 @@ void loop()
 //    terminal.println(" ");
 //   }
 //    RFID.clean_data();
-  
-
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Used to get the Query parameters 用于获取Query参数
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -164,8 +141,6 @@ void loop()
 //    terminal.println(" ");
 //  }
 //  RFID.clean_data();
-
-
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Used to get the Query parameters 用于读取接收解调器参数
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

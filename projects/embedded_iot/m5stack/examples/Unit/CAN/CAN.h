@@ -25,17 +25,13 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 #ifndef __DRIVERS_CAN_H__
 #define __DRIVERS_CAN_H__
-
 #include <stdint.h>
 #include "CAN_config.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 /**
  * \brief CAN frame type (standard/extended)
  */
@@ -43,7 +39,6 @@ typedef enum {
 	CAN_frame_std = 0, /**< Standard frame, using 11 bit identifer. */
 	CAN_frame_ext = 1  /**< Extended frame, using 29 bit identifer. */
 } CAN_frame_format_t;
-
 /**
  * \brief CAN RTR
  */
@@ -51,7 +46,6 @@ typedef enum {
 	CAN_no_RTR = 0, /**< No RTR frame. */
 	CAN_RTR = 1     /**< RTR frame. */
 } CAN_RTR_t;
-
 /** \brief Frame information record type */
 typedef union {
 	uint32_t U; /**< \brief Unsigned access */
@@ -63,7 +57,6 @@ typedef union {
 		unsigned int reserved_24 : 24; /**< \brief \internal Reserved */
 	} B;
 } CAN_FIR_t;
-
 /** \brief CAN Frame structure */
 typedef struct {
 	CAN_FIR_t FIR;  /**< \brief Frame information record*/
@@ -74,12 +67,10 @@ typedef struct {
 		uint64_t u64;    /**< \brief Payload u64 access*/
 	} data;
 } CAN_frame_t;
-
 typedef enum {
 	Dual_Mode=0, 							/**< \brief The dual acceptance filter option is enabled (two filters, each with the length of 16 bit are active) */
 	Single_Mode=1 							/**< \brief The single acceptance filter option is enabled (one filter with the length of 32 bit is active) */
 } CAN_filter_mode_t;
-
 /** \brief CAN Filter structure */
 typedef struct {
     CAN_filter_mode_t 	FM:1;          		/**< \brief [0:0] Filter Mode */
@@ -92,14 +83,12 @@ typedef struct {
 	uint8_t 			AMR2;				/**< \brief Acceptance Mask Register AMR2 */
 	uint8_t 			AMR3;				/**< \brief Acceptance Mask Register AMR3 */
 } CAN_filter_t;
-
 /**
  * \brief Initialize the CAN Module
  *
  * \return 0 CAN Module had been initialized
  */
 int CAN_init(void);
-
 /**
  * \brief Send a can frame
  *
@@ -107,14 +96,12 @@ int CAN_init(void);
  * \return  0 Frame has been written to the module
  */
 int CAN_write_frame(const CAN_frame_t *p_frame);
-
 /**
  * \brief Stops the CAN Module
  *
  * \return 0 CAN Module was stopped
  */
 int CAN_stop(void);
-
 /**
  * \brief Config CAN Filter, must call before CANInit()
  *
@@ -122,10 +109,7 @@ int CAN_stop(void);
  * \return  0 CAN Filter had been initialized
  */
 int CAN_config_filter(const CAN_filter_t* p_filter);
-
-
 #ifdef __cplusplus
 }
 #endif
-
 #endif

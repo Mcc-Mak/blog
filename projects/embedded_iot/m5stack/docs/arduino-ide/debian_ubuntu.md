@@ -1,9 +1,7 @@
 Installation instructions for Debian / Ubuntu OS
 =================================================
-
 - Install latest Arduino IDE from [arduino.cc](https://www.arduino.cc/en/Main/Software)
 - Open Terminal and execute the following command (copy->paste and hit enter):
-
   ```bash
   sudo usermod -a -G dialout $USER && \
   sudo apt-get install git && \
@@ -19,11 +17,7 @@ Installation instructions for Debian / Ubuntu OS
   python2 get.py
   ```
 - Restart Arduino IDE
-
-
-
 - If you have Arduino.app installed to /Applications/, modify the installation as follows, beginning at `mkdir -p ~/Arduino...`:
-
 ```bash
   cd /Applications/Arduino_*/Contents/java/hardware/
   mkdir -p espressif && \

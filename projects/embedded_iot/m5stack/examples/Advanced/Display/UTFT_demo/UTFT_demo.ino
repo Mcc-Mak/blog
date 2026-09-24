@@ -3,21 +3,15 @@
 // web: http://www.henningkarlsen.com/electronics
 //
 /*
-
  This sketch uses the GLCD and font 2 only.
- 
  Make sure all the display driver and pin comnenctions are correct by
  editting the User_Setup.h file in the TFT_eSPI library folder.
-
  #########################################################################
  ###### DON'T FORGET TO UPDATE THE User_Setup.h FILE IN THE LIBRARY ######
  #########################################################################
  */
-
 #include <M5Stack.h>
-
 #define TFT_GREY 0x7BEF
-
 unsigned long runTime = 0;
 void setup()
 {
@@ -27,7 +21,6 @@ void setup()
   M5.Power.begin();
   // M5.Lcd.setRotation(1);
 }
-
 void loop()
 {
   randomSeed(millis());
@@ -39,19 +32,13 @@ void loop()
   runTime = millis();
 // Clear the screen and draw the frame
   M5.Lcd.fillScreen(TFT_BLACK);
-
-
   M5.Lcd.fillRect(0, 0, 319, 14,TFT_RED);
-
   M5.Lcd.fillRect(0, 226, 319, 14,TFT_GREY);
-
   M5.Lcd.setTextColor(TFT_BLACK,TFT_RED);
   M5.Lcd.drawCentreString("* TFT_eSPI *", 160, 4, 1);
   M5.Lcd.setTextColor(TFT_YELLOW,TFT_GREY);
   M5.Lcd.drawCentreString("Adapted by Bodmer", 160, 228,1);
-
   M5.Lcd.drawRect(0, 14, 319, 211, TFT_BLUE);
-
 // Draw crosshairs
   M5.Lcd.drawLine(159, 15, 159, 224,TFT_BLUE);
   M5.Lcd.drawLine(1, 119, 318, 119,TFT_BLUE);
@@ -59,7 +46,6 @@ void loop()
     M5.Lcd.drawLine(i, 117, i, 121,TFT_BLUE);
   for (int i=19; i<220; i+=10)
     M5.Lcd.drawLine(157, i, 161, i,TFT_BLUE);
-
 // Draw sin-, cos- and tan-lines  
   M5.Lcd.setTextColor(TFT_CYAN);
   M5.Lcd.drawString("Sin", 5, 15,2);
@@ -79,11 +65,8 @@ void loop()
   {
     M5.Lcd.drawPixel(i,119+(tan(((i*1.13)*3.14)/180)),TFT_YELLOW);
   }
-
   delay(1000);
-
   M5.Lcd.fillRect(1,15,317,209,TFT_BLACK);
-
   M5.Lcd.drawLine(159, 15, 159, 224,TFT_BLUE);
   M5.Lcd.drawLine(1, 119, 318, 119,TFT_BLUE);
 int col = 0;
@@ -105,11 +88,8 @@ int col = 0;
     M5.Lcd.drawPixel(x,y,TFT_BLUE);
     buf[x-1]=y;
   }
-
   delay(1000);
-
   M5.Lcd.fillRect(1,15,317,209,TFT_BLACK);
-
 // Draw some filled rectangles
   for (int i=1; i<6; i++)
   {
@@ -133,11 +113,8 @@ int col = 0;
     }
     M5.Lcd.fillRect(70+(i*20), 30+(i*20), 60, 60,col);
   }
-
   delay(1000);
-
   M5.Lcd.fillRect(1,15,317,209,TFT_BLACK);
-
 // Draw some filled, rounded rectangles
   for (int i=1; i<6; i++)
   {
@@ -161,11 +138,8 @@ int col = 0;
     }
     M5.Lcd.fillRoundRect(190-(i*20), 30+(i*20), 60,60, 3,col);
   }
-  
   delay(1000);
-
   M5.Lcd.fillRect(1,15,317,209,TFT_BLACK);
-
 // Draw some filled circles
   for (int i=1; i<6; i++)
   {
@@ -189,38 +163,27 @@ int col = 0;
     }
     M5.Lcd.fillCircle(100+(i*20),60+(i*20), 30,col);
   }
-  
   delay(1000);
-
   M5.Lcd.fillRect(1,15,317,209,TFT_BLACK);
-
 // Draw some lines in a pattern
-
   for (int i=15; i<224; i+=5)
   {
     M5.Lcd.drawLine(1, i, (i*1.44)-10, 223,TFT_RED);
   }
-
   for (int i=223; i>15; i-=5)
   {
     M5.Lcd.drawLine(317, i, (i*1.44)-11, 15,TFT_RED);
   }
-
   for (int i=223; i>15; i-=5)
   {
     M5.Lcd.drawLine(1, i, 331-(i*1.44), 15,TFT_CYAN);
   }
-
   for (int i=15; i<224; i+=5)
   {
     M5.Lcd.drawLine(317, i, 330-(i*1.44), 223,TFT_CYAN);
   }
-  
   delay(1000);
-
-
   M5.Lcd.fillRect(1,15,317,209,TFT_BLACK);
-
 // Draw some random circles
   for (int i=0; i<100; i++)
   {
@@ -229,11 +192,8 @@ int col = 0;
     r=random(30);
     M5.Lcd.drawCircle(x, y, r,random(0xFFFF));
   }
-
   delay(1000);
-
   M5.Lcd.fillRect(1,15,317,209,TFT_BLACK);
-
 // Draw some random rectangles
   for (int i=0; i<100; i++)
   {
@@ -249,12 +209,8 @@ int col = 0;
     }
     M5.Lcd.drawRect(x, y, x2-x, y2-y,random(0xFFFF));
   }
-
   delay(1000);
-
-
   M5.Lcd.fillRect(1,15,317,209,TFT_BLACK);
-
 // Draw some random rounded rectangles
   for (int i=0; i<100; i++)
   {
@@ -274,11 +230,8 @@ int col = 0;
     if((y2-y)<6) y2=y+6;
     M5.Lcd.drawRoundRect(x, y, x2-x,y2-y, 3,random(0xFFFF));
   }
-
   delay(1000);
-
   M5.Lcd.fillRect(1,15,317,209,TFT_BLACK);
-
  //randomSeed(1234);
  int colour = 0;
  for (int i=0; i<100; i++)
@@ -290,18 +243,14 @@ int col = 0;
     colour=random(0xFFFF);
     M5.Lcd.drawLine(x, y, x2, y2,colour);
   }
-
   delay(1000);
-
   M5.Lcd.fillRect(1,15,317,209,TFT_BLACK);
-
   // This test has been modified as it takes more time to calculate the random numbers
   // than to draw the pixels (3 seconds to produce 30,000 randoms)!
   for (int i=0; i<10000; i++)
   {
     M5.Lcd.drawPixel(2+random(316), 16+random(209),random(0xFFFF));
   }
-
   // Draw 10,000 pixels to fill a 100x100 pixel box
   // use the coords as the colour to produce the banding
   //byte i = 100;
@@ -311,15 +260,12 @@ int col = 0;
   //  //while (j--) M5.Lcd.drawPixel(i+110,j+70,0xFFFF);
   //}
   delay(1000);
-
   M5.Lcd.fillScreen(TFT_BLUE);
   M5.Lcd.fillRoundRect(80, 70, 239-80,169-70, 3,TFT_RED);
-  
   M5.Lcd.setTextColor(TFT_WHITE,TFT_RED);
   M5.Lcd.drawCentreString("That's it!", 160, 93,2);
   M5.Lcd.drawCentreString("Restarting in a", 160, 119,2);
   M5.Lcd.drawCentreString("few seconds...", 160, 132,2);
-
   runTime = millis()-runTime;
   M5.Lcd.setTextColor(TFT_GREEN,TFT_BLUE);
   M5.Lcd.drawCentreString("Runtime: (msecs)", 160, 210,2);
@@ -327,5 +273,3 @@ int col = 0;
   M5.Lcd.drawNumber(runTime, 160, 225,2);
   delay (5000);
 }
-
-

@@ -1,11 +1,8 @@
 import random
-
-
 # --- Sorting, Searching ---
 class Algorithms:
     def __init__(self):
         pass
-
     # --- Bubble Sort ---
     # Swap two elements and return the swapped pair
     def __swap(self, a, b):
@@ -13,16 +10,13 @@ class Algorithms:
         a = b
         b = tmp
         return (a, b)
-
     def bubblesort(self, nums):
         # Bubble the largest remaining value up to the end
         for _ in range(1, len(nums)):
             for j in range(0, len(nums) - 1):
                 if nums[j] > nums[j + 1]:
                     nums[j], nums[j + 1] = self.__swap(nums[j], nums[j + 1])
-
         return nums
-
     # --- Merge Sort ---
     def __merge(self, a, b):
         c = []
@@ -40,7 +34,6 @@ class Algorithms:
             c.append(b[0])
             del b[0]
         return c
-
     def mergesort(self, nums):
         n = len(nums)
         if n == 1:
@@ -52,7 +45,6 @@ class Algorithms:
         a = self.mergesort(a)
         b = self.mergesort(b)
         return self.__merge(a, b)
-
     # --- Selection Sort ---
     # Input: list
     # Output: list
@@ -70,7 +62,6 @@ class Algorithms:
             l[i] = MIN
             l[pos] = tmp
         return l
-
     # --- Binary Search ---
     # Input: int, int, list, int
     # Output: int
@@ -84,8 +75,6 @@ class Algorithms:
             return self.binarysearch(L, mid - 1, l, t)
         elif l[mid] < t:
             return self.binarysearch(mid + 1, R, l, t)
-
-
 # --- Test Zone ---
 if __name__ == "__main__":
     algo = Algorithms()

@@ -1,5 +1,4 @@
 """News sentiment scoring for stock headlines using VADER."""
-
 import os
 import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
@@ -9,7 +8,6 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import nltk
 import ssl
 nltk.download('vader_lexicon')
-
 # --- ssl workaround (allow unverified https context) ---
 try:
     _create_unverified_https_context = ssl._create_unverified_context
@@ -17,12 +15,9 @@ except AttributeError:
     pass
 else:
     ssl._create_default_https_context = _create_unverified_https_context
-
-
 class sentiments():
     def __init__(self):
         pass
-
     def get_news(self, tokens=["TSLA"]):
         # fetch news of each stock, e.g. finviz
         news_tables = {}
@@ -31,7 +26,6 @@ class sentiments():
             req = Request(url=url, headers={"User-Agent": "Chrome"})  # depends on the browser on the computer
             response = urlopen(req)
             html = BeautifulSoup(response, "html.parser")
-
             news_table = html.find(id="news-table")
             # data = []
             # date = ""
@@ -40,14 +34,12 @@ class sentiments():
             for x, j in enumerate(news_table.findAll('tr')):  # j => html element with <tr> tag, x => element index
                 text = j.a.get_text()
                 date_scrape = j.td.text.split()
-
                 if len(date_scrape) == 1:
                     time = date_scrape[0]
                 else:
                     date = date_scrape[0]
                     time = date_scrape[1]
                 news_list.append([token, date, time, text])
-
                 """date = j.td.text
                 news_title = j.a.text
                 print(date+news_title)
@@ -56,7 +48,6 @@ class sentiments():
                 """
             news_tables[token] = news_list
         return news_tables
-
     def get_sentiment_score(self, tokens=['TSLA']):
         # the sentiment score is between -1 to 1 (more negative to more positive)
         # input => tokens, output => df with sentiment score for news
@@ -73,16 +64,12 @@ class sentiments():
                 news_df['date'] = pd.to_datetime(news_df.date).dt.date
                 df_set.append(news_df)
             return df_set
-
         except:
             return df_set
-
-
 if __name__ == "__main__":
     s = sentiments()
     # news = s.get_news()
     sentiments = s.get_sentiment_score()  # input: [token1_code, token2_code ...]
     # print(news)
     print(sentiments[0])
-
 # Reference: https://nickmccullum.com/stock-market-sentiment-analysis-python/

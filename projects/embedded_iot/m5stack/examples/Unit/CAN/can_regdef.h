@@ -25,41 +25,32 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 #ifndef __DRIVERS_CAN_REGDEF_H_
 #define __DRIVERS_CAN_REGDEF_H_
-
 #include "CAN.h" //CAN_FIR_t
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 /** \brief Start address of CAN registers */
 #define MODULE_CAN ((volatile CAN_Module_t *) 0x3ff6b000)
-
 /** \brief Get standard message ID */
 #define _CAN_GET_STD_ID                                                                                                \
 	(((uint32_t) MODULE_CAN->MBX_CTRL.FCTRL.TX_RX.STD.ID[0] << 3) | (MODULE_CAN->MBX_CTRL.FCTRL.TX_RX.STD.ID[1] >> 5))
-
 /** \brief Get extended message ID */
 #define _CAN_GET_EXT_ID                                                                                                \
 	(((uint32_t) MODULE_CAN->MBX_CTRL.FCTRL.TX_RX.EXT.ID[0] << 21) |                                                   \
 	 (MODULE_CAN->MBX_CTRL.FCTRL.TX_RX.EXT.ID[1] << 13) | (MODULE_CAN->MBX_CTRL.FCTRL.TX_RX.EXT.ID[2] << 5) |          \
 	 (MODULE_CAN->MBX_CTRL.FCTRL.TX_RX.EXT.ID[3] >> 3))
-
 /** \brief Set standard message ID */
 #define _CAN_SET_STD_ID(x)                                                                                             \
 	MODULE_CAN->MBX_CTRL.FCTRL.TX_RX.STD.ID[0] = ((x) >> 3);                                                           \
 	MODULE_CAN->MBX_CTRL.FCTRL.TX_RX.STD.ID[1] = ((x) << 5);
-
 /** \brief Set extended message ID */
 #define _CAN_SET_EXT_ID(x)                                                                                             \
 	MODULE_CAN->MBX_CTRL.FCTRL.TX_RX.EXT.ID[0] = ((x) >> 21);                                                          \
 	MODULE_CAN->MBX_CTRL.FCTRL.TX_RX.EXT.ID[1] = ((x) >> 13);                                                          \
 	MODULE_CAN->MBX_CTRL.FCTRL.TX_RX.EXT.ID[2] = ((x) >> 5);                                                           \
 	MODULE_CAN->MBX_CTRL.FCTRL.TX_RX.EXT.ID[3] = ((x) << 3);
-
 /** \brief Interrupt status register */
 typedef enum {
 	__CAN_IRQ_RX = BIT(0),           /**< \brief RX Interrupt */
@@ -71,7 +62,6 @@ typedef enum {
 	__CAN_IRQ_ARB_LOST = BIT(6),     /**< \brief Arbitration lost interrupt */
 	__CAN_IRQ_BUS_ERR = BIT(7),      /**< \brief Bus error Interrupt */
 } __CAN_IRQ_t;
-
 /** \brief OCMODE options. */
 typedef enum {
 	__CAN_OC_BOM = 0b00, /**< \brief bi-phase output mode */
@@ -79,7 +69,6 @@ typedef enum {
 	__CAN_OC_NOM = 0b10, /**< \brief normal output mode */
 	__CAN_OC_COM = 0b11, /**< \brief clock output mode */
 } __CAN_OCMODE_t;
-
 /**
  * CAN controller (SJA1000).
  */
@@ -215,7 +204,6 @@ typedef struct {
 			unsigned int reserved_24 : 24; /**< \brief \internal Reserved  */
 		} B;
 	} TXERR;
-
 	union {
 		struct {
 			uint32_t CODE[4]; /**< \brief Acceptance Message ID */
@@ -271,9 +259,7 @@ typedef struct {
 	} CDR;
 	uint32_t IRAM[2];
 } CAN_Module_t;
-
 #ifdef __cplusplus
 }
 #endif
-
 #endif /* __DRIVERS_CAN_REGDEF_H_ */

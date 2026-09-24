@@ -5,35 +5,26 @@
     Connect RF433R/T to PortB (G26, G36), the transmitter end presses button A to transmit, 
     and the receiver end can view the received data through Serial.
 */
-
 #include "M5Stack.h"
 #include <driver/rmt.h>
-
 #define RF433RX
-
 #define RMT_TX_CHANNEL     RMT_CHANNEL_0
 #define RMT_RX_CHANNEL     RMT_CHANNEL_1
 #define RTM_TX_GPIO_NUM    26
 #define RTM_RX_GPIO_NUM    36
 #define RTM_BLOCK_NUM      1
-
 #define RMT_CLK_DIV         80    /*!< RMT counter clock divider */ 
 #define RMT_1US_TICKS (80000000 / RMT_CLK_DIV / 1000000)
 #define RMT_1MS_TICKS (RMT_1US_TICKS * 1000)
-
 rmt_item32_t rmtbuff[2048];
-
 #define T0H 	670
 #define T1H 	320
 #define T0L  	348
 #define T1L  	642
-
 #define RMT_CODE_H      {670,1,320,0}
 #define RMT_CODE_L      {348,1,642,0}
 #define RMT_START_CODE0 {4868,1,2469,0}
 #define RMT_START_CODE1 {1647,1,315,0}
-
-
 void initRMT()
 {
     #ifndef RF433RX
@@ -47,7 +38,6 @@ void initRMT()
     txconfig.tx_config.idle_output_en = true;
     txconfig.tx_config.idle_level = rmt_idle_level_t(0);
     txconfig.clk_div = RMT_CLK_DIV;			//时钟分频
-
     ESP_ERROR_CHECK(rmt_config(&txconfig));
     ESP_ERROR_CHECK(rmt_driver_install(txconfig.channel, 0, 0));
     #else
@@ -60,7 +50,6 @@ void initRMT()
     rxconfig.rx_config.filter_en = true;  //开启滤波器
     rxconfig.rx_config.filter_ticks_thresh = 200 * RMT_1US_TICKS; //滤波信号宽度100*1M = 100us
     rxconfig.rx_config.idle_threshold = 3 * RMT_1MS_TICKS;
-    
     ESP_ERROR_CHECK(rmt_config(&rxconfig));
     ESP_ERROR_CHECK(rmt_driver_install(rxconfig.channel, 2048, 0));
     #endif
@@ -70,7 +59,6 @@ uint8_t databuff1[5] = {0xdd,0x41,0x53,0x80,0x9f};
 uint8_t databuff2[5] = {0xdd,0x41,0x5a,0x80,0x96};
 uint8_t databuff3[5] = {0xdd,0x41,0x58,0x80,0x95};
 */
-
 uint8_t data[6] = {0xAA,0x55,0x01,0x02,0x03,0x04};
 void send(uint8_t* buff,size_t size)
 {
@@ -91,9 +79,7 @@ void send(uint8_t* buff,size_t size)
         ESP_ERROR_CHECK(rmt_wait_tx_done(RMT_TX_CHANNEL, portMAX_DELAY));
     }
 }
-
 void setup() {
-
     M5.begin();
     M5.Lcd.setRotation(1);
     M5.Lcd.fillRect(0,0,320,240,TFT_BLACK);
@@ -111,10 +97,8 @@ void setup() {
     #else
     M5.Lcd.print("Use Serial to view data"); 
     #endif
-
     //rf.begin<PT2262>(26,27).arg<int>(1000);
 }
-
 int parsedData(rmt_item32_t* item,size_t size,uint8_t* dataptr,size_t maxsize)
 {
     //if((item == nullptr)||(size < 4))return -1;
@@ -143,7 +127,6 @@ int parsedData(rmt_item32_t* item,size_t size,uint8_t* dataptr,size_t maxsize)
                     {
                         data += 1;
                     }
-
                     bitcnt ++;
                     if( bitcnt >= 8 )
                     {
@@ -166,14 +149,11 @@ int parsedData(rmt_item32_t* item,size_t size,uint8_t* dataptr,size_t maxsize)
             }
             dataitem.duration0 = item[cnt].duration1;
         }while (cnt < size);
-
         Serial.println("END");
     }
     return hex_cnt;
 }
-
 void loop() {
-
 #ifndef RF433RX
     if(M5.BtnA.wasPressed())
     {
@@ -182,7 +162,6 @@ void loop() {
     }
 #else
     int revicecnt = 0;
-
     RingbufHandle_t rb = nullptr;
     rmt_get_ringbuf_handle(RMT_RX_CHANNEL,&rb);
     rmt_rx_start(RMT_RX_CHANNEL,true);
@@ -221,9 +200,7 @@ void loop() {
         }
     }
     rmt_rx_stop(RMT_RX_CHANNEL);
-
 #endif
-
     delay(10);
     M5.update();
 }

@@ -2,7 +2,6 @@
 #include "TFTTerminal.h"
 TFT_eSprite TerminalBuff = TFT_eSprite(&M5.Lcd);
 TFTTerminal terminal(&TerminalBuff);
-
 String waitRevice()
 {
     String recvStr;
@@ -14,13 +13,11 @@ String waitRevice()
     terminal.println(recvStr);
     return recvStr;
 }
-
 void sendATCMD(String cmdStr)
 {
     Serial2.print(cmdStr);
     delay(100);
 }
-
 int sendATCMDAndRevice(String cmdStr)
 {
     delay(1000);
@@ -38,7 +35,6 @@ int sendATCMDAndRevice(String cmdStr)
         return -1;
     }
 }
-
 void GET() {
     terminal.println("GET Request");
     sendATCMD("AT?\r\n");
@@ -64,7 +60,6 @@ void GET() {
     terminal.println(recvStr);
     sendATCMDAndRevice("AT+HTTPTERM\r\n");
 }
-
 void POST() {
     terminal.println("POST Request");
     sendATCMD("AT?\r\n");
@@ -93,7 +88,6 @@ void POST() {
     terminal.println(recvStr);
     sendATCMDAndRevice("AT+HTTPTERM\r\n");
 }
-
 void setup()
 {
     M5.begin();
@@ -113,8 +107,6 @@ void setup()
     terminal.println("Press Btn A GET Request");
     terminal.println("Press Btn B POST Request");
 };
-
-
 void loop()
 {
   M5.update();
@@ -128,4 +120,3 @@ void loop()
   };
   delay(10);
 }
-

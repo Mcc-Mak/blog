@@ -5,7 +5,6 @@
 #define RX_PIN      16
 #define TX_PIN      17
 #define RESET_PIN   5   //Module reset resistance is not soldered. if necessary, weld it yourself.
-
 void header(const char *string){
     M5.Lcd.setTextSize(1);
     M5.Lcd.setTextColor(WHITE, BLUE);
@@ -20,8 +19,6 @@ void header(const char *string){
     M5.Lcd.setCursor(150, 85, 2);
     M5.Lcd.print("AT Command Pass-through");
 }
-
-
 String _readSerial(uint32_t timeout)
 {
     uint64_t timeOld = millis();
@@ -40,7 +37,6 @@ String _readSerial(uint32_t timeout)
     Serial.print(str);
     return str;
 }
-
 void simcard_test(){
     Serial2.print(F("AT+CPIN?\r"));
     String simcard_status = _readSerial(3000);
@@ -54,7 +50,6 @@ void simcard_test(){
       M5.Lcd.print("SIM Card OK");
     }
 }
-
 void signal_test(){
     String csq_data;
     M5.Lcd.setCursor(0, 65, 2);
@@ -70,7 +65,6 @@ void signal_test(){
     M5.Lcd.setCursor(0, 65, 2);
     M5.Lcd.print(csq_data.substring(csq_data.indexOf("+CSQ:"),csq_data.indexOf("OK")));
 }
-
 void GPRS_init(){
     Serial2.print(F("AT+CIPSHUT\r"));
     String init_data = _readSerial(4000);
@@ -88,7 +82,6 @@ void GPRS_init(){
       M5.Lcd.print("GPRS OK");
     }
 }
-
 void ping_test(){
     String ping_data;
     Serial2.print(F("AT+CIFSR\r"));
@@ -110,7 +103,6 @@ void ping_test(){
       M5.Lcd.print(ping_data);
     }
 }
-
 void setup() {
     M5.begin();
     M5.Power.begin();
@@ -121,8 +113,6 @@ void setup() {
     signal_test();
     GPRS_init();
 }
-
-
 void loop(){
   //AT instruction write
   if(Serial.available()){

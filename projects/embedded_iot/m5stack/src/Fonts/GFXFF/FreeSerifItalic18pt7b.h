@@ -344,7 +344,6 @@ const uint8_t FreeSerifItalic18pt7bBitmaps[] PROGMEM = {
   0x03, 0x80, 0x38, 0x03, 0x00, 0x70, 0x07, 0x00, 0x70, 0x06, 0x00, 0xE0,
   0x0E, 0x00, 0xC0, 0x1C, 0x01, 0x80, 0x70, 0x00, 0x1E, 0x00, 0x3F, 0xE1,
   0xF8, 0x7F, 0xC0, 0x07, 0x80 };
-
 const GFXglyph FreeSerifItalic18pt7bGlyphs[] PROGMEM = {
   {     0,   0,   0,   9,    0,    1 },   // 0x20 ' '
   {     0,  10,  23,  12,    1,  -22 },   // 0x21 '!'
@@ -441,7 +440,6 @@ const GFXglyph FreeSerifItalic18pt7bGlyphs[] PROGMEM = {
   {  4071,   2,  23,  10,    4,  -22 },   // 0x7C '|'
   {  4077,  12,  31,  14,    0,  -24 },   // 0x7D '}'
   {  4124,  17,   4,  19,    1,  -10 } }; // 0x7E '~'
-
 const GFXfont FreeSerifItalic18pt7b PROGMEM = {
   (uint8_t  *)FreeSerifItalic18pt7bBitmaps,
   (GFXglyph *)FreeSerifItalic18pt7bGlyphs,
@@ -450,5 +448,4 @@ const GFXfont FreeSerifItalic18pt7b PROGMEM = {
   0, 0
   #endif
   };
-
 // Approx. 4805 bytes

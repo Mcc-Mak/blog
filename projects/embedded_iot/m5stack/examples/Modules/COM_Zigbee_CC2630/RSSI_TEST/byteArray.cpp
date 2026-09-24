@@ -1,5 +1,4 @@
 #include "byteArray.h"
-
 byteArray::byteArray(size_t size)
 {
     if( size == 0 )
@@ -11,7 +10,6 @@ byteArray::byteArray(size_t size)
     _length = size;
     _ptr = (uint8_t*)malloc(sizeof(uint8_t) * size);
 }
-
 byteArray::byteArray(const uint8_t *data,size_t size)
 {
     if( size == 0 )
@@ -24,7 +22,6 @@ byteArray::byteArray(const uint8_t *data,size_t size)
     _ptr = (uint8_t*)malloc(sizeof(uint8_t) * size);
     memcpy(_ptr,data,sizeof(uint8_t) * size);
 }
-
 byteArray::byteArray(const byteArray &array)
 {
     if(( array._length == 0 )||( array._ptr == nullptr ))
@@ -36,20 +33,17 @@ byteArray::byteArray(const byteArray &array)
     this->_ptr = (uint8_t*)realloc(this->_ptr,sizeof(uint8_t) * array._length);
     memcpy(this->_ptr,array._ptr,sizeof(uint8_t) * array._length);
 }
-
 byteArray::~byteArray()
 {
     if( _ptr == nullptr ) return;
     delete _ptr;
 }
-
 byteArray &byteArray::append(uint8_t data)
 {
     _ptr = (uint8_t*)realloc(_ptr,sizeof(uint8_t) * ( _length + 1 ) );
     _ptr[_length ++] = data;
     return *this;
 }
-
 byteArray &byteArray::append(const char *s)
 {
     _ptr = (uint8_t*)realloc(_ptr,sizeof(uint8_t) * ( _length + strlen(s)));
@@ -57,7 +51,6 @@ byteArray &byteArray::append(const char *s)
     _length += strlen(s);
     return *this;
 }
-
 byteArray &byteArray::append( const byteArray &array )
 {
     _ptr = (uint8_t*)realloc(_ptr,sizeof(uint8_t) * ( _length + array._length));
@@ -65,12 +58,10 @@ byteArray &byteArray::append( const byteArray &array )
     _length += array._length;
     return *this;
 }
-
 uint8_t byteArray::at(size_t i)
 {
     return _ptr[i];
 }
-
 int byteArray::indexof(char data,int pos)
 {
     if((this->_length == 0)||(this->_ptr == nullptr)||( pos > this->_length))return -1;
@@ -80,7 +71,6 @@ int byteArray::indexof(char data,int pos)
     }
     return -1;
 }
-
 int byteArray::indexof(const byteArray &array,int pos)
 {
     bool flag = false;
@@ -96,7 +86,6 @@ int byteArray::indexof(const byteArray &array,int pos)
     }
     return -1;
 }
-
 byteArray byteArray::mid(size_t pos,size_t len)
 {   
     if(( pos > this->_length )||( pos < 0 )) return byteArray();
@@ -108,10 +97,8 @@ byteArray byteArray::mid(size_t pos,size_t len)
     } 
     return byteArray();
 }
-
 byteArray &byteArray::operator=(const byteArray &array)
 {
-    
     if( this == &array )return *this;
     if(( array._length == 0 )||( array._ptr == nullptr ))
     {
@@ -122,7 +109,6 @@ byteArray &byteArray::operator=(const byteArray &array)
     this->_length = array._length;
     this->_ptr = (uint8_t*)realloc(this->_ptr,sizeof(uint8_t) * array._length);
     memcpy(this->_ptr,array._ptr,sizeof(uint8_t) * array._length);
-    
     return *this;
 }
 byteArray &byteArray::operator=(const char *str)
@@ -138,17 +124,14 @@ byteArray &byteArray::operator=(const char *str)
     strcpy((char*)this->_ptr,str);
     return *this;
 }
-
 uint8_t & byteArray::operator[](size_t i)
 {
     return _ptr[i];
 }
-
 const uint8_t & byteArray::operator[](size_t i) const
 {
     return _ptr[i];
 }
-
 byteArray &byteArray::operator+=(char c)
 {
     return append(c);
@@ -161,5 +144,3 @@ byteArray &byteArray::operator+=(const byteArray &a)
 {
     return append(a);
 }
-
-

@@ -5,7 +5,6 @@
 #include "DHT12.h"
 #include <Wire.h>     //The DHT12 uses I2C comunication.
 DHT12 dht12;          //Preset scale CELSIUS and ID 0x5c.
-
 /*
 For configuration library:
 DHT12 dht12("Scale temperature","ID device for I2C");
@@ -21,7 +20,6 @@ the preset scale is KELVIN and ID is 0x5c.
   DHT12 dht12(FAHRENHEIT,0x53);
 The preset scale is FAHRENHEIT and ID is 0x53.
 */
-
 void setup() {
   M5.begin();
   M5.Power.begin();
@@ -29,31 +27,26 @@ void setup() {
   Serial.println("Prueba de libreria DHT12:");
   M5.Lcd.println("Prueba de libreria DHT12:");
 }
-
 void loop() {
   //Read temperature with preset scale.
   Serial.print("Temperatura: ");
   M5.Lcd.print("Temperatura: ");
   Serial.print(dht12.readTemperature());
   M5.Lcd.print(dht12.readTemperature());
-
   //Read humidity.
   Serial.print("*C  Humedad: ");
   M5.Lcd.print("*C  Humedad: ");
   Serial.print(dht12.readHumidity());
   M5.Lcd.println(dht12.readHumidity());
-
   //Read temperature as forced fahrenheit.
   Serial.println("%RH");
   Serial.println("%RH");
   Serial.print("Temperatura: ");
   Serial.print(dht12.readTemperature(FAHRENHEIT));
-
   //Read termperature as forced kelvin.
   Serial.println("*F");
   Serial.print("Temperatura: ");
   Serial.print(dht12.readTemperature(KELVIN));
   Serial.println("*K");
-
   delay(5000);
 }

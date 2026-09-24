@@ -1,14 +1,10 @@
 """Collection of image-processing tools built on OpenCV."""
-
 import numpy as np
 import imutils
 import cv2
-
-
 class image_tools(object):
     def __init__(self):
         pass
-
     def ConvertVideoToPanorama(self, video_path: str, save: bool = False, steps: int = 10):
         # Input:  Video Path + (opt) save?  =>  Output: Panorama photo array and display image
         # Video extension format: mp4, MOV ...
@@ -32,7 +28,6 @@ class image_tools(object):
         cv2.imshow("panorama.jpg", panorama_img)
         cv2.waitKey(10000)
         return panorama_img
-
     def __FindHomographicMatrix(self, img1, img2):
         # Match keypoints between two frames (SIFT) and compute the homography
         img1 = np.asarray(img1, dtype=np.uint8)
@@ -45,14 +40,12 @@ class image_tools(object):
         gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
         kp1, dp1 = sift.detectAndCompute(gray1, mask=None)
         kp2, dp2 = sift.detectAndCompute(gray2, mask=None)
-
         # Return the two best keypoint matches per descriptor
         best_2 = matcher.knnMatch(
             queryDescriptors=dp1,
             trainDescriptors=dp2,
             k=2
         )
-
         # Lowe's ratio test: keep only the most similar matches
         ratio = 0.2
         match = []
@@ -61,10 +54,8 @@ class image_tools(object):
                 match.append(m)
         # Sort matches by distance (best first)
         match = sorted(match, key=lambda x: x.distance)
-
         keypoints1 = np.array([kp1[m.queryIdx].pt for m in match])
         keypoints2 = np.array([kp2[m.trainIdx].pt for m in match])
-
         # Image 1 as the destination, Image 2 as the source
         src, dst = img2, img1
         src_kps, dst_kps = (keypoints2, keypoints1)
@@ -76,33 +67,23 @@ class image_tools(object):
             ransacReprojThreshold=3
         )
         return H
-
     def __combineImages(self, img1, img2, h):
         # Warp img1 into the coordinate system of img2 and stitch them together
         rows1, cols1 = img1.shape[:2]
         rows2, cols2 = img2.shape[:2]
-
         list_of_points_1 = np.float32([[0, 0], [0, rows1], [cols1, rows1], [cols1, 0]]).reshape(-1, 1, 2)
         temp_points = np.float32([[0, 0], [0, rows2], [cols2, rows2], [cols2, 0]]).reshape(-1, 1, 2)
-
         # Warp perspective and change the field of view
         list_of_points_2 = cv2.perspectiveTransform(temp_points, h)
-
         list_of_points = np.concatenate((list_of_points_1, list_of_points_2), axis=0)
-
         [x_min, y_min] = np.int32(list_of_points.min(axis=0).ravel() - 0.5)
         [x_max, y_max] = np.int32(list_of_points.max(axis=0).ravel() + 0.5)
-
         # Shift everything so that no pixel is cropped
         translation_dist = [-x_min, -y_min]
-
         H_translation = np.array([[1, 0, translation_dist[0]], [0, 1, translation_dist[1]], [0, 0, 1]])
-
         output_img = cv2.warpPerspective(img2, H_translation.dot(h), (x_max - x_min, y_max - y_min))
         output_img[translation_dist[1]:rows1 + translation_dist[1], translation_dist[0]:cols1 + translation_dist[0]] = img1
-
         return output_img
-
     def pixelate(self, img_path, pixel_img_size):  # e.g. img_path = "./face.png", pixel_img_size = (20, 20)
         img_path = img_path
         input = cv2.imread(img_path)
@@ -112,8 +93,6 @@ class image_tools(object):
         # Compress the image into a pixelated size
         output = cv2.resize(temp_image, (i_w, i_h), interpolation=cv2.INTER_NEAREST)
         return output
-
-
 if __name__ == "__main__":
     img_tools = image_tools()
     # Function 1: ConvertVideoToPanorama
