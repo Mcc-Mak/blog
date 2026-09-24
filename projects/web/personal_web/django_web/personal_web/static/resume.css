@@ -1,0 +1,116 @@
+
+#blog_contents
+{
+
+width:300px;height:200px;font-size:10pt;padding:0px ;
+  text-align: top; 
+}
+
+
+nav
+{
+    text-align: center;
+
+
+}
+button
+{
+    background: #182ce6;
+    color: white;
+    /*border: 0;
+    padding: 6px 12px;
+*/
+
+
+
+}
+a
+{
+
+    text-decoration: none;
+
+}
+
+body
+{
+position:relative;
+
+
+}
+
+.contact
+{
+    width: 160px;
+    height: 40px;
+    background-color: white;
+    margin: 0 auto;
+    border: 1px navy solid;  /* outer stroke */
+    outline: 1px navy solid;  /* inner stroke */
+    outline-offset: -2px;  /* negative border width + outline width */
+    position: absolute;
+    text-align:center;
+    
+    top: 220px;
+    left: 1000px;
+  
+}
+/* #contact
+{
+
+
+}
+=> id="...."
+
+
+*/
+
+  .click_img:hover {
+    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+  }
+
+  .ul_nav_bar
+  {
+    list-style-type: none;
+    margin:0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333333;
+    font-size: 10px;
+
+
+
+  }
+  .li_nav
+  {
+    float:left;
+
+
+
+  }
+  .li_a
+  {
+    display:block;
+    color: white;
+    text-align:center;
+    padding:8px;
+    text-decoration:none;
+
+
+  }
+  
+  .li_a:hover
+  {
+
+    background-color: #111111;
+
+  }
+  html
+  {
+    position: relative;
+    margin: auto;
+    background-image:url("resume_bg.jpg");
+    scroll-behavior: smooth;
+    padding-bottom: 50%;
+    background-size: cover;
+  }
+
